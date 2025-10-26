@@ -1,0 +1,13 @@
+# ninja log v6
+919	1801	7831063351069616	CMakeFiles/trabalhopratico.dir/Comando.cpp.obj.ddi	25a1d0ea91cb94b8
+619	1593	7831069893879414	CMakeFiles/trabalhopratico.dir/main.cpp.obj	2487c4132b149703
+567	617	7831069893359414	CMakeFiles/trabalhopratico.dir/main.cpp.obj.modmap	a4f317c185ed9b28
+30	567	7831069887979399	CMakeFiles/trabalhopratico.dir/main.cpp.obj.ddi	cf7c44cf5b2c136
+1888	3068	7831063360749487	CMakeFiles/trabalhopratico.dir/Comando.cpp.obj	ec2bf92064d17290
+567	617	7831069893359414	CMakeFiles/trabalhopratico.dir/CXX.dd	a4f317c185ed9b28
+567	617	7831069893359414	C:/Users/tiago/Documents/trabalhopratico/cmake-build-debug/CMakeFiles/trabalhopratico.dir/CXXModules.json	a4f317c185ed9b28
+567	617	7831069893359414	CMakeFiles/trabalhopratico.dir/Comando.cpp.obj.modmap	a4f317c185ed9b28
+1593	1841	7831069903619400	trabalhopratico.exe	5198450e250ca1e9
+63	565	7831069552520429	CMakeFiles/trabalhopratico.dir/ComandoFactory.cpp.obj.ddi	1c944bf1454ca87b
+567	617	7831069893359414	CMakeFiles/trabalhopratico.dir/ComandoFactory.cpp.obj.modmap	a4f317c185ed9b28
+643	1713	7831069558320422	CMakeFiles/trabalhopratico.dir/ComandoFactory.cpp.obj	fdcc8b7afa382b37

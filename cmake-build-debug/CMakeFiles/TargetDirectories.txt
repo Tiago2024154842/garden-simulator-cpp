@@ -1,0 +1,3 @@
+C:/Users/tiago/Documents/trabalhopratico/cmake-build-debug/CMakeFiles/trabalhopratico.dir
+C:/Users/tiago/Documents/trabalhopratico/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/tiago/Documents/trabalhopratico/cmake-build-debug/CMakeFiles/rebuild_cache.dir
