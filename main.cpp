@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "ComandoFactory.h"
+#include "Comandos/ComandoFactory.h"
 
 using namespace std;
 
@@ -41,5 +41,3 @@ int main() {
 
     return 0;
 }
-
-//BOAS

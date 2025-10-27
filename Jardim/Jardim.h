@@ -7,8 +7,9 @@ class Jardim {
     Jardim(int c, int l);
 
     private:
-    static int nColunas;
-    static int nLinhas;
+    int nColunas;
+    int nLinhas;
+
 };
 
 
