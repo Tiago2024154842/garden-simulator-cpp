@@ -7,14 +7,4 @@ class Comando {
     virtual bool executar() = 0;
 };
 
-class Lplantas : public Comando {
-    public:
-    bool executar() override;
-};
-
-class Jardim : public Comando {
-    public:
-    bool executar() override;
-};
-
 #endif

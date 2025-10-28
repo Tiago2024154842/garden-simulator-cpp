@@ -1,7 +1,7 @@
 #ifndef COMANDOFACTORY_H
 #define COMANDOFACTORY_H
 
-#include "Comando.h"
+#include "Comandos/Comando.h"
 
 class ComandoFactory {
 public:

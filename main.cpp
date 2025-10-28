@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "Comandos/ComandoFactory.h"
+#include "ComandoFactory.h"
 
 using namespace std;
 
