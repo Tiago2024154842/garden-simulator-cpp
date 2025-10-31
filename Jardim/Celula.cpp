@@ -20,3 +20,11 @@ void Celula::removePlanta() {
   delete planta;
   planta = nullptr;
 }
+
+bool Celula::temFerramenta() const {
+  return ferramenta != nullptr;
+}
+
+void Celula::setFerramenta(Ferramenta* ferramenta) {
+  this->ferramenta = ferramenta;
+}

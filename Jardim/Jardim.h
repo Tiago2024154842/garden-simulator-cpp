@@ -1,6 +1,7 @@
 #ifndef JARDIM_H
 #define JARDIM_H
 
+#include "../Random/Random.h"
 #include "Celula.h"
 
 using namespace std;

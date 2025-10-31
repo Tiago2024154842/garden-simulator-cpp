@@ -14,4 +14,10 @@ add_executable(Trabalho_POO main.cpp
         Jardim/Jardim.h
         Jardim/Celula.cpp
         Jardim/Celula.h
+        Random/Random.h
+        Random/Random.cpp
+        Jardim/Ferramenta.h
+        Jardim/Ferramenta.cpp
+        Jardim/Jardineiro.cpp
+        Jardim/Jardineiro.h
 )

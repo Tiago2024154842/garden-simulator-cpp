@@ -9,8 +9,6 @@ bool lplantas::executar(Jardim * jardim, string * argv, int argc) {
 }
 
 bool lplanta::executar(Jardim * jardim, string* argv, int argc) {
-
-
     if (jardim == nullptr) {
         cout << "Jardim não foi criado corretamente" << endl;
         return false;
@@ -50,25 +48,17 @@ bool avanca::executar(Jardim *jardim, string *argv, int argc) {
         return false;
     }
 
-    if (argc > 1) {
-
-        cout << "Uso: avanca [n]" << endl;
-        return false;
-
-    }
-     if (argc == 1) {
-        int n = stoi(argv[0]);
+    int n = 1;
+    if (argc > 0) {
+        n = stoi(argv[0]);
         if(n < 0) {
             cout << "[n] tem de ser numero positivo" << endl;
             return false;
         }
-        cout << "avanca ["<< n << "]" << endl;
-        cout << "Comando nao implementado" << endl;
-        return true;
-     }
-    cout << "avanca [1]" << endl;
+    }
+
+    cout << "avanca [" << n << "]" << endl;
     cout << "Comando nao implementado" << endl;
     return true;
-
 }
 

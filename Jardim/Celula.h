@@ -19,6 +19,8 @@ class Celula {
     bool temPlanta() const;
     Planta * getPlanta() const;
     void removePlanta();
+    void setFerramenta(Ferramenta* ferramenta);
+    bool temFerramenta() const;
 };
 
 #endif
