@@ -16,6 +16,11 @@ class lplantas : public Comando {
     bool executar(Jardim * jardim, string * argv, int argc) override;
 };
 
+class lplanta : public Comando {
+  public:
+    bool executar(Jardim * jardim, string * argv, int argc) override;
+};
+
 class jardim : public Comando {
   public:
     bool executar(Jardim * jardim, string * argv, int argc) override;
@@ -25,5 +30,11 @@ class planta : public Comando {
   public:
     bool executar(Jardim * jardim, string * argv, int argc) override;
 };
+
+class avanca : public Comando {
+  public:
+    bool executar(Jardim * jardim, string * argv, int argc) override;
+};
+
 
 #endif

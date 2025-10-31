@@ -1,7 +1,0 @@
-ninja_dyndep_version = 1.0
-build CMakeFiles/trabalhopratico.dir/main.cpp.obj: dyndep
-
-build CMakeFiles/trabalhopratico.dir/Comando.cpp.obj: dyndep
-
-build CMakeFiles/trabalhopratico.dir/ComandoFactory.cpp.obj: dyndep
-
