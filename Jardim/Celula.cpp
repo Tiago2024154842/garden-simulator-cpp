@@ -1,6 +1,6 @@
 #include "Celula.h"
 
-Celula::Celula() : planta(nullptr), ferramenta(nullptr) {}
+Celula::Celula() : planta(nullptr), ferramenta(nullptr), jardineiro(nullptr) {}
 Celula::~Celula() {}
 
 void Celula::setPlanta(Planta* planta) {

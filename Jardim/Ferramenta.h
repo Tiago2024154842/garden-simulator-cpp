@@ -6,6 +6,7 @@
 class Ferramenta {
     static int numSerie;
 
+  public:
     virtual void usar() const = 0;
 };
 

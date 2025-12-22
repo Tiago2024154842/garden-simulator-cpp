@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Planta.h"
 #include "Ferramenta.h"
+#include "Jardineiro.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ class Celula {
   private:
     Planta* planta;
     Ferramenta* ferramenta;
+    Jardineiro* jardineiro;
 
   public:
     Celula();

@@ -13,7 +13,7 @@ class Jardim {
     void mostraGrelha() const;
     int getNColunas() const;
     int getNLinhas() const;
-    void criarPlanta(int c, int l, string tipo);
+    void criarPlanta(int l, int c, string tipo);
 
   private:
     int nColunas;

@@ -81,8 +81,8 @@ void Jardim::mostraGrelha() const {
     cout << endl;
 }
 
-void Jardim::criarPlanta(int c, int l, string tipo) {
-    if (l < 1 || l >= nLinhas || c < 1 || c >= nColunas) {
+void Jardim::criarPlanta(int l, int c, string tipo) {
+    if (l < 0 || l > nLinhas || c < 0 || c > nColunas) {
         cout << "Parametros fora do limite do jardim";
         return;
     }
@@ -92,7 +92,7 @@ void Jardim::criarPlanta(int c, int l, string tipo) {
         return;
     }
 
-    if (grelha[l-1][c-1].temPlanta()) return; // evitar por planta quando já há uma planta
+    if (grelha[l][c].temPlanta()) return; // evitar por planta quando já há uma planta
 
     Planta * p = nullptr;
     if (tipo == "r") p = new Roseira();
@@ -100,5 +100,5 @@ void Jardim::criarPlanta(int c, int l, string tipo) {
     else if (tipo == "x") p = new Exotica();
     else if (tipo == "c") p = new Cacto();
 
-    grelha[l-1][c-1].setPlanta(p);
+    grelha[l][c].setPlanta(p);
 }

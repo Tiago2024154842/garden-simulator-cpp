@@ -21,7 +21,7 @@ Jardim* executarComando(const string& c, Jardim* jardimAtual) {
         return jardimAtual;
     }
 
-    if (jardimAtual == nullptr && nome != "fim") {
+    if (jardimAtual == nullptr && nome != "fim" && nome != "executa") {
         cout << "Erro: Primeiro crie um jardim usando 'jardim <nlinhas> <ncolunas>'" << endl;
         return nullptr;
     }
@@ -32,15 +32,13 @@ Jardim* executarComando(const string& c, Jardim* jardimAtual) {
         return jardimAtual;
     }
 
-    string argv[3];
+    string argv[2];
     int argc = 0;
     while (comando >> argv[argc] && argc < 3)
         argc++;
 
-    //if (cmd->executar(jardimAtual, argv, argc))
-        //jardimAtual->mostraGrelha();
-
-    cmd->executar(jardimAtual, argv, argc);
+    if (cmd->executar(jardimAtual, argv, argc))
+        jardimAtual->mostraGrelha();
 
     delete cmd;
     
