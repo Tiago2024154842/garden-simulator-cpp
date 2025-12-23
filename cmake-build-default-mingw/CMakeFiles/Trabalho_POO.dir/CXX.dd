@@ -1,0 +1,19 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles/Trabalho_POO.dir/main.cpp.obj: dyndep
+
+build CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj: dyndep
+
+build CMakeFiles/Trabalho_POO.dir/ComandoFactory.cpp.obj: dyndep
+
+build CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj: dyndep
+
+build CMakeFiles/Trabalho_POO.dir/Jardim/Jardim.cpp.obj: dyndep
+
+build CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj: dyndep
+
+build CMakeFiles/Trabalho_POO.dir/Random/Random.cpp.obj: dyndep
+
+build CMakeFiles/Trabalho_POO.dir/Jardim/Ferramenta.cpp.obj: dyndep
+
+build CMakeFiles/Trabalho_POO.dir/Jardim/Jardineiro.cpp.obj: dyndep
+

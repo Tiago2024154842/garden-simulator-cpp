@@ -14,6 +14,11 @@ Jardim* executarComando(const string& c, Jardim* jardimAtual) {
     if (nome == "jardim") {
         int linhas, colunas;
         if (comando >> linhas >> colunas) {
+            if (linhas > 26 || colunas > 26) {
+                cout << "Erro: O tamanho maximo e 26x26!" << endl;
+                return jardimAtual;
+            }
+
             delete jardimAtual;
             return new Jardim(linhas, colunas);
         }

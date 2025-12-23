@@ -3,6 +3,8 @@ project(Trabalho_POO)
 
 set(CMAKE_CXX_STANDARD 20)
 
+include_directories(.)
+
 add_executable(Trabalho_POO main.cpp
         Comandos/Comando.cpp
         Comandos/Comando.h

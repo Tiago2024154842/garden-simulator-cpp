@@ -26,8 +26,7 @@ bool lplanta::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    return jardim->getDescPlanta(l, c);
 }
 
 bool planta::executar(Jardim * jardim, string * argv, int argc) {
@@ -53,8 +52,7 @@ bool planta::executar(Jardim * jardim, string * argv, int argc) {
     }
 
     cout << "Comando implementado nao na totalidade" << endl;
-    jardim->criarPlanta(l, c, argv[1]);
-    return true;
+    return jardim->criarPlanta(l, c, argv[1][0]);;
 }
 
 bool avanca::executar(Jardim *jardim, string *argv, int argc) {
@@ -237,8 +235,7 @@ bool entra::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    cout << "Comando nao implementado" << endl;
-    return true;
+    return jardim->colocarJardineiro(l, c);
 }
 
 bool sai::executar(Jardim * jardim, string* argv, int argc) {

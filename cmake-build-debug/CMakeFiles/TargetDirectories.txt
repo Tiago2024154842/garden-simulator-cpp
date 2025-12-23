@@ -1,3 +1,0 @@
-C:/Users/Tiago/Desktop/ISEC/POO/Trabalho_POO/cmake-build-debug/CMakeFiles/Trabalho_POO.dir
-C:/Users/Tiago/Desktop/ISEC/POO/Trabalho_POO/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Tiago/Desktop/ISEC/POO/Trabalho_POO/cmake-build-debug/CMakeFiles/rebuild_cache.dir

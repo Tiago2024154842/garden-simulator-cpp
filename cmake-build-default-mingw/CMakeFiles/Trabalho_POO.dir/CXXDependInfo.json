@@ -1,0 +1,21 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "C:/Users/tiago/Documents/Trabalho_POO/cmake-build-default-mingw",
+	"dir-cur-src" : "C:/Users/tiago/Documents/Trabalho_POO",
+	"dir-top-bld" : "C:/Users/tiago/Documents/Trabalho_POO/cmake-build-default-mingw",
+	"dir-top-src" : "C:/Users/tiago/Documents/Trabalho_POO",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : 
+	[
+		"C:\\Users\\tiago\\Documents\\Trabalho_POO\\."
+	],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/tiago/Documents/Trabalho_POO/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir"
+}

@@ -2,6 +2,7 @@
 #define CELULA_H
 
 #include <iostream>
+#include "Random/Random.h"
 #include "Planta.h"
 #include "Ferramenta.h"
 #include "Jardineiro.h"
@@ -13,6 +14,8 @@ class Celula {
     Planta* planta;
     Ferramenta* ferramenta;
     Jardineiro* jardineiro;
+    int nutrientes;
+    int agua;
 
   public:
     Celula();
@@ -23,6 +26,9 @@ class Celula {
     void removePlanta();
     void setFerramenta(Ferramenta* ferramenta);
     bool temFerramenta() const;
+    Jardineiro * getJardineiro() const;
+    void setJardineiro(Jardineiro* jardineiro);
+    bool temJardineiro() const;
 };
 
 #endif
