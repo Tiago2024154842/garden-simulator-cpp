@@ -63505,35 +63505,39 @@ class Random {
 using namespace std;
 
 class Planta {
-    public:
-        int nutrientes;
-        int agua;
-        string beleza;
-        virtual string getPropriedades() const = 0;
+  private:
+    string beleza;
+    string nome;
+    char simbolo;
+    int nutrientes;
+    int agua;
+
+  protected:
+    Planta(string n, string b, char s, int nut, int a);
+
+  public:
+    char getSimbolo() const;
+    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
-        string getPropriedades() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
-        string getPropriedades() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
-        string getPropriedades() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
-        string getPropriedades() const override;
 };
 # 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h" 1
@@ -63542,44 +63546,56 @@ class Cacto : public Planta {
 
 
 
-class Ferramenta {
-    static int numSerie;
+class Celula;
 
+class Ferramenta {
   public:
-    virtual void usar() const = 0;
+    char getSimbolo() const;
+    virtual void usar(Celula* area) = 0;
+    virtual std::string getDesc() const = 0;
+
+  protected:
+    Ferramenta(char s);
+
+  private:
+    char simbolo;
+    static int numSerie;
 };
 
 class Regador : public Ferramenta {
-    void usar() const override;
+  public:
+    Regador();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
+
+  private:
+    int agua;
 };
 
 class Adubo : public Ferramenta {
-    void usar() const override;
+  public:
+    Adubo();
+    void usar(Celula* area) override;
+    std::string getDesc() const override;
+
+  private:
+    int quantidade;
 };
 
 class Tesoura : public Ferramenta {
-    void usar() const override;
+  public:
+    Tesoura();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
 };
 
 class Enxada : public Ferramenta {
-    void usar() const override;
+  public:
+    Enxada();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
 };
 # 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
-# 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h" 1
-
-
-
-
-
-class Jardineiro {
-  public:
-    Jardineiro();
-    ~Jardineiro();
-  private:
-    Ferramenta * mao;
-    Ferramenta ** inventario;
-};
-# 9 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 
 using namespace std;
 
@@ -63587,7 +63603,6 @@ class Celula {
   private:
     Planta* planta;
     Ferramenta* ferramenta;
-    Jardineiro* jardineiro;
     int nutrientes;
     int agua;
 
@@ -63595,20 +63610,91 @@ class Celula {
     Celula();
     ~Celula();
     void setPlanta(Planta* planta);
+    bool removerPlanta();
     bool temPlanta() const;
     Planta * getPlanta() const;
     void removePlanta();
     void setFerramenta(Ferramenta* ferramenta);
+    Ferramenta * getFerramenta() const;
     bool temFerramenta() const;
-    Jardineiro * getJardineiro() const;
-    void setJardineiro(Jardineiro* jardineiro);
-    bool temJardineiro() const;
 };
 # 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.cpp" 2
+# 1 "C:/Users/tiago/Documents/Trabalho_POO/Settings.h" 1
 
-Celula::Celula() : planta(nullptr), ferramenta(nullptr), jardineiro(nullptr) {
-  agua = Random::getRandom(80, 100);
-  nutrientes = Random::getRandom(40, 50);
+
+
+class Settings {
+    public:
+    class Jardim {
+    public:
+        static const int agua_min = 80;
+        static const int agua_max = 100;
+        static const int nutrientes_min = 40;
+        static const int nutrientes_max = 50;
+    };
+    class Regador {
+    public:
+        static const int capacidade = 200;
+        static const int dose = 10;
+    };
+    class Adubo {
+    public:
+        static const int capacidade = 100;
+        static const int dose = 10;
+    };
+    class Jardineiro {
+    public:
+        static const int max_movimentos = 10;
+        static const int max_entradas_saidas = 1;
+        static const int max_plantacoes = 2;
+        static const int max_colheitas = 5;
+    };
+    class Cacto {
+        public:
+        static const int absorcao_agua_percentagem = 25;
+        static const int absorcao_nutrientes = 5;
+        static const int morre_agua_solo_maior = 100;
+        static const int morre_agua_solo_instantes = 3;
+        static const int morre_nutrientes_solo_menor = 1;
+        static const int morre_nutrientes_solo_instantes = 3;
+        static const int multiplica_nutrientes_maior = 100;
+        static const int multiplica_agua_maior = 50;
+    };
+    class Roseira {
+        public:
+        static const int inicial_agua = 25;
+        static const int inicial_nutrientes = 25;
+        static const int perda_agua = 4;
+        static const int perda_nutrientes = 4;
+        static const int absorcao_agua = 5;
+        static const int absorcao_nutrientes = 8;
+        static const int morre_agua_menor = 1;
+        static const int morre_nutrientes_menor = 1;
+        static const int morre_nutrientes_maior = 199;
+        static const int multiplica_nutrientes_maior = 100;
+        static const int nova_nutrientes = 25;
+        static const int nova_agua_percentagem = 50;
+        static const int original_nutrientes = 100;
+        static const int original_agua_percentagem = 50;
+    };
+    class ErvaDaninha {
+        public:
+        static const int inicial_agua = 5;
+        static const int inicial_nutrientes = 5;
+        static const int absorcao_agua = 1;
+        static const int absorcao_nutrientes = 1;
+        static const int morre_instantes = 60;
+        static const int multiplica_nutrientes_maior = 30;
+        static const int multiplica_instantes = 5;
+        static const int nova_nutrientes = 5;
+        static const int original_nutrientes = 5;
+    };
+};
+# 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.cpp" 2
+
+Celula::Celula() : planta(nullptr), ferramenta(nullptr) {
+  agua = Random::getRandom(Settings::Jardim::agua_min, Settings::Jardim::agua_max);
+  nutrientes = Random::getRandom(Settings::Jardim::nutrientes_min, Settings::Jardim::nutrientes_max);
 }
 
 Celula::~Celula() {}
@@ -63619,6 +63705,16 @@ void Celula::setPlanta(Planta * planta) {
 
 bool Celula::temPlanta() const {
   return planta != nullptr;
+}
+
+bool Celula::removerPlanta() {
+  if (planta != nullptr) {
+    delete planta;
+    planta = nullptr;
+    return true;
+  }
+
+  return false;
 }
 
 Planta * Celula::getPlanta() const {
@@ -63638,14 +63734,6 @@ void Celula::setFerramenta(Ferramenta* ferramenta) {
   this->ferramenta = ferramenta;
 }
 
-void Celula::setJardineiro(Jardineiro* jardineiro) {
-  this->jardineiro = jardineiro;
-}
-
-Jardineiro * Celula::getJardineiro() const {
-  return jardineiro;
-}
-
-bool Celula::temJardineiro() const {
-  return jardineiro != nullptr;
+Ferramenta * Celula::getFerramenta() const {
+  return ferramenta;
 }

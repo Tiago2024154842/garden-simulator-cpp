@@ -5,7 +5,6 @@
 #include "Random/Random.h"
 #include "Planta.h"
 #include "Ferramenta.h"
-#include "Jardineiro.h"
 
 using namespace std;
 
@@ -13,7 +12,6 @@ class Celula {
   private:
     Planta* planta;
     Ferramenta* ferramenta;
-    Jardineiro* jardineiro;
     int nutrientes;
     int agua;
 
@@ -21,14 +19,13 @@ class Celula {
     Celula();
     ~Celula();
     void setPlanta(Planta* planta);
+    bool removerPlanta();
     bool temPlanta() const;
     Planta * getPlanta() const;
     void removePlanta();
     void setFerramenta(Ferramenta* ferramenta);
+    Ferramenta * getFerramenta() const;
     bool temFerramenta() const;
-    Jardineiro * getJardineiro() const;
-    void setJardineiro(Jardineiro* jardineiro);
-    bool temJardineiro() const;
 };
 
 #endif

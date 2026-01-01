@@ -1,8 +1,9 @@
 #include "Celula.h"
+#include "../Settings.h"
 
-Celula::Celula() : planta(nullptr), ferramenta(nullptr), jardineiro(nullptr) {
-  agua = Random::getRandom(80, 100);
-  nutrientes = Random::getRandom(40, 50);
+Celula::Celula() : planta(nullptr), ferramenta(nullptr) {
+  agua = Random::getRandom(Settings::Jardim::agua_min, Settings::Jardim::agua_max);
+  nutrientes = Random::getRandom(Settings::Jardim::nutrientes_min, Settings::Jardim::nutrientes_max);
 }
 
 Celula::~Celula() {}
@@ -13,6 +14,16 @@ void Celula::setPlanta(Planta * planta) {
 
 bool Celula::temPlanta() const {
   return planta != nullptr;
+}
+
+bool Celula::removerPlanta() {
+  if (planta != nullptr) {
+    delete planta;
+    planta = nullptr;
+    return true;
+  }
+
+  return false;
 }
 
 Planta * Celula::getPlanta() const {
@@ -32,14 +43,6 @@ void Celula::setFerramenta(Ferramenta* ferramenta) {
   this->ferramenta = ferramenta;
 }
 
-void Celula::setJardineiro(Jardineiro* jardineiro) {
-  this->jardineiro = jardineiro;
-}
-
-Jardineiro * Celula::getJardineiro() const {
-  return jardineiro;
-}
-
-bool Celula::temJardineiro() const {
-  return jardineiro != nullptr;
+Ferramenta * Celula::getFerramenta() const {
+  return ferramenta;
 }

@@ -3,27 +3,56 @@
 
 #include <iostream>
 
-class Ferramenta {
-    static int numSerie;
+class Celula;
 
+class Ferramenta {
   public:
-    virtual void usar() const = 0;
+    char getSimbolo() const;
+    int getNumSerie() const;
+    virtual void usar(Celula* area) = 0;
+    virtual std::string getDesc() const = 0;
+
+  protected:
+    Ferramenta(char s);
+
+  private: 
+    char simbolo;
+    int numSerie;
+    static int contadorNumSerie;
 };
 
 class Regador : public Ferramenta {
-    void usar() const override;
+  public:
+    Regador();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
+    
+  private:
+    int agua;
 };
 
 class Adubo : public Ferramenta {
-    void usar() const override;
+  public:
+    Adubo();
+    void usar(Celula* area) override;
+    std::string getDesc() const override;
+
+  private:
+    int quantidade;
 };
 
 class Tesoura : public Ferramenta {
-    void usar() const override;
+  public:
+    Tesoura();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
 };
 
 class Enxada : public Ferramenta {
-    void usar() const override;
+  public:
+    Enxada();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
 };
 
 #endif

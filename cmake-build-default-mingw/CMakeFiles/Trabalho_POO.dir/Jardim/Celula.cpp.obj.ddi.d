@@ -177,4 +177,4 @@ CMakeFiles\Trabalho_POO.dir\Jardim\Celula.cpp.obj.ddi: \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/pstl/execution_defs.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h \
- C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h
+ C:/Users/tiago/Documents/Trabalho_POO/Settings.h

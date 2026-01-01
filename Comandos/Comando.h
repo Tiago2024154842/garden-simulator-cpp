@@ -71,23 +71,11 @@ class compra : public Comando {
     bool executar(Jardim *jardim, string *argv, int argc) override;
 };
 
-class movEsquerda : public Comando {
+class mover : public Comando {
+    char direcao;
+    
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
-
-class movDireita : public Comando {
-  public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
-
-class movCima : public Comando {
-  public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
-
-class movBaixo : public Comando {
-  public:
+    mover(char d);
     bool executar(Jardim * jardim, string * argv, int argc) override;
 };
 

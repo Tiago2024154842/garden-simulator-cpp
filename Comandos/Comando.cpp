@@ -42,16 +42,15 @@ bool planta::executar(Jardim * jardim, string * argv, int argc) {
     int c = (int) argv[0][1] - (int) 'a';
 
     if(l >= jardim->getNLinhas() || c >= jardim->getNColunas() || l < 0 || c < 0) {
-        cout << "Coordenadas fora dos limites do jardim" << endl;
+        cout << "Erro: Coordenadas fora dos limites do jardim" << endl;
         return false;
     }
 
     if (!(argv[1] == "c" || argv[1] == "r" || argv[1] == "e" || argv[1] == "x")) {
-        cout << "<Tipo> Errado. Pode meter entre [c] [r] [e] [x] "<< endl;
+        cout << "Erro: <tipo> errado, as opcoes sao [c] [r] [e] [x] "<< endl;
         return false;
     }
 
-    cout << "Comando implementado nao na totalidade" << endl;
     return jardim->criarPlanta(l, c, argv[1][0]);;
 }
 
@@ -63,7 +62,7 @@ bool avanca::executar(Jardim *jardim, string *argv, int argc) {
     if (argc > 0) {
         n = stoi(argv[0]);
         if(n < 0) {
-            cout << "[n] tem de ser numero positivo" << endl;
+            cout << "Erro: [n] tem de ser numero positivo" << endl;
             return false;
         }
     }
@@ -117,8 +116,8 @@ bool lferr::executar(Jardim * jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    jardim->listaFerramentas();
+    return false;
 }
 
 bool colhe::executar(Jardim * jardim, string* argv, int argc) {
@@ -138,8 +137,7 @@ bool colhe::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    return jardim->removerPlanta(l, c);
 }
 
 bool larga::executar(Jardim * jardim, string* argv, int argc) {
@@ -177,45 +175,23 @@ bool compra::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    if (!(argv[0] == "g" || argv[0] == "a" || argv[0] == "t" || argv[0] == "z")) {
-        cout << "<c> Errado. Pode meter entre [g] [a] [t] [z] "<< endl;
+    char simbolo = argv[0][0];
+
+    if (!(simbolo == 'g' || simbolo == 'a' || simbolo == 't' || simbolo == 'z')) {
+        cout << "Erro: <c> errado, as opcoes sao [g] [a] [t] [z] "<< endl;
         return false;
     }
 
-    cout << "Comando nao implementado" << endl;
-    return true;
+    return jardim->compraFerramenta(simbolo);
 }
 
-bool movEsquerda::executar(Jardim * jardim, string* argv, int argc) {
+mover::mover(char d) : direcao(d) {};
+
+bool mover::executar(Jardim *jardim, string *argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
-    return true;
-}
-
-bool movDireita::executar(Jardim * jardim, string* argv, int argc) {
-    if (jardim == nullptr)
-        return false;
-
-    cout << "Comando não implementado" << endl;
-    return true;
-}
-
-bool movCima::executar(Jardim * jardim, string* argv, int argc) {
-    if (jardim == nullptr)
-        return false;
-
-    cout << "Comando não implementado" << endl;
-    return true;
-}
-
-bool movBaixo::executar(Jardim * jardim, string* argv, int argc) {
-    if (jardim == nullptr)
-        return false;
-
-    cout << "Comando não implementado" << endl;
-    return true;
+    return jardim->moverJardineiro(direcao);
 }
 
 bool entra::executar(Jardim * jardim, string* argv, int argc) {
@@ -231,11 +207,11 @@ bool entra::executar(Jardim * jardim, string* argv, int argc) {
     int c = (int) argv[0][1] - (int) 'a';
 
     if(l >= jardim->getNLinhas() || c >= jardim->getNColunas() || l < 0 || c < 0) {
-        cout << "Coordenadas fora dos limites do jardim" << endl;
+        cout << "Erro: Coordenadas fora dos limites do jardim" << endl;
         return false;
     }
 
-    return jardim->colocarJardineiro(l, c);
+    return jardim->setJardineiro(l, c);
 }
 
 bool sai::executar(Jardim * jardim, string* argv, int argc) {

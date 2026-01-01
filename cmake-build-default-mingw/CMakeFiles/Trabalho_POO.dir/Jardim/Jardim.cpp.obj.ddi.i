@@ -2,7 +2,7 @@
 # 0 "<built-in>"
 # 0 "<command-line>"
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp"
-# 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h" 1
+# 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 1
 
 
 
@@ -41558,38 +41558,7 @@ namespace std
 # 87 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/iostream" 3
 
 }
-# 5 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h" 2
-
-
-# 6 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h"
-class Ferramenta {
-    static int numSerie;
-
-  public:
-    virtual void usar() const = 0;
-};
-
-class Regador : public Ferramenta {
-    void usar() const override;
-};
-
-class Adubo : public Ferramenta {
-    void usar() const override;
-};
-
-class Tesoura : public Ferramenta {
-    void usar() const override;
-};
-
-class Enxada : public Ferramenta {
-    void usar() const override;
-};
-# 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
-# 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 1
-
-
-
-
+# 5 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Random/Random.h" 1
 
 
@@ -63543,39 +63512,122 @@ class Random {
 using namespace std;
 
 class Planta {
-    public:
-        int nutrientes;
-        int agua;
-        string beleza;
-        virtual string getPropriedades() const = 0;
+  private:
+    string beleza;
+    string nome;
+    char simbolo;
+    int nutrientes;
+    int agua;
+
+  protected:
+    Planta(string n, string b, char s, int nut, int a);
+
+  public:
+    char getSimbolo() const;
+    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
-        string getPropriedades() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
-        string getPropriedades() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
-        string getPropriedades() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
-        string getPropriedades() const override;
 };
 # 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
+# 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h" 1
 
+
+
+
+
+class Celula;
+
+class Ferramenta {
+  public:
+    char getSimbolo() const;
+    virtual void usar(Celula* area) = 0;
+    virtual std::string getDesc() const = 0;
+
+  protected:
+    Ferramenta(char s);
+
+  private:
+    char simbolo;
+    static int numSerie;
+};
+
+class Regador : public Ferramenta {
+  public:
+    Regador();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
+
+  private:
+    int agua;
+};
+
+class Adubo : public Ferramenta {
+  public:
+    Adubo();
+    void usar(Celula* area) override;
+    std::string getDesc() const override;
+
+  private:
+    int quantidade;
+};
+
+class Tesoura : public Ferramenta {
+  public:
+    Tesoura();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
+};
+
+class Enxada : public Ferramenta {
+  public:
+    Enxada();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
+};
+# 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
+
+using namespace std;
+
+class Celula {
+  private:
+    Planta* planta;
+    Ferramenta* ferramenta;
+    int nutrientes;
+    int agua;
+
+  public:
+    Celula();
+    ~Celula();
+    void setPlanta(Planta* planta);
+    bool removerPlanta();
+    bool temPlanta() const;
+    Planta * getPlanta() const;
+    void removePlanta();
+    void setFerramenta(Ferramenta* ferramenta);
+    Ferramenta * getFerramenta() const;
+    bool temFerramenta() const;
+};
+# 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h" 1
+
 
 
 
@@ -63585,36 +63637,15 @@ class Jardineiro {
   public:
     Jardineiro();
     ~Jardineiro();
+    void setFerramenta(Ferramenta * f);
+    std::string getFerramentas() const;
+
   private:
     Ferramenta * mao;
-    Ferramenta ** inventario;
+    std::vector<Ferramenta*> inventario;
 };
-# 9 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
+# 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 
-using namespace std;
-
-class Celula {
-  private:
-    Planta* planta;
-    Ferramenta* ferramenta;
-    Jardineiro* jardineiro;
-    int nutrientes;
-    int agua;
-
-  public:
-    Celula();
-    ~Celula();
-    void setPlanta(Planta* planta);
-    bool temPlanta() const;
-    Planta * getPlanta() const;
-    void removePlanta();
-    void setFerramenta(Ferramenta* ferramenta);
-    bool temFerramenta() const;
-    Jardineiro * getJardineiro() const;
-    void setJardineiro(Jardineiro* jardineiro);
-    bool temJardineiro() const;
-};
-# 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 
 using namespace std;
 
@@ -63627,19 +63658,26 @@ class Jardim {
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
     bool criarPlanta(int l, int c, char tipo);
-    bool colocarJardineiro(int l, int c);
+    bool removerPlanta(int l, int c);
+    bool moverJardineiro(char c);
+    bool setJardineiro(int l, int c);
+    bool compraFerramenta(char f);
+    void listaFerramentas() const;
 
   private:
     bool verificaLimites(int l, int c) const;
     int instante;
     int nColunas;
     int nLinhas;
-    Celula * jardineiroPos;
+    int jardLinha;
+    int jardColuna;
+    Jardineiro * jardineiro;
     Celula ** grelha;
 };
-# 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
+# 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
 
-Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardineiroPos(nullptr) {
+Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardLinha(-1), jardColuna(-1) {
+    jardineiro = new Jardineiro();
     grelha = new Celula*[nLinhas];
     for (int i = 0; i < nLinhas; ++i) {
         grelha[i] = new Celula[nColunas];
@@ -63692,8 +63730,8 @@ int Jardim::getNLinhas() const {
 }
 
 bool Jardim::verificaLimites(int l, int c) const {
-    if (l < 0 || l > nLinhas || c < 0 || c > nColunas) {
-        cout << "Parametros fora do limite do jardim" << endl;
+    if (l < 0 || l >= nLinhas || c < 0 || c >= nColunas) {
+        cout << "Erro: Fora do limite do jardim" << endl;
         return false;
     }
 
@@ -63713,12 +63751,14 @@ void Jardim::mostraGrelha() const {
                 if (j == 0 && j < nColunas)
                     cout << (char) (a + (i-1));
                 else {
-                    if (grelha[i-1][j-1].temJardineiro())
+                    Celula celula = grelha[i-1][j-1];
+
+                    if (i-1 == jardLinha && j-1 == jardColuna)
                         cout << '*';
-                    else if (grelha[i-1][j-1].temFerramenta())
-                        cout << 'f';
-                    else if (grelha[i-1][j-1].temPlanta())
-                        cout << 'p';
+                    else if (celula.temPlanta())
+                        cout << celula.getPlanta()->getSimbolo();
+                    else if (celula.temFerramenta())
+                        cout << celula.getFerramenta()->getSimbolo();
                     else
                         cout << ' ';
                 }
@@ -63726,7 +63766,6 @@ void Jardim::mostraGrelha() const {
         }
         cout << endl;
     }
-    cout << endl;
 }
 
 bool Jardim::criarPlanta(int l, int c, char tipo) {
@@ -63735,12 +63774,12 @@ bool Jardim::criarPlanta(int l, int c, char tipo) {
     tipo = tolower(tipo);
 
     if (!(tipo == 'c' || tipo == 'r' || tipo == 'e' || tipo == 'x')) {
-        cout << "Tipo de planta invalido" << endl;
+        cout << "Erro: Tipo de planta invalido" << endl;
         return false;
     }
 
     if (grelha[l][c].temPlanta()) {
-        cout << "Ja existe uma planta nessa posicao" << endl;
+        cout << "Erro: Ja existe uma planta nessa posicao" << endl;
         return false;
     }
 
@@ -63749,16 +63788,28 @@ bool Jardim::criarPlanta(int l, int c, char tipo) {
     else if (tipo == 'e') p = new ErvaDaninha();
     else if (tipo == 'x') p = new Exotica();
     else if (tipo == 'c') p = new Cacto();
+    else return false;
 
     grelha[l][c].setPlanta(p);
     return true;
+}
+
+bool Jardim::removerPlanta(int l, int c) {
+    if (!verificaLimites(l, c)) return false;
+
+    if (!grelha[l][c].temPlanta()) {
+        cout << "Erro: Nao existe uma planta nessa posicao" << endl;
+        return false;
+    }
+
+    return grelha[l][c].removerPlanta();
 }
 
 bool Jardim::getDescPlanta(int l, int c) const {
     if (!verificaLimites(l, c)) return false;
 
     if (!grelha[l][c].temPlanta()) {
-        cout << "Nao existe nenhuma planta nessa posicao" << endl;
+        cout << "Erro: Nao existe nenhuma planta nessa posicao" << endl;
         return false;
     }
 
@@ -63767,21 +63818,50 @@ bool Jardim::getDescPlanta(int l, int c) const {
     return true;
 }
 
-bool Jardim::colocarJardineiro(int l, int c) {
+bool Jardim::moverJardineiro(char direcao) {
+    int linha = jardLinha;
+    int coluna = jardColuna;
+
+    if (direcao == 'e')
+        --coluna;
+    else if (direcao == 'd')
+        ++coluna;
+    else if (direcao == 'c')
+        --linha;
+    else
+        ++linha;
+
+    return Jardim::setJardineiro(linha, coluna);
+}
+
+bool Jardim::setJardineiro(int l, int c) {
     if (!verificaLimites(l, c)) return false;
 
-    if (jardineiroPos != nullptr) {
-        if (jardineiroPos == &grelha[l][c]) {
-            cout << "O jardineiro ja estava nessa posicao" << endl;
-            return false;
-        }
-
-        grelha[l][c].setJardineiro(jardineiroPos->getJardineiro());
-        jardineiroPos->setJardineiro(nullptr);
-    } else {
-        grelha[l][c].setJardineiro(new Jardineiro());
+    if (jardLinha == l && jardColuna == c) {
+        cout << "Erro: O jardineiro ja estava nessa posicao" << endl;
+        return false;
     }
 
-    jardineiroPos = &grelha[l][c];
+    jardLinha = l;
+    jardColuna = c;
     return true;
+}
+
+bool Jardim::compraFerramenta(char f) {
+    Ferramenta * ferr;
+    if (f == 'g') ferr = new Regador();
+    else if (f == 't') ferr = new Tesoura();
+    else if (f == 'a') ferr = new Adubo();
+    else if (f == 'z') ferr = new Enxada();
+    else {
+        cout << "Erro: Ferramenta desconhecida no mercado online";
+        return false;
+    }
+
+    jardineiro->setFerramenta(ferr);
+    return true;
+}
+
+void Jardim::listaFerramentas() const {
+    cout << jardineiro->getFerramentas();
 }

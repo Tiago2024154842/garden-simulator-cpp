@@ -6,35 +6,39 @@
 using namespace std;
 
 class Planta {
-    public:
-        int nutrientes;
-        int agua;
-        string beleza;
-        virtual string getPropriedades() const = 0;
+  private:
+    string beleza;
+    string nome;
+    char simbolo;
+    int nutrientes;
+    int agua;
+
+  protected:
+    Planta(string n, string b, char s, int nut, int a);
+
+  public:
+    char getSimbolo() const;
+    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
-        string getPropriedades() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
-        string getPropriedades() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
-        string getPropriedades() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
-        string getPropriedades() const override;
 };
 
 #endif

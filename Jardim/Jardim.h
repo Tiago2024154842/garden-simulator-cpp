@@ -4,6 +4,8 @@
 #include <iostream>
 #include "../Random/Random.h"
 #include "Celula.h"
+#include "Jardineiro.h"
+#include "Ferramenta.h"
 
 using namespace std;
 
@@ -16,14 +18,21 @@ class Jardim {
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
     bool criarPlanta(int l, int c, char tipo);
-    bool colocarJardineiro(int l, int c);
+    bool removerPlanta(int l, int c);
+    bool moverJardineiro(char c);
+    bool setJardineiro(int l, int c);
+    bool compraFerramenta(char f);
+    void listaFerramentas() const;
+    bool pegaFerramenta(int num) const;
 
   private:
     bool verificaLimites(int l, int c) const;
     int instante;
     int nColunas;
     int nLinhas;
-    Celula * jardineiroPos;
+    int jardLinha;
+    int jardColuna;
+    Jardineiro * jardineiro;
     Celula ** grelha;
 };
 

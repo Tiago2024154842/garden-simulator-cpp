@@ -63517,35 +63517,39 @@ class Random {
 using namespace std;
 
 class Planta {
-    public:
-        int nutrientes;
-        int agua;
-        string beleza;
-        virtual string getPropriedades() const = 0;
+  private:
+    string beleza;
+    string nome;
+    char simbolo;
+    int nutrientes;
+    int agua;
+
+  protected:
+    Planta(string n, string b, char s, int nut, int a);
+
+  public:
+    char getSimbolo() const;
+    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
-        string getPropriedades() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
-        string getPropriedades() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
-        string getPropriedades() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
-        string getPropriedades() const override;
 };
 # 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h" 1
@@ -63554,30 +63558,81 @@ class Cacto : public Planta {
 
 
 
-class Ferramenta {
-    static int numSerie;
+class Celula;
 
+class Ferramenta {
   public:
-    virtual void usar() const = 0;
+    char getSimbolo() const;
+    virtual void usar(Celula* area) = 0;
+    virtual std::string getDesc() const = 0;
+
+  protected:
+    Ferramenta(char s);
+
+  private:
+    char simbolo;
+    static int numSerie;
 };
 
 class Regador : public Ferramenta {
-    void usar() const override;
+  public:
+    Regador();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
+
+  private:
+    int agua;
 };
 
 class Adubo : public Ferramenta {
-    void usar() const override;
+  public:
+    Adubo();
+    void usar(Celula* area) override;
+    std::string getDesc() const override;
+
+  private:
+    int quantidade;
 };
 
 class Tesoura : public Ferramenta {
-    void usar() const override;
+  public:
+    Tesoura();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
 };
 
 class Enxada : public Ferramenta {
-    void usar() const override;
+  public:
+    Enxada();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
 };
 # 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
+
+using namespace std;
+
+class Celula {
+  private:
+    Planta* planta;
+    Ferramenta* ferramenta;
+    int nutrientes;
+    int agua;
+
+  public:
+    Celula();
+    ~Celula();
+    void setPlanta(Planta* planta);
+    bool removerPlanta();
+    bool temPlanta() const;
+    Planta * getPlanta() const;
+    void removePlanta();
+    void setFerramenta(Ferramenta* ferramenta);
+    Ferramenta * getFerramenta() const;
+    bool temFerramenta() const;
+};
+# 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h" 1
+
 
 
 
@@ -63587,36 +63642,15 @@ class Jardineiro {
   public:
     Jardineiro();
     ~Jardineiro();
+    void setFerramenta(Ferramenta * f);
+    std::string getFerramentas() const;
+
   private:
     Ferramenta * mao;
-    Ferramenta ** inventario;
+    std::vector<Ferramenta*> inventario;
 };
-# 9 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
+# 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 
-using namespace std;
-
-class Celula {
-  private:
-    Planta* planta;
-    Ferramenta* ferramenta;
-    Jardineiro* jardineiro;
-    int nutrientes;
-    int agua;
-
-  public:
-    Celula();
-    ~Celula();
-    void setPlanta(Planta* planta);
-    bool temPlanta() const;
-    Planta * getPlanta() const;
-    void removePlanta();
-    void setFerramenta(Ferramenta* ferramenta);
-    bool temFerramenta() const;
-    Jardineiro * getJardineiro() const;
-    void setJardineiro(Jardineiro* jardineiro);
-    bool temJardineiro() const;
-};
-# 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 
 using namespace std;
 
@@ -63629,14 +63663,20 @@ class Jardim {
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
     bool criarPlanta(int l, int c, char tipo);
-    bool colocarJardineiro(int l, int c);
+    bool removerPlanta(int l, int c);
+    bool moverJardineiro(char c);
+    bool setJardineiro(int l, int c);
+    bool compraFerramenta(char f);
+    void listaFerramentas() const;
 
   private:
     bool verificaLimites(int l, int c) const;
     int instante;
     int nColunas;
     int nLinhas;
-    Celula * jardineiroPos;
+    int jardLinha;
+    int jardColuna;
+    Jardineiro * jardineiro;
     Celula ** grelha;
 };
 # 6 "C:/Users/tiago/Documents/Trabalho_POO/Comandos/Comando.h" 2
@@ -63708,23 +63748,11 @@ class compra : public Comando {
     bool executar(Jardim *jardim, string *argv, int argc) override;
 };
 
-class movEsquerda : public Comando {
-  public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
+class mover : public Comando {
+    char direcao;
 
-class movDireita : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
-
-class movCima : public Comando {
-  public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
-
-class movBaixo : public Comando {
-  public:
+    mover(char d);
     bool executar(Jardim * jardim, string * argv, int argc) override;
 };
 
@@ -66500,16 +66528,15 @@ bool planta::executar(Jardim * jardim, string * argv, int argc) {
     int c = (int) argv[0][1] - (int) 'a';
 
     if(l >= jardim->getNLinhas() || c >= jardim->getNColunas() || l < 0 || c < 0) {
-        cout << "Coordenadas fora dos limites do jardim" << endl;
+        cout << "Erro: Coordenadas fora dos limites do jardim" << endl;
         return false;
     }
 
     if (!(argv[1] == "c" || argv[1] == "r" || argv[1] == "e" || argv[1] == "x")) {
-        cout << "<Tipo> Errado. Pode meter entre [c] [r] [e] [x] "<< endl;
+        cout << "Erro: <tipo> errado, as opcoes sao [c] [r] [e] [x] "<< endl;
         return false;
     }
 
-    cout << "Comando implementado nao na totalidade" << endl;
     return jardim->criarPlanta(l, c, argv[1][0]);;
 }
 
@@ -66521,7 +66548,7 @@ bool avanca::executar(Jardim *jardim, string *argv, int argc) {
     if (argc > 0) {
         n = stoi(argv[0]);
         if(n < 0) {
-            cout << "[n] tem de ser numero positivo" << endl;
+            cout << "Erro: [n] tem de ser numero positivo" << endl;
             return false;
         }
     }
@@ -66575,8 +66602,8 @@ bool lferr::executar(Jardim * jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    jardim->listaFerramentas();
+    return false;
 }
 
 bool colhe::executar(Jardim * jardim, string* argv, int argc) {
@@ -66596,8 +66623,7 @@ bool colhe::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    return jardim->removerPlanta(l, c);
 }
 
 bool larga::executar(Jardim * jardim, string* argv, int argc) {
@@ -66635,45 +66661,23 @@ bool compra::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    if (!(argv[0] == "g" || argv[0] == "a" || argv[0] == "t" || argv[0] == "z")) {
-        cout << "<c> Errado. Pode meter entre [g] [a] [t] [z] "<< endl;
+    char simbolo = argv[0][0];
+
+    if (!(simbolo == 'g' || simbolo == 'a' || simbolo == 't' || simbolo == 'z')) {
+        cout << "Erro: <c> errado, as opcoes sao [g] [a] [t] [z] "<< endl;
         return false;
     }
 
-    cout << "Comando nao implementado" << endl;
-    return true;
+    return jardim->compraFerramenta(simbolo);
 }
 
-bool movEsquerda::executar(Jardim * jardim, string* argv, int argc) {
+mover::mover(char d) : direcao(d) {};
+
+bool mover::executar(Jardim *jardim, string *argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
-    return true;
-}
-
-bool movDireita::executar(Jardim * jardim, string* argv, int argc) {
-    if (jardim == nullptr)
-        return false;
-
-    cout << "Comando não implementado" << endl;
-    return true;
-}
-
-bool movCima::executar(Jardim * jardim, string* argv, int argc) {
-    if (jardim == nullptr)
-        return false;
-
-    cout << "Comando não implementado" << endl;
-    return true;
-}
-
-bool movBaixo::executar(Jardim * jardim, string* argv, int argc) {
-    if (jardim == nullptr)
-        return false;
-
-    cout << "Comando não implementado" << endl;
-    return true;
+    return jardim->moverJardineiro(direcao);
 }
 
 bool entra::executar(Jardim * jardim, string* argv, int argc) {
@@ -66689,11 +66693,11 @@ bool entra::executar(Jardim * jardim, string* argv, int argc) {
     int c = (int) argv[0][1] - (int) 'a';
 
     if(l >= jardim->getNLinhas() || c >= jardim->getNColunas() || l < 0 || c < 0) {
-        cout << "Coordenadas fora dos limites do jardim" << endl;
+        cout << "Erro: Coordenadas fora dos limites do jardim" << endl;
         return false;
     }
 
-    return jardim->colocarJardineiro(l, c);
+    return jardim->setJardineiro(l, c);
 }
 
 bool sai::executar(Jardim * jardim, string* argv, int argc) {

@@ -64709,35 +64709,39 @@ class Random {
 using namespace std;
 
 class Planta {
-    public:
-        int nutrientes;
-        int agua;
-        string beleza;
-        virtual string getPropriedades() const = 0;
+  private:
+    string beleza;
+    string nome;
+    char simbolo;
+    int nutrientes;
+    int agua;
+
+  protected:
+    Planta(string n, string b, char s, int nut, int a);
+
+  public:
+    char getSimbolo() const;
+    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
-        string getPropriedades() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
-        string getPropriedades() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
-        string getPropriedades() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
-        string getPropriedades() const override;
 };
 # 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h" 1
@@ -64746,30 +64750,81 @@ class Cacto : public Planta {
 
 
 
-class Ferramenta {
-    static int numSerie;
+class Celula;
 
+class Ferramenta {
   public:
-    virtual void usar() const = 0;
+    char getSimbolo() const;
+    virtual void usar(Celula* area) = 0;
+    virtual std::string getDesc() const = 0;
+
+  protected:
+    Ferramenta(char s);
+
+  private:
+    char simbolo;
+    static int numSerie;
 };
 
 class Regador : public Ferramenta {
-    void usar() const override;
+  public:
+    Regador();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
+
+  private:
+    int agua;
 };
 
 class Adubo : public Ferramenta {
-    void usar() const override;
+  public:
+    Adubo();
+    void usar(Celula* area) override;
+    std::string getDesc() const override;
+
+  private:
+    int quantidade;
 };
 
 class Tesoura : public Ferramenta {
-    void usar() const override;
+  public:
+    Tesoura();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
 };
 
 class Enxada : public Ferramenta {
-    void usar() const override;
+  public:
+    Enxada();
+    void usar(Celula* area) override;
+    std::string getDesc() const;
 };
 # 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
+
+using namespace std;
+
+class Celula {
+  private:
+    Planta* planta;
+    Ferramenta* ferramenta;
+    int nutrientes;
+    int agua;
+
+  public:
+    Celula();
+    ~Celula();
+    void setPlanta(Planta* planta);
+    bool removerPlanta();
+    bool temPlanta() const;
+    Planta * getPlanta() const;
+    void removePlanta();
+    void setFerramenta(Ferramenta* ferramenta);
+    Ferramenta * getFerramenta() const;
+    bool temFerramenta() const;
+};
+# 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h" 1
+
 
 
 
@@ -64779,36 +64834,15 @@ class Jardineiro {
   public:
     Jardineiro();
     ~Jardineiro();
+    void setFerramenta(Ferramenta * f);
+    std::string getFerramentas() const;
+
   private:
     Ferramenta * mao;
-    Ferramenta ** inventario;
+    std::vector<Ferramenta*> inventario;
 };
-# 9 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
+# 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 
-using namespace std;
-
-class Celula {
-  private:
-    Planta* planta;
-    Ferramenta* ferramenta;
-    Jardineiro* jardineiro;
-    int nutrientes;
-    int agua;
-
-  public:
-    Celula();
-    ~Celula();
-    void setPlanta(Planta* planta);
-    bool temPlanta() const;
-    Planta * getPlanta() const;
-    void removePlanta();
-    void setFerramenta(Ferramenta* ferramenta);
-    bool temFerramenta() const;
-    Jardineiro * getJardineiro() const;
-    void setJardineiro(Jardineiro* jardineiro);
-    bool temJardineiro() const;
-};
-# 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 
 using namespace std;
 
@@ -64821,14 +64855,20 @@ class Jardim {
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
     bool criarPlanta(int l, int c, char tipo);
-    bool colocarJardineiro(int l, int c);
+    bool removerPlanta(int l, int c);
+    bool moverJardineiro(char c);
+    bool setJardineiro(int l, int c);
+    bool compraFerramenta(char f);
+    void listaFerramentas() const;
 
   private:
     bool verificaLimites(int l, int c) const;
     int instante;
     int nColunas;
     int nLinhas;
-    Celula * jardineiroPos;
+    int jardLinha;
+    int jardColuna;
+    Jardineiro * jardineiro;
     Celula ** grelha;
 };
 # 5 "C:/Users/tiago/Documents/Trabalho_POO/main.cpp" 2
@@ -64911,23 +64951,11 @@ class compra : public Comando {
     bool executar(Jardim *jardim, string *argv, int argc) override;
 };
 
-class movEsquerda : public Comando {
-  public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
+class mover : public Comando {
+    char direcao;
 
-class movDireita : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
-
-class movCima : public Comando {
-  public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
-
-class movBaixo : public Comando {
-  public:
+    mover(char d);
     bool executar(Jardim * jardim, string * argv, int argc) override;
 };
 

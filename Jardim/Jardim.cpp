@@ -1,7 +1,7 @@
-#include "Ferramenta.h"
 #include "Jardim.h"
 
-Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardineiroPos(nullptr) {
+Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardLinha(-1), jardColuna(-1) {
+    jardineiro = new Jardineiro();
     grelha = new Celula*[nLinhas];
     for (int i = 0; i < nLinhas; ++i) {
         grelha[i] = new Celula[nColunas];
@@ -54,8 +54,8 @@ int Jardim::getNLinhas() const {
 }
 
 bool Jardim::verificaLimites(int l, int c) const {
-    if (l < 0 || l > nLinhas || c < 0 || c > nColunas) {
-        cout << "Parametros fora do limite do jardim" << endl;
+    if (l < 0 || l >= nLinhas || c < 0 || c >= nColunas) {
+        cout << "Erro: Fora do limite do jardim" << endl;
         return false;
     }
 
@@ -75,12 +75,14 @@ void Jardim::mostraGrelha() const {
                 if (j == 0 && j < nColunas)
                     cout << (char) (a + (i-1)); // Vai escrevendo ABC... pelas linhas
                 else {
-                    if (grelha[i-1][j-1].temJardineiro())
+                    Celula celula = grelha[i-1][j-1];
+
+                    if (i-1 == jardLinha && j-1 == jardColuna)
                         cout << '*';
-                    else if (grelha[i-1][j-1].temFerramenta())
-                        cout << 'f';
-                    else if (grelha[i-1][j-1].temPlanta())
-                        cout << 'p';
+                    else if (celula.temPlanta())
+                        cout << celula.getPlanta()->getSimbolo();
+                    else if (celula.temFerramenta())
+                        cout << celula.getFerramenta()->getSimbolo();
                     else
                         cout << ' ';
                 }
@@ -88,7 +90,6 @@ void Jardim::mostraGrelha() const {
         }
         cout << endl;
     }
-    cout << endl;
 }
 
 bool Jardim::criarPlanta(int l, int c, char tipo) {
@@ -97,13 +98,13 @@ bool Jardim::criarPlanta(int l, int c, char tipo) {
     tipo = tolower(tipo);
 
     if (!(tipo == 'c' || tipo == 'r' || tipo == 'e' || tipo == 'x')) {
-        cout << "Tipo de planta invalido" << endl;
+        cout << "Erro: Tipo de planta invalido" << endl;
         return false;
     }
 
     if (grelha[l][c].temPlanta()) {
-        cout << "Ja existe uma planta nessa posicao" << endl;
-        return false; // evitar por planta quando já há uma planta
+        cout << "Erro: Ja existe uma planta nessa posicao" << endl;
+        return false;
     }
 
     Planta * p = nullptr;
@@ -111,16 +112,28 @@ bool Jardim::criarPlanta(int l, int c, char tipo) {
     else if (tipo == 'e') p = new ErvaDaninha();
     else if (tipo == 'x') p = new Exotica();
     else if (tipo == 'c') p = new Cacto();
+    else return false;
 
     grelha[l][c].setPlanta(p);
     return true;
+}
+
+bool Jardim::removerPlanta(int l, int c) {
+    if (!verificaLimites(l, c)) return false;
+
+    if (!grelha[l][c].temPlanta()) {
+        cout << "Erro: Nao existe uma planta nessa posicao" << endl;
+        return false;
+    }
+
+    return grelha[l][c].removerPlanta();
 }
 
 bool Jardim::getDescPlanta(int l, int c) const {
     if (!verificaLimites(l, c)) return false;
 
     if (!grelha[l][c].temPlanta()) {
-        cout << "Nao existe nenhuma planta nessa posicao" << endl;
+        cout << "Erro: Nao existe nenhuma planta nessa posicao" << endl;
         return false;
     }
 
@@ -129,21 +142,54 @@ bool Jardim::getDescPlanta(int l, int c) const {
     return true;
 }
 
-bool Jardim::colocarJardineiro(int l, int c) {
+bool Jardim::moverJardineiro(char direcao) {
+    int linha = jardLinha;
+    int coluna = jardColuna;
+
+    if (direcao == 'e')
+        --coluna;
+    else if (direcao == 'd')
+        ++coluna;
+    else if (direcao == 'c')
+        --linha;
+    else
+        ++linha;
+
+    return Jardim::setJardineiro(linha, coluna);
+}
+
+bool Jardim::setJardineiro(int l, int c) {
     if (!verificaLimites(l, c)) return false;
 
-    if (jardineiroPos != nullptr) {
-        if (jardineiroPos == &grelha[l][c]) {
-            cout << "O jardineiro ja estava nessa posicao" << endl;
-            return false;
-        }
-
-        grelha[l][c].setJardineiro(jardineiroPos->getJardineiro());
-        jardineiroPos->setJardineiro(nullptr);
-    } else {
-        grelha[l][c].setJardineiro(new Jardineiro());
+    if (jardLinha == l && jardColuna == c) {
+        cout << "Erro: O jardineiro ja estava nessa posicao" << endl;
+        return false;
     }
 
-    jardineiroPos = &grelha[l][c];
+    jardLinha = l;
+    jardColuna = c;
     return true;
 } 
+
+bool Jardim::compraFerramenta(char f) {   
+    Ferramenta * ferr;
+    if (f == 'g') ferr = new Regador();
+    else if (f == 't') ferr = new Tesoura();
+    else if (f == 'a') ferr = new Adubo();
+    else if (f == 'z') ferr = new Enxada();
+    else {
+        cout << "Erro: Ferramenta desconhecida no mercado online";
+        return false;
+    }
+
+    jardineiro->setFerramenta(ferr);
+    return true;
+}
+
+void Jardim::listaFerramentas() const {
+    cout << jardineiro->getFerramentas();
+}
+
+bool Jardim::pegaFerramenta(int num) const {
+    return jardineiro->pegaFerramenta(num);
+}

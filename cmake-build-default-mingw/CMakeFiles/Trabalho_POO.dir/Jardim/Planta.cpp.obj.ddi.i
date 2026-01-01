@@ -41565,35 +41565,39 @@ namespace std
 using namespace std;
 
 class Planta {
-    public:
-        int nutrientes;
-        int agua;
-        string beleza;
-        virtual string getPropriedades() const = 0;
+  private:
+    string beleza;
+    string nome;
+    char simbolo;
+    int nutrientes;
+    int agua;
+
+  protected:
+    Planta(string n, string b, char s, int nut, int a);
+
+  public:
+    char getSimbolo() const;
+    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
-        string getPropriedades() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
-        string getPropriedades() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
-        string getPropriedades() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
-        string getPropriedades() const override;
 };
 # 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.cpp" 2
 # 1 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 1 3
@@ -42868,48 +42872,23 @@ class Settings {
 };
 # 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.cpp" 2
 
-Roseira::Roseira() {
-    beleza = "bonita";
-    nutrientes = Settings::Roseira::inicial_nutrientes;
-    agua = Settings::Roseira::inicial_agua;
+Planta::Planta(string n, string b, char s, int nut, int a) : nome(n), beleza(b), simbolo(s), nutrientes(nut), agua(a) {}
+
+char Planta::getSimbolo() const {
+    return simbolo;
 }
 
-string Roseira::getPropriedades() const {
+string Planta::getPropriedades() const {
     ostringstream str;
 
-    str << "Roseira ("<< beleza << ") com " << nutrientes << "% de nutrientes e " << agua << "% de agua";
+    str << nome << "("<< beleza << ") com " << nutrientes << "% de nutrientes e " << agua << "% de agua";
     return str.str();
 }
 
-ErvaDaninha::ErvaDaninha() {
-    beleza = "feia";
-    nutrientes = Settings::ErvaDaninha::inicial_nutrientes;
-    agua = Settings::ErvaDaninha::inicial_agua;
-}
+Roseira::Roseira() : Planta("Roseira", "bonita", 'r', Settings::Roseira::inicial_nutrientes, Settings::Roseira::inicial_agua) {}
 
-string ErvaDaninha::getPropriedades() const {
-    ostringstream str;
+ErvaDaninha::ErvaDaninha() : Planta("Erva Daninha", "feia", 'e', Settings::ErvaDaninha::inicial_nutrientes, Settings::ErvaDaninha::inicial_agua) {}
 
-    str << "Erva Daninha ("<< beleza << ") com " << nutrientes << "% de nutrientes e " << agua << "% de agua";
-    return str.str();
-}
+Exotica::Exotica() : Planta("Exotica", "divinal", 'x', 10, 10) {}
 
-Exotica::Exotica() {}
-
-string Exotica::getPropriedades() const {
-    ostringstream str;
-
-    str << "Planta exotica ("<< beleza << ") com " << nutrientes << "% de nutrientes e " << agua << "% de agua";
-    return str.str();
-}
-
-Cacto::Cacto() {
-    beleza = "neutra";
-}
-
-string Cacto::getPropriedades() const {
-    ostringstream str;
-
-    str << "Cacto com ("<< beleza << ") com " << nutrientes << "% de nutrientes e " << agua << "% de agua";
-    return str.str();
-}
+Cacto::Cacto() : Planta("Cacto", "neutra", 'c', 10, 10) {}
