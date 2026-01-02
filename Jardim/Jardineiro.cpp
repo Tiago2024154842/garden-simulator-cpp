@@ -2,6 +2,18 @@
 #include <sstream>
 
 Jardineiro::Jardineiro() : mao(nullptr) {}
+
+Jardineiro::Jardineiro(const Jardineiro & outro) {
+    for (auto f : outro.inventario) {
+        inventario.push_back(f->copia());
+    }
+
+    if (outro->mao != nullptr)
+        mao = outro->mao->copia();
+    else
+        mao = nullptr;
+}
+
 Jardineiro::~Jardineiro() {
     for (auto it = inventario.begin(); it != inventario.end(); ++it)
         delete *it;

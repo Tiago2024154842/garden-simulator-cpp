@@ -6,10 +6,18 @@ Celula::Celula() : planta(nullptr), ferramenta(nullptr) {
   nutrientes = Random::getRandom(Settings::Jardim::nutrientes_min, Settings::Jardim::nutrientes_max);
 }
 
-Celula::~Celula() {}
+Celula::~Celula() {
+  removerPlanta();
+
+  if (ferramenta != nullptr) {
+    delete ferramenta;
+    ferramenta = nullptr;
+  }
+}
 
 void Celula::setPlanta(Planta * planta) {
-  this->planta = planta;
+  if (this->planta == nullptr)
+    this->planta = planta;
 }
 
 bool Celula::temPlanta() const {
@@ -30,17 +38,13 @@ Planta * Celula::getPlanta() const {
   return planta;
 }
 
-void Celula::removePlanta() {
-  delete planta;
-  planta = nullptr;
-}
-
 bool Celula::temFerramenta() const {
   return ferramenta != nullptr;
 }
 
 void Celula::setFerramenta(Ferramenta* ferramenta) {
-  this->ferramenta = ferramenta;
+  if (this->ferramenta == nullptr)
+    this->ferramenta = ferramenta;
 }
 
 Ferramenta * Celula::getFerramenta() const {
@@ -53,4 +57,14 @@ int Celula::getNutrientes() const {
 
 int Celula::getAgua() const {
   return agua;
+}
+
+void Celula::setAgua(int a) {
+  if (a < 0) a = 0;
+  agua = a;
+}
+
+void Celula::setNutrientes(int n) {
+  if (n < 0) n = 0;
+  nutrientes = n;
 }

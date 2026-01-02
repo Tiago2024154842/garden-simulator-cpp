@@ -7,6 +7,7 @@
 class Jardineiro {
   public:
     Jardineiro();
+    Jardineiro(const Jardineiro & outro);
     ~Jardineiro();
     void setFerramenta(Ferramenta * f);
     std::string getFerramentas() const;

@@ -43,7 +43,28 @@ Jardim::Jardim(const Jardim & outro) {
     jardLinha = outro.jardLinha;
     jardColuna = outro.jardColuna;
     
+    if (jardineiro != nullptr)
+        jardineiro = new Jardineiro(*outro.jardineiro); // construtor por copia
+    else
+        jardineiro = nullptr;
+
+    grelha = new Celula*[nLinhas];
     
+    for (int l = 0; l < nLinhas; ++l) 
+        grelha[i] = new Celula[nColunas];
+    
+    for (int l = 0; l < nLinhas; ++l) {
+        for (int c = 0; c < nColunas; ++c) {
+            grelha[l][c].setNutrientes(outro.grelha[l][c].getNutrientes());
+            grelha[l][c].setAgua(outro.grelha[l][c].getAgua());
+
+            if (outro.grelha[l][c].temPlanta()) 
+                grelha[l][c].setPlanta(outro.grelha[l][c].getPlanta()->copia());
+            
+            if (outro.grelha[l][c].temFerramenta()) 
+                grelha[l][c].setFerramenta(outro.grelha[l][c].getFerramenta()->copia());
+        }
+    }
 }
 
 Jardim::~Jardim() {

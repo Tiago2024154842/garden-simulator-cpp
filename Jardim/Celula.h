@@ -20,6 +20,8 @@ class Celula {
     ~Celula();
     int getNutrientes() const;
     int getAgua() const;
+    void setAgua(int a);
+    void setNutrientes(int n);
     void setPlanta(Planta* planta);
     bool removerPlanta();
     bool temPlanta() const;

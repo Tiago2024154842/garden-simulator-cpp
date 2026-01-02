@@ -23,6 +23,10 @@ std::string Ferramenta::getNome() const {
 
 Regador::Regador() : Ferramenta('g', "Regador"), agua(Settings::Regador::capacidade) {}
 
+Regador * copia() const {
+    return new Regador(*this);
+}
+
 void Regador::usar(Celula* area) {
     if (area != nullptr && agua >= 10) {
         // area->adicionarAgua(Settings::Regador::dose); 
@@ -37,6 +41,10 @@ std::string Regador::getDesc() const {
 }
 
 Adubo::Adubo() : Ferramenta('a', "Pacote de adubo"), quantidade(Settings::Adubo::capacidade) {}
+
+Adubo * copia() const {
+    return new Adubo(*this);
+}
 
 void Adubo::usar(Celula* area) {
     if (area != nullptr && quantidade >= 10) {
@@ -53,9 +61,13 @@ std::string Adubo::getDesc() const {
 
 Tesoura::Tesoura() : Ferramenta('t', "Tesoura de poda") {}
 
+Tesoura * copia() const {
+    return new Tesoura(*this);
+}
+
 void Tesoura::usar(Celula* area) {
     if (area != nullptr && area->temPlanta()) {
-        area->removePlanta();
+        area->removerPlanta();
     }
 }
 
@@ -66,6 +78,10 @@ std::string Tesoura::getDesc() const {
 }
 
 Enxada::Enxada() : Ferramenta('z', "Enxada") {}
+
+Enxada * copia() const {
+    return new Enxada(*this);
+}
 
 void Enxada::usar(Celula* area) {}
 

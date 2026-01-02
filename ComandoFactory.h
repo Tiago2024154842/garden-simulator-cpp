@@ -4,7 +4,9 @@
 #include "Comandos/Comando.h"
 
 class ComandoFactory {
-public:
+  public:
+    static Jardim * executarComando(const string& c, Jardim* jardimAtual);
+  private:
     static Comando * criarComando(const std::string & comando);
 };
 

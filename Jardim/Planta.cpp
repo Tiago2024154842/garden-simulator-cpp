@@ -17,8 +17,16 @@ string Planta::getPropriedades() const {
 
 Roseira::Roseira() : Planta("Roseira", "bonita", 'r', Settings::Roseira::inicial_nutrientes, Settings::Roseira::inicial_agua) {}
 
+Roseira::copia() const { return new Roseira(*this); }
+
 ErvaDaninha::ErvaDaninha() : Planta("Erva Daninha", "feia", 'e', Settings::ErvaDaninha::inicial_nutrientes, Settings::ErvaDaninha::inicial_agua) {}
+
+ErvaDaninha::copia() const { return new ErvaDaninha(*this); }
 
 Exotica::Exotica() : Planta("Exotica", "divinal", 'x', 10, 10) {}
 
+Exotica::copia() const { return new Exotica(*this); }
+
 Cacto::Cacto() :  Planta("Cacto", "neutra", 'c', 10, 10) {}
+
+Cacto::copia() const { return new Cacto(*this); }
