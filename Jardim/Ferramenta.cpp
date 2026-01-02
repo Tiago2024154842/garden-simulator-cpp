@@ -32,7 +32,7 @@ void Regador::usar(Celula* area) {
 
 std::string Regador::getDesc() const {
     std::ostringstream str;
-    str << getNome() << " (nr de serie: " << getNumSerie() << ") -> Agua: " << agua << ", Capacidade: " << agua/2 << "%";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ") com " << agua << " de agua e " << agua/2 << "% de capacidade";
     return str.str();
 }
 
@@ -47,7 +47,7 @@ void Adubo::usar(Celula* area) {
 
 std::string Adubo::getDesc() const {
     std::ostringstream str;
-    str << getNome() << " (nr de serie: " << getNumSerie() << ") -> Unidades de adubo: " << quantidade << ", Capacidade: " << (quantidade*100)/Settings::Adubo::capacidade << "%";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ") com " << quantidade << " unidades de adubo e " << (quantidade*100)/Settings::Adubo::capacidade << "% de capacidade";
     return str.str();
 }
 

@@ -18,6 +18,8 @@ class Celula {
   public:
     Celula();
     ~Celula();
+    int getNutrientes() const;
+    int getAgua() const;
     void setPlanta(Planta* planta);
     bool removerPlanta();
     bool temPlanta() const;

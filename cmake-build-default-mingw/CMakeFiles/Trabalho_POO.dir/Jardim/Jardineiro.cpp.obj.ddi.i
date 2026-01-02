@@ -47776,8 +47776,14 @@ namespace std
 # 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp"
 Jardineiro::Jardineiro() : mao(nullptr) {}
 Jardineiro::~Jardineiro() {
-    for (auto it = inventario.begin(); it != inventario.end(); ++it) {
-        delete (*it);
+    for (auto it = inventario.begin(); it != inventario.end(); ++it)
+        delete *it;
+
+    inventario.clear();
+
+    if (mao != nullptr) {
+        delete mao;
+        mao = nullptr;
     }
 }
 
@@ -47798,7 +47804,7 @@ std::string Jardineiro::getFerramentas() const {
         for (auto it = inventario.begin(); it != inventario.end(); ++it)
             str << (*it)->getDesc() << std::endl;
     } else if (mao == nullptr)
-        str << "Sem ferramentas no inventario" << std::endl;
+        str << "Aviso: Sem ferramentas no inventario" << std::endl;
 
     return str.str();
 }

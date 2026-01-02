@@ -63613,6 +63613,8 @@ class Celula {
   public:
     Celula();
     ~Celula();
+    int getNutrientes() const;
+    int getAgua() const;
     void setPlanta(Planta* planta);
     bool removerPlanta();
     bool temPlanta() const;
@@ -63740,4 +63742,12 @@ void Celula::setFerramenta(Ferramenta* ferramenta) {
 
 Ferramenta * Celula::getFerramenta() const {
   return ferramenta;
+}
+
+int Celula::getNutrientes() const {
+  return nutrientes;
+}
+
+int Celula::getAgua() const {
+  return agua;
 }

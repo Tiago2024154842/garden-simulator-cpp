@@ -46,3 +46,11 @@ void Celula::setFerramenta(Ferramenta* ferramenta) {
 Ferramenta * Celula::getFerramenta() const {
   return ferramenta;
 }
+
+int Celula::getNutrientes() const {
+  return nutrientes;
+}
+
+int Celula::getAgua() const {
+  return agua;
+}

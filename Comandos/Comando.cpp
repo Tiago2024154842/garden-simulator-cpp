@@ -5,8 +5,8 @@ bool lplantas::executar(Jardim * jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    jardim->listarPlantas();
+    return false;
 }
 
 bool lplanta::executar(Jardim * jardim, string* argv, int argc) {
@@ -77,8 +77,8 @@ bool larea::executar(Jardim * jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    jardim->listaArea();
+    return false;
 }
 
 bool lsolo::executar(Jardim * jardim, string * argv, int argc) {
@@ -105,12 +105,12 @@ bool lsolo::executar(Jardim * jardim, string * argv, int argc) {
             return false;
         }
 
-        cout << "Comando nao implementado com n" << endl;
-        return true;
+        jardim->listaSolo(l, c, n);
+        return false;
     }
 
-    cout << "Comando nao implementado sem n" << endl;
-    return true;
+    jardim->listaSolo(l, c);
+    return false;
 }
 
 bool lferr::executar(Jardim * jardim, string * argv, int argc) {
@@ -222,7 +222,7 @@ bool sai::executar(Jardim * jardim, string* argv, int argc) {
         return false;
 
     cout << "Comando não implementado" << endl;
-    return true;
+    return jardim->sairJardineiro();
 }
 
 bool grava::executar(Jardim * jardim, string* argv, int argc) {

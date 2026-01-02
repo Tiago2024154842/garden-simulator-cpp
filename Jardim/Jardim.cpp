@@ -1,4 +1,5 @@
 #include "Jardim.h"
+#include <sstream>
 
 Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardLinha(-1), jardColuna(-1) {
     jardineiro = new Jardineiro();
@@ -34,6 +35,15 @@ Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardLinha(-
     } while (ferrColocadas < 3 && tentativas < 100);
 
     cout << "Jardim criado" << endl;
+}
+
+Jardim::Jardim(const Jardim & outro) {
+    nColunas = outro.nColunas;
+    nLinhas = outro.nLinhas;
+    jardLinha = outro.jardLinha;
+    jardColuna = outro.jardColuna;
+    
+    
 }
 
 Jardim::~Jardim() {
@@ -171,6 +181,17 @@ bool Jardim::setJardineiro(int l, int c) {
     return true;
 } 
 
+bool Jardim::sairJardineiro() {
+    if (jardLinha == -1 || jardColuna == -1) {
+        cout << "Erro: O jardineiro já estava fora do jardim" << endl; 
+        return false;
+    }
+
+    jardLinha = -1;
+    jardColuna = -1;
+    return true;
+}
+
 bool Jardim::compraFerramenta(char f) {   
     Ferramenta * ferr;
     if (f == 'g') ferr = new Regador();
@@ -197,4 +218,88 @@ void Jardim::pegaFerramenta(int num) const {
 
 void Jardim::largaFerramenta() const {
     jardineiro->largaFerramenta();
+}
+
+void Jardim::listarPlantas() const {
+    int nPlantas = 0;
+    ostringstream str;
+
+    str << "############# PLANTAS NO JARDIM #############" << endl;
+
+    for (int l = 0; l < nLinhas; l++) {
+        for (int c = 0; c < nColunas; c++) {
+            if (grelha[l][c].temPlanta()) {
+                ++nPlantas;
+                Planta* p = grelha[l][c].getPlanta();
+                char coordL = 'A' + l;
+                char coordC = 'A' + c;
+
+                str << "---------------- POSICAO " << coordL << coordC << " -----------------" << endl;
+                str << p->getPropriedades() << endl;
+                str << "Solo com " << grelha[l][c].getNutrientes() << " de nutrientes e " << grelha[l][c].getAgua() << " de agua" << endl;   
+            }
+        }
+    }
+
+    if  (nPlantas > 0)
+        cout << str.str();
+    else 
+        cout << "Aviso: Nao ha nenhuma planta no jardim" << endl;
+}
+
+void Jardim::listaArea() const {
+    cout << "############# CONTEUDO DO JARDIM #############" << endl;
+
+    for (int l = 0; l < nLinhas; l++) {
+        for (int c = 0; c < nColunas; c++) {
+            bool temInfo = grelha[l][c].temPlanta() || grelha[l][c].temFerramenta() || (jardLinha == l && jardColuna == c);
+
+            if (temInfo)
+                getCelulaDesc(l, c);
+        }    
+    }
+}
+
+void Jardim::listaSolo(int l, int c, int n) const {
+    if (n == 0) {
+        getCelulaDesc(l, c);
+    } else {
+        cout << "############ PROPRIEDADES DA AREA ############" << endl;
+        int inicioL = (l - n < 0) ? 0 : l - n;
+        int inicioC = (c - n < 0) ? 0 : c - n;
+        int fimL = (l + n >= nLinhas) ? nLinhas - 1 : l + n;
+        int fimC = (c + n >= nColunas) ? nColunas - 1 : c + n;
+
+        for (int i = inicioL; i <= fimL; ++i) {
+            for (int j = inicioC; j <= fimC; ++j)
+                getCelulaDesc(i, j);
+        }
+    }
+}
+
+void Jardim::getCelulaDesc(int l, int c) const {
+    char coordL = 'A' + l;
+    char coordC = 'A' + c;
+
+    cout << "----------------- POSICAO " << coordL << coordC << " -----------------" << endl;
+    cout << "Solo com " << grelha[l][c].getNutrientes() << " de nutrientes e " << grelha[l][c].getAgua() << " de agua" << endl;
+
+    bool temPlanta = grelha[l][c].temPlanta();
+    bool temFerramenta = grelha[l][c].temFerramenta();
+    bool temJardineiro = (jardLinha == l && jardColuna == c);
+
+    if (temPlanta) {
+        Planta* p = grelha[l][c].getPlanta();
+
+        cout << p->getPropriedades() << endl;
+    }
+
+    if (temFerramenta) {
+        Ferramenta * f = grelha[l][c].getFerramenta();
+
+        cout << f->getDesc() << endl;
+    }
+
+    if (temJardineiro) 
+        cout << "Jardineiro" << endl;
 }

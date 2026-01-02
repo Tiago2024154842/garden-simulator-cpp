@@ -63620,6 +63620,8 @@ class Celula {
   public:
     Celula();
     ~Celula();
+    int getNutrientes() const;
+    int getAgua() const;
     void setPlanta(Planta* planta);
     bool removerPlanta();
     bool temPlanta() const;
@@ -63667,13 +63669,17 @@ class Jardim {
     bool removerPlanta(int l, int c);
     bool moverJardineiro(char c);
     bool setJardineiro(int l, int c);
+    bool sairJardineiro();
     bool compraFerramenta(char f);
     void listaFerramentas() const;
     void pegaFerramenta(int num) const;
     void largaFerramenta() const;
-
+    void listarPlantas() const;
+    void listaArea() const;
+    void listaSolo(int l, int c, int n = 0) const;
 
   private:
+    void getCelulaDesc(int l, int c) const;
     bool verificaLimites(int l, int c) const;
     int instante;
     int nColunas;
@@ -63684,7 +63690,1206 @@ class Jardim {
     Celula ** grelha;
 };
 # 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
+# 1 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 1 3
+# 57 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
 
+# 57 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+namespace std
+{
+
+namespace __cxx11 {
+# 80 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+  template<typename _CharT, typename _Traits, typename _Alloc>
+    class basic_stringbuf : public basic_streambuf<_CharT, _Traits>
+    {
+      struct __xfer_bufptrs;
+
+
+      using allocator_traits = std::allocator_traits<_Alloc>;
+      using _Noexcept_swap
+ = __or_<typename allocator_traits::propagate_on_container_swap,
+  typename allocator_traits::is_always_equal>;
+
+
+    public:
+
+      typedef _CharT char_type;
+      typedef _Traits traits_type;
+
+
+      typedef _Alloc allocator_type;
+      typedef typename traits_type::int_type int_type;
+      typedef typename traits_type::pos_type pos_type;
+      typedef typename traits_type::off_type off_type;
+
+      typedef basic_streambuf<char_type, traits_type> __streambuf_type;
+      typedef basic_string<char_type, _Traits, _Alloc> __string_type;
+      typedef typename __string_type::size_type __size_type;
+
+    protected:
+
+      ios_base::openmode _M_mode;
+
+
+      __string_type _M_string;
+
+    public:
+# 123 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      basic_stringbuf()
+      : __streambuf_type(), _M_mode(ios_base::in | ios_base::out), _M_string()
+      { }
+# 134 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      explicit
+      basic_stringbuf(ios_base::openmode __mode)
+      : __streambuf_type(), _M_mode(__mode), _M_string()
+      { }
+# 147 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      explicit
+      basic_stringbuf(const __string_type& __str,
+        ios_base::openmode __mode = ios_base::in | ios_base::out)
+      : __streambuf_type(), _M_mode(),
+ _M_string(__str.data(), __str.size(), __str.get_allocator())
+      { _M_stringbuf_init(__mode); }
+
+
+      basic_stringbuf(const basic_stringbuf&) = delete;
+
+      basic_stringbuf(basic_stringbuf&& __rhs)
+      : basic_stringbuf(std::move(__rhs), __xfer_bufptrs(__rhs, this))
+      { __rhs._M_sync(const_cast<char_type*>(__rhs._M_string.data()), 0, 0); }
+
+
+      explicit
+      basic_stringbuf(const allocator_type& __a)
+      : basic_stringbuf(ios_base::in | std::ios_base::out, __a)
+      { }
+
+      basic_stringbuf(ios_base::openmode __mode,
+        const allocator_type& __a)
+      : __streambuf_type(), _M_mode(__mode), _M_string(__a)
+      { }
+
+      explicit
+      basic_stringbuf(__string_type&& __s,
+        ios_base::openmode __mode = ios_base::in
+        | ios_base::out)
+      : __streambuf_type(), _M_mode(__mode), _M_string(std::move(__s))
+      { _M_stringbuf_init(__mode); }
+
+      template<typename _SAlloc>
+ basic_stringbuf(const basic_string<_CharT, _Traits, _SAlloc>& __s,
+   const allocator_type& __a)
+ : basic_stringbuf(__s, ios_base::in | std::ios_base::out, __a)
+ { }
+
+      template<typename _SAlloc>
+ basic_stringbuf(const basic_string<_CharT, _Traits, _SAlloc>& __s,
+   ios_base::openmode __mode,
+   const allocator_type& __a)
+ : __streambuf_type(), _M_mode(__mode),
+   _M_string(__s.data(), __s.size(), __a)
+ { _M_stringbuf_init(__mode); }
+
+      template<typename _SAlloc>
+ explicit
+ basic_stringbuf(const basic_string<_CharT, _Traits, _SAlloc>& __s,
+   ios_base::openmode __mode = ios_base::in
+          | ios_base::out)
+ : basic_stringbuf(__s, __mode, allocator_type{})
+ { }
+
+      basic_stringbuf(basic_stringbuf&& __rhs, const allocator_type& __a)
+      : basic_stringbuf(std::move(__rhs), __a, __xfer_bufptrs(__rhs, this))
+      { __rhs._M_sync(const_cast<char_type*>(__rhs._M_string.data()), 0, 0); }
+
+      allocator_type get_allocator() const noexcept
+      { return _M_string.get_allocator(); }
+
+
+
+
+      basic_stringbuf&
+      operator=(const basic_stringbuf&) = delete;
+
+      basic_stringbuf&
+      operator=(basic_stringbuf&& __rhs)
+      {
+ __xfer_bufptrs __st{__rhs, this};
+ const __streambuf_type& __base = __rhs;
+ __streambuf_type::operator=(__base);
+ this->pubimbue(__rhs.getloc());
+ _M_mode = __rhs._M_mode;
+ _M_string = std::move(__rhs._M_string);
+ __rhs._M_sync(const_cast<char_type*>(__rhs._M_string.data()), 0, 0);
+ return *this;
+      }
+
+      void
+      swap(basic_stringbuf& __rhs) noexcept(_Noexcept_swap::value)
+      {
+ __xfer_bufptrs __l_st{*this, std::__addressof(__rhs)};
+ __xfer_bufptrs __r_st{__rhs, this};
+ __streambuf_type& __base = __rhs;
+ __streambuf_type::swap(__base);
+ __rhs.pubimbue(this->pubimbue(__rhs.getloc()));
+ std::swap(_M_mode, __rhs._M_mode);
+ std::swap(_M_string, __rhs._M_string);
+      }
+# 250 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      [[__nodiscard__]]
+      __string_type
+      str() const &
+      {
+ __string_type __ret(_M_string.get_allocator());
+ if (char_type* __hi = _M_high_mark())
+   __ret.assign(this->pbase(), __hi);
+ else
+   __ret = _M_string;
+ return __ret;
+      }
+
+
+
+
+      template<__allocator_like _SAlloc>
+ [[__nodiscard__]]
+ basic_string<_CharT, _Traits, _SAlloc>
+ str(const _SAlloc& __sa) const
+ {
+   auto __sv = view();
+   return { __sv.data(), __sv.size(), __sa };
+ }
+
+
+      [[__nodiscard__]]
+      __string_type
+      str() &&
+      {
+ if (char_type* __hi = _M_high_mark())
+   {
+
+     _M_string._M_set_length(_M_high_mark() - this->pbase());
+   }
+ auto __str = std::move(_M_string);
+ _M_string.clear();
+ _M_sync(_M_string.data(), 0, 0);
+ return __str;
+      }
+
+
+     
+      basic_string_view<char_type, traits_type>
+      view() const noexcept
+      {
+ if (char_type* __hi = _M_high_mark())
+   return { this->pbase(), __hi };
+ else
+   return _M_string;
+      }
+# 309 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      void
+      str(const __string_type& __s)
+      {
+
+
+ _M_string.assign(__s.data(), __s.size());
+ _M_stringbuf_init(_M_mode);
+      }
+
+
+
+      template<__allocator_like _SAlloc>
+ requires (!is_same_v<_SAlloc, _Alloc>)
+ void
+ str(const basic_string<_CharT, _Traits, _SAlloc>& __s)
+ {
+   _M_string.assign(__s.data(), __s.size());
+   _M_stringbuf_init(_M_mode);
+ }
+
+
+      void
+      str(__string_type&& __s)
+      {
+ _M_string = std::move(__s);
+ _M_stringbuf_init(_M_mode);
+      }
+
+
+    protected:
+
+      void
+      _M_stringbuf_init(ios_base::openmode __mode)
+      {
+ _M_mode = __mode;
+ __size_type __len = 0;
+ if (_M_mode & (ios_base::ate | ios_base::app))
+   __len = _M_string.size();
+ _M_sync(const_cast<char_type*>(_M_string.data()), 0, __len);
+      }
+
+      virtual streamsize
+      showmanyc()
+      {
+ streamsize __ret = -1;
+ if (_M_mode & ios_base::in)
+   {
+     _M_update_egptr();
+     __ret = this->egptr() - this->gptr();
+   }
+ return __ret;
+      }
+
+      virtual int_type
+      underflow();
+
+      virtual int_type
+      pbackfail(int_type __c = traits_type::eof());
+
+      virtual int_type
+      overflow(int_type __c = traits_type::eof());
+# 382 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      virtual __streambuf_type*
+      setbuf(char_type* __s, streamsize __n)
+      {
+ if (__s && __n >= 0)
+   {
+
+
+
+
+
+
+     _M_string.clear();
+
+
+     _M_sync(__s, __n, 0);
+   }
+ return this;
+      }
+
+      virtual pos_type
+      seekoff(off_type __off, ios_base::seekdir __way,
+       ios_base::openmode __mode = ios_base::in | ios_base::out);
+
+      virtual pos_type
+      seekpos(pos_type __sp,
+       ios_base::openmode __mode = ios_base::in | ios_base::out);
+
+
+
+
+      void
+      _M_sync(char_type* __base, __size_type __i, __size_type __o);
+
+
+
+      void
+      _M_update_egptr()
+      {
+ if (char_type* __pptr = this->pptr())
+   {
+     char_type* __egptr = this->egptr();
+     if (!__egptr || __pptr > __egptr)
+       {
+  if (_M_mode & ios_base::in)
+    this->setg(this->eback(), this->gptr(), __pptr);
+  else
+    this->setg(__pptr, __pptr, __pptr);
+       }
+   }
+      }
+
+
+
+      void
+      _M_pbump(char_type* __pbeg, char_type* __pend, off_type __off);
+
+    private:
+
+
+
+
+      __attribute__((__always_inline__))
+      char_type*
+      _M_high_mark() const noexcept
+      {
+ if (char_type* __pptr = this->pptr())
+   {
+     char_type* __egptr = this->egptr();
+     if (!__egptr || __pptr > __egptr)
+       return __pptr;
+     else
+       return __egptr;
+   }
+ return 0;
+      }
+
+
+
+
+
+      struct __xfer_bufptrs
+      {
+ __xfer_bufptrs(const basic_stringbuf& __from, basic_stringbuf* __to)
+ : _M_to{__to}, _M_goff{-1, -1, -1}, _M_poff{-1, -1, -1}
+ {
+   const _CharT* const __str = __from._M_string.data();
+   const _CharT* __end = nullptr;
+   if (__from.eback())
+     {
+       _M_goff[0] = __from.eback() - __str;
+       _M_goff[1] = __from.gptr() - __str;
+       _M_goff[2] = __from.egptr() - __str;
+       __end = __from.egptr();
+     }
+   if (__from.pbase())
+     {
+       _M_poff[0] = __from.pbase() - __str;
+       _M_poff[1] = __from.pptr() - __from.pbase();
+       _M_poff[2] = __from.epptr() - __str;
+       if (!__end || __from.pptr() > __end)
+  __end = __from.pptr();
+     }
+
+
+   if (__end)
+     {
+
+
+       auto& __mut_from = const_cast<basic_stringbuf&>(__from);
+       __mut_from._M_string._M_length(__end - __str);
+     }
+ }
+
+ ~__xfer_bufptrs()
+ {
+   char_type* __str = const_cast<char_type*>(_M_to->_M_string.data());
+   if (_M_goff[0] != -1)
+     _M_to->setg(__str+_M_goff[0], __str+_M_goff[1], __str+_M_goff[2]);
+   if (_M_poff[0] != -1)
+     _M_to->_M_pbump(__str+_M_poff[0], __str+_M_poff[2], _M_poff[1]);
+ }
+
+ basic_stringbuf* _M_to;
+ off_type _M_goff[3];
+ off_type _M_poff[3];
+      };
+# 518 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      basic_stringbuf(basic_stringbuf&& __rhs, __xfer_bufptrs&&)
+      : __streambuf_type(static_cast<const __streambuf_type&>(__rhs)),
+      _M_mode(__rhs._M_mode), _M_string(std::move(__rhs._M_string))
+      { }
+
+
+
+
+      basic_stringbuf(basic_stringbuf&& __rhs, const allocator_type& __a,
+        __xfer_bufptrs&&)
+      : __streambuf_type(static_cast<const __streambuf_type&>(__rhs)),
+      _M_mode(__rhs._M_mode), _M_string(std::move(__rhs._M_string), __a)
+      { }
+
+
+    };
+# 551 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+  template<typename _CharT, typename _Traits, typename _Alloc>
+    class basic_istringstream : public basic_istream<_CharT, _Traits>
+    {
+    public:
+
+      typedef _CharT char_type;
+      typedef _Traits traits_type;
+
+
+      typedef _Alloc allocator_type;
+      typedef typename traits_type::int_type int_type;
+      typedef typename traits_type::pos_type pos_type;
+      typedef typename traits_type::off_type off_type;
+
+
+      typedef basic_string<_CharT, _Traits, _Alloc> __string_type;
+      typedef basic_stringbuf<_CharT, _Traits, _Alloc> __stringbuf_type;
+      typedef basic_istream<char_type, traits_type> __istream_type;
+
+    private:
+      __stringbuf_type _M_stringbuf;
+
+    public:
+# 585 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      basic_istringstream()
+      : __istream_type(), _M_stringbuf(ios_base::in)
+      { this->init(&_M_stringbuf); }
+# 601 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      explicit
+      basic_istringstream(ios_base::openmode __mode)
+      : __istream_type(), _M_stringbuf(__mode | ios_base::in)
+      { this->init(&_M_stringbuf); }
+# 619 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      explicit
+      basic_istringstream(const __string_type& __str,
+     ios_base::openmode __mode = ios_base::in)
+      : __istream_type(), _M_stringbuf(__str, __mode | ios_base::in)
+      { this->init(&_M_stringbuf); }
+
+
+
+
+
+
+
+      ~basic_istringstream()
+      { }
+
+
+      basic_istringstream(const basic_istringstream&) = delete;
+
+      basic_istringstream(basic_istringstream&& __rhs)
+      : __istream_type(std::move(__rhs)),
+      _M_stringbuf(std::move(__rhs._M_stringbuf))
+      { __istream_type::set_rdbuf(&_M_stringbuf); }
+
+
+      basic_istringstream(ios_base::openmode __mode, const allocator_type& __a)
+      : __istream_type(), _M_stringbuf(__mode | ios_base::in, __a)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      explicit
+      basic_istringstream(__string_type&& __str,
+     ios_base::openmode __mode = ios_base::in)
+      : __istream_type(), _M_stringbuf(std::move(__str), __mode | ios_base::in)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ basic_istringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       const allocator_type& __a)
+ : basic_istringstream(__str, ios_base::in, __a)
+ { }
+
+      template<typename _SAlloc>
+ basic_istringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       ios_base::openmode __mode,
+       const allocator_type& __a)
+ : __istream_type(), _M_stringbuf(__str, __mode | ios_base::in, __a)
+ { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ explicit
+ basic_istringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       ios_base::openmode __mode = ios_base::in)
+ : basic_istringstream(__str, __mode, allocator_type())
+ { }
+
+
+
+
+      basic_istringstream&
+      operator=(const basic_istringstream&) = delete;
+
+      basic_istringstream&
+      operator=(basic_istringstream&& __rhs)
+      {
+ __istream_type::operator=(std::move(__rhs));
+ _M_stringbuf = std::move(__rhs._M_stringbuf);
+ return *this;
+      }
+
+      void
+      swap(basic_istringstream& __rhs)
+      {
+ __istream_type::swap(__rhs);
+ _M_stringbuf.swap(__rhs._M_stringbuf);
+      }
+# 702 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      [[__nodiscard__]]
+      __stringbuf_type*
+      rdbuf() const
+      { return const_cast<__stringbuf_type*>(&_M_stringbuf); }
+
+
+
+
+
+      [[__nodiscard__]]
+      __string_type
+      str() const &
+      { return _M_stringbuf.str(); }
+
+
+
+
+      template<__allocator_like _SAlloc>
+ [[__nodiscard__]]
+ basic_string<_CharT, _Traits, _SAlloc>
+ str(const _SAlloc& __sa) const
+ { return _M_stringbuf.str(__sa); }
+
+
+      [[__nodiscard__]]
+      __string_type
+      str() &&
+      { return std::move(_M_stringbuf).str(); }
+
+
+     
+      basic_string_view<char_type, traits_type>
+      view() const noexcept
+      { return _M_stringbuf.view(); }
+# 744 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      void
+      str(const __string_type& __s)
+      { _M_stringbuf.str(__s); }
+
+
+
+      template<__allocator_like _SAlloc>
+ requires (!is_same_v<_SAlloc, _Alloc>)
+ void
+ str(const basic_string<_CharT, _Traits, _SAlloc>& __s)
+ { _M_stringbuf.str(__s); }
+
+
+      void
+      str(__string_type&& __s)
+      { _M_stringbuf.str(std::move(__s)); }
+
+    };
+# 779 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+  template <typename _CharT, typename _Traits, typename _Alloc>
+    class basic_ostringstream : public basic_ostream<_CharT, _Traits>
+    {
+    public:
+
+      typedef _CharT char_type;
+      typedef _Traits traits_type;
+
+
+      typedef _Alloc allocator_type;
+      typedef typename traits_type::int_type int_type;
+      typedef typename traits_type::pos_type pos_type;
+      typedef typename traits_type::off_type off_type;
+
+
+      typedef basic_string<_CharT, _Traits, _Alloc> __string_type;
+      typedef basic_stringbuf<_CharT, _Traits, _Alloc> __stringbuf_type;
+      typedef basic_ostream<char_type, traits_type> __ostream_type;
+
+    private:
+      __stringbuf_type _M_stringbuf;
+
+    public:
+# 813 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      basic_ostringstream()
+      : __ostream_type(), _M_stringbuf(ios_base::out)
+      { this->init(&_M_stringbuf); }
+# 829 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      explicit
+      basic_ostringstream(ios_base::openmode __mode)
+      : __ostream_type(), _M_stringbuf(__mode | ios_base::out)
+      { this->init(&_M_stringbuf); }
+# 847 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      explicit
+      basic_ostringstream(const __string_type& __str,
+     ios_base::openmode __mode = ios_base::out)
+      : __ostream_type(), _M_stringbuf(__str, __mode | ios_base::out)
+      { this->init(&_M_stringbuf); }
+
+
+
+
+
+
+
+      ~basic_ostringstream()
+      { }
+
+
+      basic_ostringstream(const basic_ostringstream&) = delete;
+
+      basic_ostringstream(basic_ostringstream&& __rhs)
+      : __ostream_type(std::move(__rhs)),
+      _M_stringbuf(std::move(__rhs._M_stringbuf))
+      { __ostream_type::set_rdbuf(&_M_stringbuf); }
+
+
+      basic_ostringstream(ios_base::openmode __mode, const allocator_type& __a)
+      : __ostream_type(), _M_stringbuf(__mode | ios_base::out, __a)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      explicit
+      basic_ostringstream(__string_type&& __str,
+     ios_base::openmode __mode = ios_base::out)
+      : __ostream_type(), _M_stringbuf(std::move(__str), __mode | ios_base::out)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ basic_ostringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       const allocator_type& __a)
+ : basic_ostringstream(__str, ios_base::out, __a)
+ { }
+
+      template<typename _SAlloc>
+ basic_ostringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       ios_base::openmode __mode,
+       const allocator_type& __a)
+ : __ostream_type(), _M_stringbuf(__str, __mode | ios_base::out, __a)
+ { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ explicit
+ basic_ostringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       ios_base::openmode __mode = ios_base::out)
+ : basic_ostringstream(__str, __mode, allocator_type())
+ { }
+
+
+
+
+      basic_ostringstream&
+      operator=(const basic_ostringstream&) = delete;
+
+      basic_ostringstream&
+      operator=(basic_ostringstream&& __rhs)
+      {
+ __ostream_type::operator=(std::move(__rhs));
+ _M_stringbuf = std::move(__rhs._M_stringbuf);
+ return *this;
+      }
+
+      void
+      swap(basic_ostringstream& __rhs)
+      {
+ __ostream_type::swap(__rhs);
+ _M_stringbuf.swap(__rhs._M_stringbuf);
+      }
+# 930 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      [[__nodiscard__]]
+      __stringbuf_type*
+      rdbuf() const
+      { return const_cast<__stringbuf_type*>(&_M_stringbuf); }
+
+
+
+
+
+      [[__nodiscard__]]
+      __string_type
+      str() const &
+      { return _M_stringbuf.str(); }
+
+
+
+
+      template<__allocator_like _SAlloc>
+ [[__nodiscard__]]
+ basic_string<_CharT, _Traits, _SAlloc>
+ str(const _SAlloc& __sa) const
+ { return _M_stringbuf.str(__sa); }
+
+
+      [[__nodiscard__]]
+      __string_type
+      str() &&
+      { return std::move(_M_stringbuf).str(); }
+
+
+     
+      basic_string_view<char_type, traits_type>
+      view() const noexcept
+      { return _M_stringbuf.view(); }
+# 972 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      void
+      str(const __string_type& __s)
+      { _M_stringbuf.str(__s); }
+
+
+
+      template<__allocator_like _SAlloc>
+ requires (!is_same_v<_SAlloc, _Alloc>)
+ void
+ str(const basic_string<_CharT, _Traits, _SAlloc>& __s)
+ { _M_stringbuf.str(__s); }
+
+
+      void
+      str(__string_type&& __s)
+      { _M_stringbuf.str(std::move(__s)); }
+
+    };
+# 1007 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+  template <typename _CharT, typename _Traits, typename _Alloc>
+    class basic_stringstream : public basic_iostream<_CharT, _Traits>
+    {
+    public:
+
+      typedef _CharT char_type;
+      typedef _Traits traits_type;
+
+
+      typedef _Alloc allocator_type;
+      typedef typename traits_type::int_type int_type;
+      typedef typename traits_type::pos_type pos_type;
+      typedef typename traits_type::off_type off_type;
+
+
+      typedef basic_string<_CharT, _Traits, _Alloc> __string_type;
+      typedef basic_stringbuf<_CharT, _Traits, _Alloc> __stringbuf_type;
+      typedef basic_iostream<char_type, traits_type> __iostream_type;
+
+    private:
+      __stringbuf_type _M_stringbuf;
+
+    public:
+# 1041 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      basic_stringstream()
+      : __iostream_type(), _M_stringbuf(ios_base::out | ios_base::in)
+      { this->init(&_M_stringbuf); }
+# 1055 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      explicit
+      basic_stringstream(ios_base::openmode __m)
+      : __iostream_type(), _M_stringbuf(__m)
+      { this->init(&_M_stringbuf); }
+# 1071 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      explicit
+      basic_stringstream(const __string_type& __str,
+    ios_base::openmode __m = ios_base::out | ios_base::in)
+      : __iostream_type(), _M_stringbuf(__str, __m)
+      { this->init(&_M_stringbuf); }
+
+
+
+
+
+
+
+      ~basic_stringstream()
+      { }
+
+
+      basic_stringstream(const basic_stringstream&) = delete;
+
+      basic_stringstream(basic_stringstream&& __rhs)
+      : __iostream_type(std::move(__rhs)),
+      _M_stringbuf(std::move(__rhs._M_stringbuf))
+      { __iostream_type::set_rdbuf(&_M_stringbuf); }
+
+
+      basic_stringstream(ios_base::openmode __mode, const allocator_type& __a)
+      : __iostream_type(), _M_stringbuf(__mode, __a)
+      { this->init(&_M_stringbuf); }
+
+      explicit
+      basic_stringstream(__string_type&& __str,
+    ios_base::openmode __mode = ios_base::in
+           | ios_base::out)
+      : __iostream_type(), _M_stringbuf(std::move(__str), __mode)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ basic_stringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+      const allocator_type& __a)
+ : basic_stringstream(__str, ios_base::in | ios_base::out, __a)
+ { }
+
+      template<typename _SAlloc>
+ basic_stringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+      ios_base::openmode __mode,
+      const allocator_type& __a)
+ : __iostream_type(), _M_stringbuf(__str, __mode, __a)
+ { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ explicit
+ basic_stringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+      ios_base::openmode __mode = ios_base::in
+             | ios_base::out)
+ : basic_stringstream(__str, __mode, allocator_type())
+ { }
+
+
+
+
+      basic_stringstream&
+      operator=(const basic_stringstream&) = delete;
+
+      basic_stringstream&
+      operator=(basic_stringstream&& __rhs)
+      {
+ __iostream_type::operator=(std::move(__rhs));
+ _M_stringbuf = std::move(__rhs._M_stringbuf);
+ return *this;
+      }
+
+      void
+      swap(basic_stringstream& __rhs)
+      {
+ __iostream_type::swap(__rhs);
+ _M_stringbuf.swap(__rhs._M_stringbuf);
+      }
+# 1156 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      [[__nodiscard__]]
+      __stringbuf_type*
+      rdbuf() const
+      { return const_cast<__stringbuf_type*>(&_M_stringbuf); }
+
+
+
+
+
+      [[__nodiscard__]]
+      __string_type
+      str() const &
+      { return _M_stringbuf.str(); }
+
+
+
+
+      template<__allocator_like _SAlloc>
+ [[__nodiscard__]]
+ basic_string<_CharT, _Traits, _SAlloc>
+ str(const _SAlloc& __sa) const
+ { return _M_stringbuf.str(__sa); }
+
+
+      [[__nodiscard__]]
+      __string_type
+      str() &&
+      { return std::move(_M_stringbuf).str(); }
+
+
+     
+      basic_string_view<char_type, traits_type>
+      view() const noexcept
+      { return _M_stringbuf.view(); }
+# 1198 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
+      void
+      str(const __string_type& __s)
+      { _M_stringbuf.str(__s); }
+
+
+
+      template<__allocator_like _SAlloc>
+ requires (!is_same_v<_SAlloc, _Alloc>)
+ void
+ str(const basic_string<_CharT, _Traits, _SAlloc>& __s)
+ { _M_stringbuf.str(__s); }
+
+
+      void
+      str(__string_type&& __s)
+      { _M_stringbuf.str(std::move(__s)); }
+
+    };
+
+
+
+  template <class _CharT, class _Traits, class _Allocator>
+    inline void
+    swap(basic_stringbuf<_CharT, _Traits, _Allocator>& __x,
+  basic_stringbuf<_CharT, _Traits, _Allocator>& __y)
+    noexcept(noexcept(__x.swap(__y)))
+    { __x.swap(__y); }
+
+
+  template <class _CharT, class _Traits, class _Allocator>
+    inline void
+    swap(basic_istringstream<_CharT, _Traits, _Allocator>& __x,
+  basic_istringstream<_CharT, _Traits, _Allocator>& __y)
+    { __x.swap(__y); }
+
+
+  template <class _CharT, class _Traits, class _Allocator>
+    inline void
+    swap(basic_ostringstream<_CharT, _Traits, _Allocator>& __x,
+  basic_ostringstream<_CharT, _Traits, _Allocator>& __y)
+    { __x.swap(__y); }
+
+
+  template <class _CharT, class _Traits, class _Allocator>
+    inline void
+    swap(basic_stringstream<_CharT, _Traits, _Allocator>& __x,
+  basic_stringstream<_CharT, _Traits, _Allocator>& __y)
+    { __x.swap(__y); }
+
+
+}
+
+}
+
+
+
+
+# 1 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/sstream.tcc" 1 3
+# 40 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/sstream.tcc" 3
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wc++11-extensions"
+
+namespace std
+{
+
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::int_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    pbackfail(int_type __c)
+    {
+      int_type __ret = traits_type::eof();
+      if (this->eback() < this->gptr())
+ {
+
+
+   const bool __testeof = traits_type::eq_int_type(__c, __ret);
+   if (!__testeof)
+     {
+       const bool __testeq = traits_type::eq(traits_type::
+          to_char_type(__c),
+          this->gptr()[-1]);
+       const bool __testout = this->_M_mode & ios_base::out;
+       if (__testeq || __testout)
+  {
+    this->gbump(-1);
+    if (!__testeq)
+      *this->gptr() = traits_type::to_char_type(__c);
+    __ret = __c;
+  }
+     }
+   else
+     {
+       this->gbump(-1);
+       __ret = traits_type::not_eof(__c);
+     }
+ }
+      return __ret;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::int_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    overflow(int_type __c)
+    {
+      const bool __testout = this->_M_mode & ios_base::out;
+      if (__builtin_expect(!__testout, false))
+ return traits_type::eof();
+
+      const bool __testeof = traits_type::eq_int_type(__c, traits_type::eof());
+      if (__builtin_expect(__testeof, false))
+ return traits_type::not_eof(__c);
+
+      const __size_type __capacity = _M_string.capacity();
+
+
+      if (size_t(this->epptr() - this->pbase()) < __capacity)
+ {
+
+   char_type* __base = const_cast<char_type*>(_M_string.data());
+   _M_pbump(__base, __base + __capacity, this->pptr() - this->pbase());
+   if (_M_mode & ios_base::in)
+     {
+       const __size_type __nget = this->gptr() - this->eback();
+       const __size_type __eget = this->egptr() - this->eback();
+       this->setg(__base, __base + __nget, __base + __eget + 1);
+     }
+   *this->pptr() = traits_type::to_char_type(__c);
+   this->pbump(1);
+   return __c;
+ }
+
+
+      const __size_type __max_size = _M_string.max_size();
+      const bool __testput = this->pptr() < this->epptr();
+      if (__builtin_expect(!__testput && __capacity == __max_size, false))
+ return traits_type::eof();
+
+
+
+      const char_type __conv = traits_type::to_char_type(__c);
+      if (!__testput)
+ {
+# 133 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/sstream.tcc" 3
+   const __size_type __opt_len = std::max(__size_type(2 * __capacity),
+       __size_type(512));
+   const __size_type __len = std::min(__opt_len, __max_size);
+   __string_type __tmp(_M_string.get_allocator());
+   __tmp.reserve(__len);
+   if (this->pbase())
+     __tmp.assign(this->pbase(), this->epptr() - this->pbase());
+   __tmp.push_back(__conv);
+   _M_string.swap(__tmp);
+   _M_sync(const_cast<char_type*>(_M_string.data()),
+    this->gptr() - this->eback(), this->pptr() - this->pbase());
+ }
+      else
+ *this->pptr() = __conv;
+      this->pbump(1);
+      return __c;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::int_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    underflow()
+    {
+      int_type __ret = traits_type::eof();
+      const bool __testin = this->_M_mode & ios_base::in;
+      if (__testin)
+ {
+
+   _M_update_egptr();
+
+   if (this->gptr() < this->egptr())
+     __ret = traits_type::to_int_type(*this->gptr());
+ }
+      return __ret;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::pos_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    seekoff(off_type __off, ios_base::seekdir __way, ios_base::openmode __mode)
+    {
+      pos_type __ret = pos_type(off_type(-1));
+      bool __testin = (ios_base::in & this->_M_mode & __mode) != 0;
+      bool __testout = (ios_base::out & this->_M_mode & __mode) != 0;
+      const bool __testboth = __testin && __testout && __way != ios_base::cur;
+      __testin &= !(__mode & ios_base::out);
+      __testout &= !(__mode & ios_base::in);
+
+
+
+      const char_type* __beg = __testin ? this->eback() : this->pbase();
+      if ((__beg || !__off) && (__testin || __testout || __testboth))
+ {
+   _M_update_egptr();
+
+   off_type __newoffi = __off;
+   off_type __newoffo = __newoffi;
+   if (__way == ios_base::cur)
+     {
+       __newoffi += this->gptr() - __beg;
+       __newoffo += this->pptr() - __beg;
+     }
+   else if (__way == ios_base::end)
+     __newoffo = __newoffi += this->egptr() - __beg;
+
+   if ((__testin || __testboth)
+       && __newoffi >= 0
+       && this->egptr() - __beg >= __newoffi)
+     {
+       this->setg(this->eback(), this->eback() + __newoffi,
+    this->egptr());
+       __ret = pos_type(__newoffi);
+     }
+   if ((__testout || __testboth)
+       && __newoffo >= 0
+       && this->egptr() - __beg >= __newoffo)
+     {
+       _M_pbump(this->pbase(), this->epptr(), __newoffo);
+       __ret = pos_type(__newoffo);
+     }
+ }
+      return __ret;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::pos_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    seekpos(pos_type __sp, ios_base::openmode __mode)
+    {
+      pos_type __ret = pos_type(off_type(-1));
+      const bool __testin = (ios_base::in & this->_M_mode & __mode) != 0;
+      const bool __testout = (ios_base::out & this->_M_mode & __mode) != 0;
+
+      const char_type* __beg = __testin ? this->eback() : this->pbase();
+      if ((__beg || !off_type(__sp)) && (__testin || __testout))
+ {
+   _M_update_egptr();
+
+   const off_type __pos(__sp);
+   const bool __testpos = (0 <= __pos
+      && __pos <= this->egptr() - __beg);
+   if (__testpos)
+     {
+       if (__testin)
+  this->setg(this->eback(), this->eback() + __pos,
+      this->egptr());
+       if (__testout)
+  _M_pbump(this->pbase(), this->epptr(), __pos);
+       __ret = __sp;
+     }
+ }
+      return __ret;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    void
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    _M_sync(char_type* __base, __size_type __i, __size_type __o)
+    {
+      const bool __testin = _M_mode & ios_base::in;
+      const bool __testout = _M_mode & ios_base::out;
+      char_type* __endg = __base + _M_string.size();
+      char_type* __endp = __base + _M_string.capacity();
+
+      if (__base != _M_string.data())
+ {
+
+   __endg += __i;
+   __i = 0;
+   __endp = __endg;
+ }
+
+      if (__testin)
+ this->setg(__base, __base + __i, __endg);
+      if (__testout)
+ {
+   _M_pbump(__base, __endp, __o);
+
+
+
+   if (!__testin)
+     this->setg(__endg, __endg, __endg);
+ }
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    void
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    _M_pbump(char_type* __pbeg, char_type* __pend, off_type __off)
+    {
+      this->setp(__pbeg, __pend);
+      while (__off > __gnu_cxx::__numeric_traits<int>::__max)
+ {
+   this->pbump(__gnu_cxx::__numeric_traits<int>::__max);
+   __off -= __gnu_cxx::__numeric_traits<int>::__max;
+ }
+      this->pbump(__off);
+    }
+
+
+
+
+  extern template class basic_stringbuf<char>;
+  extern template class basic_istringstream<char>;
+  extern template class basic_ostringstream<char>;
+  extern template class basic_stringstream<char>;
+
+
+  extern template class basic_stringbuf<wchar_t>;
+  extern template class basic_istringstream<wchar_t>;
+  extern template class basic_ostringstream<wchar_t>;
+  extern template class basic_stringstream<wchar_t>;
+
+
+
+
+}
+
+#pragma GCC diagnostic pop
+# 1256 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 2 3
+# 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
+
+
+# 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp"
 Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardLinha(-1), jardColuna(-1) {
     jardineiro = new Jardineiro();
     grelha = new Celula*[nLinhas];
@@ -63856,6 +65061,17 @@ bool Jardim::setJardineiro(int l, int c) {
     return true;
 }
 
+bool Jardim::sairJardineiro() {
+    if (jardLinha == -1 || jardColuna == -1) {
+        cout << "Erro: O jardineiro já estava fora do jardim" << endl;
+        return false;
+    }
+
+    jardLinha = -1;
+    jardColuna = -1;
+    return true;
+}
+
 bool Jardim::compraFerramenta(char f) {
     Ferramenta * ferr;
     if (f == 'g') ferr = new Regador();
@@ -63882,4 +65098,89 @@ void Jardim::pegaFerramenta(int num) const {
 
 void Jardim::largaFerramenta() const {
     jardineiro->largaFerramenta();
+}
+
+void Jardim::listarPlantas() const {
+    int nPlantas = 0;
+    ostringstream str;
+
+    str << "############# PLANTAS NO JARDIM #############" << endl;
+
+    for (int l = 0; l < nLinhas; l++) {
+        for (int c = 0; c < nColunas; c++) {
+            if (grelha[l][c].temPlanta()) {
+                ++nPlantas;
+                Planta* p = grelha[l][c].getPlanta();
+                char coordL = 'A' + l;
+                char coordC = 'A' + c;
+
+                str << "---------------- POSICAO " << coordL << coordC << " -----------------" << endl;
+                str << p->getPropriedades() << endl;
+                str << "Solo com " << grelha[l][c].getNutrientes() << " de nutrientes e " << grelha[l][c].getAgua() << " de agua" << endl;
+            }
+        }
+    }
+
+    if (nPlantas > 0)
+        cout << str.str();
+    else
+        cout << "Aviso: Nao ha nenhuma planta no jardim" << endl;
+}
+
+void Jardim::listaArea() const {
+    cout << "############# CONTEUDO DO JARDIM #############" << endl;
+
+    for (int l = 0; l < nLinhas; l++) {
+        for (int c = 0; c < nColunas; c++) {
+            bool temInfo = grelha[l][c].temPlanta() || grelha[l][c].temFerramenta() || (jardLinha == l && jardColuna == c);
+
+            if (temInfo)
+                getCelulaDesc(l, c);
+        }
+    }
+}
+
+void Jardim::listaSolo(int l, int c, int n) const {
+
+    if (n == 0) {
+        getCelulaDesc(l, c);
+    } else {
+        cout << "############ PROPRIEDADES DA AREA ############" << endl;
+        int inicioL = (l - n < 0) ? 0 : l - n;
+        int inicioC = (c - n < 0) ? 0 : c - n;
+        int fimL = (l + n >= nLinhas) ? nLinhas - 1 : l + n;
+        int fimC = (c + n >= nColunas) ? nColunas - 1 : c + n;
+
+        for (int i = inicioL; i <= fimL; ++i) {
+            for (int j = inicioC; j <= fimC; ++j)
+                getCelulaDesc(i, j);
+        }
+    }
+}
+
+void Jardim::getCelulaDesc(int l, int c) const {
+    char coordL = 'A' + l;
+    char coordC = 'A' + c;
+
+    cout << "----------------- POSICAO " << coordL << coordC << " -----------------" << endl;
+    cout << "Solo com " << grelha[l][c].getNutrientes() << " de nutrientes e " << grelha[l][c].getAgua() << " de agua" << endl;
+
+    bool temPlanta = grelha[l][c].temPlanta();
+    bool temFerramenta = grelha[l][c].temFerramenta();
+    bool temJardineiro = (jardLinha == l && jardColuna == c);
+
+    if (temPlanta) {
+        Planta* p = grelha[l][c].getPlanta();
+
+        cout << p->getPropriedades() << endl;
+    }
+
+    if (temFerramenta) {
+        Ferramenta * f = grelha[l][c].getFerramenta();
+
+        cout << f->getDesc() << endl;
+    }
+
+    if (temJardineiro)
+        cout << "Jardineiro" << endl;
 }

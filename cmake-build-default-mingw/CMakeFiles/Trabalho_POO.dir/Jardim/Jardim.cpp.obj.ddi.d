@@ -179,4 +179,6 @@ CMakeFiles\Trabalho_POO.dir\Jardim\Jardim.cpp.obj.ddi: \
  C:/Users/tiago/Documents/Trabalho_POO/Random/Random.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h \
- C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h
+ C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/sstream.tcc
