@@ -26,7 +26,8 @@ bool lplanta::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    return jardim->getDescPlanta(l, c);
+    jardim->getDescPlanta(l, c);
+    return false;
 }
 
 bool planta::executar(Jardim * jardim, string * argv, int argc) {
@@ -144,8 +145,8 @@ bool larga::executar(Jardim * jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    jardim->largaFerramenta();
+    return false;
 }
 
 bool pega::executar(Jardim * jardim, string* argv, int argc) {
@@ -162,8 +163,9 @@ bool pega::executar(Jardim * jardim, string* argv, int argc) {
         cout << "[n] tem de ser numero positivo" << endl;
         return false;
     }
-    cout << "Comando nao implementado" << endl;
-    return true;
+
+    jardim->pegaFerramenta(n);
+    return false;
 }
 
 bool compra::executar(Jardim * jardim, string* argv, int argc) {
@@ -182,7 +184,8 @@ bool compra::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    return jardim->compraFerramenta(simbolo);
+    jardim->compraFerramenta(simbolo);
+    return false;
 }
 
 mover::mover(char d) : direcao(d) {};

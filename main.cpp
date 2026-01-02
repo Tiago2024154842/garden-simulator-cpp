@@ -42,7 +42,7 @@ Jardim* executarComando(const string& c, Jardim* jardimAtual) {
     while (comando >> argv[argc] && argc < 3)
         argc++;
 
-    if (cmd->executar(jardimAtual, argv, argc))
+    if (cmd->executar(jardimAtual, argv, argc)) // se retornar true mostra o jardim
         jardimAtual->mostraGrelha();
 
     delete cmd;

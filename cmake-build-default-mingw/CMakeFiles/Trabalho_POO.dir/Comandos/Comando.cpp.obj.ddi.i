@@ -63562,16 +63562,20 @@ class Celula;
 
 class Ferramenta {
   public:
+    std::string getNome() const;
     char getSimbolo() const;
+    int getNumSerie() const;
     virtual void usar(Celula* area) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
-    Ferramenta(char s);
+    Ferramenta(char s, const std::string & n);
 
   private:
+    std::string nome;
     char simbolo;
-    static int numSerie;
+    int numSerie;
+    static int contadorNumSerie;
 };
 
 class Regador : public Ferramenta {
@@ -63644,6 +63648,8 @@ class Jardineiro {
     ~Jardineiro();
     void setFerramenta(Ferramenta * f);
     std::string getFerramentas() const;
+    void pegaFerramenta(int num);
+    void largaFerramenta();
 
   private:
     Ferramenta * mao;
@@ -63668,6 +63674,9 @@ class Jardim {
     bool setJardineiro(int l, int c);
     bool compraFerramenta(char f);
     void listaFerramentas() const;
+    void pegaFerramenta(int num) const;
+    void largaFerramenta() const;
+
 
   private:
     bool verificaLimites(int l, int c) const;
@@ -66512,7 +66521,8 @@ bool lplanta::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    return jardim->getDescPlanta(l, c);
+    jardim->getDescPlanta(l, c);
+    return false;
 }
 
 bool planta::executar(Jardim * jardim, string * argv, int argc) {
@@ -66630,8 +66640,8 @@ bool larga::executar(Jardim * jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    jardim->largaFerramenta();
+    return false;
 }
 
 bool pega::executar(Jardim * jardim, string* argv, int argc) {
@@ -66648,8 +66658,9 @@ bool pega::executar(Jardim * jardim, string* argv, int argc) {
         cout << "[n] tem de ser numero positivo" << endl;
         return false;
     }
-    cout << "Comando nao implementado" << endl;
-    return true;
+
+    jardim->pegaFerramenta(n);
+    return false;
 }
 
 bool compra::executar(Jardim * jardim, string* argv, int argc) {
@@ -66668,7 +66679,8 @@ bool compra::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    return jardim->compraFerramenta(simbolo);
+    jardim->compraFerramenta(simbolo);
+    return false;
 }
 
 mover::mover(char d) : direcao(d) {};

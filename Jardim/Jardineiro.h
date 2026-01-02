@@ -10,7 +10,8 @@ class Jardineiro {
     ~Jardineiro();
     void setFerramenta(Ferramenta * f);
     std::string getFerramentas() const;
-    bool pegaFerramenta(int num);
+    void pegaFerramenta(int num);
+    void largaFerramenta();
 
   private: 
     Ferramenta * mao;

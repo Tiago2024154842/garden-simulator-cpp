@@ -5,7 +5,7 @@
 
 int Ferramenta::contadorNumSerie = 0;
 
-Ferramenta::Ferramenta(char s) : simbolo(s) {
+Ferramenta::Ferramenta(const char s, const std::string & n) : simbolo(s), nome(n) {
     numSerie = ++contadorNumSerie;
 }
 
@@ -17,7 +17,11 @@ char Ferramenta::getSimbolo() const {
     return simbolo;
 }
 
-Regador::Regador() : Ferramenta('g'), agua(Settings::Regador::capacidade) {}
+std::string Ferramenta::getNome() const {
+    return nome;
+}
+
+Regador::Regador() : Ferramenta('g', "Regador"), agua(Settings::Regador::capacidade) {}
 
 void Regador::usar(Celula* area) {
     if (area != nullptr && agua >= 10) {
@@ -28,11 +32,11 @@ void Regador::usar(Celula* area) {
 
 std::string Regador::getDesc() const {
     std::ostringstream str;
-    str << "Regador -> Agua: " << agua << ", Capacidade: " << agua/2 << "%";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ") -> Agua: " << agua << ", Capacidade: " << agua/2 << "%";
     return str.str();
 }
 
-Adubo::Adubo() : Ferramenta('a'), quantidade(Settings::Adubo::capacidade) {}
+Adubo::Adubo() : Ferramenta('a', "Pacote de adubo"), quantidade(Settings::Adubo::capacidade) {}
 
 void Adubo::usar(Celula* area) {
     if (area != nullptr && quantidade >= 10) {
@@ -43,11 +47,11 @@ void Adubo::usar(Celula* area) {
 
 std::string Adubo::getDesc() const {
     std::ostringstream str;
-    str << "Pacote de adubo -> Unidades de adubo: " << quantidade << ", Capacidade: " << (quantidade*100)/Settings::Adubo::capacidade << "%";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ") -> Unidades de adubo: " << quantidade << ", Capacidade: " << (quantidade*100)/Settings::Adubo::capacidade << "%";
     return str.str();
 }
 
-Tesoura::Tesoura() : Ferramenta('t') {}
+Tesoura::Tesoura() : Ferramenta('t', "Tesoura de poda") {}
 
 void Tesoura::usar(Celula* area) {
     if (area != nullptr && area->temPlanta()) {
@@ -57,16 +61,16 @@ void Tesoura::usar(Celula* area) {
 
 std::string Tesoura::getDesc() const {
     std::ostringstream str;
-    str << "Tesoura de poda";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ")";
     return str.str();
 }
 
-Enxada::Enxada() : Ferramenta('z') {}
+Enxada::Enxada() : Ferramenta('z', "Enxada") {}
 
 void Enxada::usar(Celula* area) {}
 
 std::string Enxada::getDesc() const {
     std::ostringstream str;
-    str << "Enxada";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ")";
     return str.str();
 }

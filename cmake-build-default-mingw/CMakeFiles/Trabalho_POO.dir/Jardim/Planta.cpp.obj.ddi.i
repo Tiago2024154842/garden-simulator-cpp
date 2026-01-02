@@ -42881,7 +42881,7 @@ char Planta::getSimbolo() const {
 string Planta::getPropriedades() const {
     ostringstream str;
 
-    str << nome << "("<< beleza << ") com " << nutrientes << "% de nutrientes e " << agua << "% de agua";
+    str << nome << " ("<< beleza << ") com " << nutrientes << " de nutrientes e " << agua << " de agua";
     return str.str();
 }
 

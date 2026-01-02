@@ -23,7 +23,9 @@ class Jardim {
     bool setJardineiro(int l, int c);
     bool compraFerramenta(char f);
     void listaFerramentas() const;
-    bool pegaFerramenta(int num) const;
+    void pegaFerramenta(int num) const;
+    void largaFerramenta() const;
+    
 
   private:
     bool verificaLimites(int l, int c) const;

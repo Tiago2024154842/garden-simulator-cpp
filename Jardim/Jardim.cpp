@@ -182,6 +182,7 @@ bool Jardim::compraFerramenta(char f) {
         return false;
     }
 
+    cout << "Ferramenta comprada com sucesso" << endl;
     jardineiro->setFerramenta(ferr);
     return true;
 }
@@ -190,6 +191,10 @@ void Jardim::listaFerramentas() const {
     cout << jardineiro->getFerramentas();
 }
 
-bool Jardim::pegaFerramenta(int num) const {
-    return jardineiro->pegaFerramenta(num);
+void Jardim::pegaFerramenta(int num) const {
+    jardineiro->pegaFerramenta(num);
+}
+
+void Jardim::largaFerramenta() const {
+    jardineiro->largaFerramenta();
 }

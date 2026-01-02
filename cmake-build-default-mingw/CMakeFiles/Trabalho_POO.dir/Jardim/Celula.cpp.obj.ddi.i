@@ -63550,16 +63550,20 @@ class Celula;
 
 class Ferramenta {
   public:
+    std::string getNome() const;
     char getSimbolo() const;
+    int getNumSerie() const;
     virtual void usar(Celula* area) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
-    Ferramenta(char s);
+    Ferramenta(char s, const std::string & n);
 
   private:
+    std::string nome;
     char simbolo;
-    static int numSerie;
+    int numSerie;
+    static int contadorNumSerie;
 };
 
 class Regador : public Ferramenta {

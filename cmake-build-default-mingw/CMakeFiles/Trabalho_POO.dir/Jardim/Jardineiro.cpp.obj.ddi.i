@@ -46509,16 +46509,20 @@ class Celula;
 
 class Ferramenta {
   public:
+    std::string getNome() const;
     char getSimbolo() const;
+    int getNumSerie() const;
     virtual void usar(Celula* area) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
-    Ferramenta(char s);
+    Ferramenta(char s, const std::string & n);
 
   private:
+    std::string nome;
     char simbolo;
-    static int numSerie;
+    int numSerie;
+    static int contadorNumSerie;
 };
 
 class Regador : public Ferramenta {
@@ -46562,6 +46566,8 @@ class Jardineiro {
     ~Jardineiro();
     void setFerramenta(Ferramenta * f);
     std::string getFerramentas() const;
+    void pegaFerramenta(int num);
+    void largaFerramenta();
 
   private:
     Ferramenta * mao;
@@ -47783,16 +47789,56 @@ std::string Jardineiro::getFerramentas() const {
     std::ostringstream str;
 
     if (mao != nullptr) {
-        str << "--------- Mao ---------" << std::endl;
+        str << "############# NA MAO #############" << std::endl;
         str << mao->getDesc() << std::endl;
     }
 
     if (inventario.size() > 0) {
-        str << "--------- Inventario (" << inventario.size() << ") ---------" << std::endl;
+        str << "############# INVENTARIO (" << inventario.size() << ") #############" << std::endl;
         for (auto it = inventario.begin(); it != inventario.end(); ++it)
             str << (*it)->getDesc() << std::endl;
-    } else
+    } else if (mao == nullptr)
         str << "Sem ferramentas no inventario" << std::endl;
 
     return str.str();
+}
+
+void Jardineiro::pegaFerramenta(int num) {
+    auto iterator = inventario.end();
+
+    if (mao != nullptr && mao->getNumSerie() == num) {
+        std::cout << "Erro: O jardineiro ja tem essa ferramenta na mao" << std::endl;
+        return;
+    }
+
+    for (auto it = inventario.begin(); it != inventario.end(); ++it) {
+        if ((*it)->getNumSerie() == num) {
+            iterator = it;
+            break;
+        }
+    }
+
+    if (iterator == inventario.end()) {
+        std::cout << "Erro: Nao existe nenhuma ferramenta no inventario do jardineiro com esse numero de serie" << std::endl;
+        return;
+    }
+
+    Ferramenta* novaFerramenta = *iterator;
+    inventario.erase(iterator);
+
+    if (mao != nullptr)
+        inventario.push_back(mao);
+
+    mao = novaFerramenta;
+    std::cout << mao->getNome() << " (nr de serie: " << num << ") posta na mao do jardineiro" << std::endl;
+}
+
+void Jardineiro::largaFerramenta() {
+    if (mao != nullptr) {
+        inventario.push_back(mao);
+        std::cout << mao->getNome() << " largado(a)" << std::endl;
+        mao = nullptr;
+    } else {
+        std::cout << "Erro: O jardineiro nao tem nenhuma ferramenta para largar" << std::endl;
+    }
 }
