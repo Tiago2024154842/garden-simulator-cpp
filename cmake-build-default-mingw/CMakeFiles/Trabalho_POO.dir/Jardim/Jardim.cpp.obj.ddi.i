@@ -63512,39 +63512,44 @@ class Random {
 using namespace std;
 
 class Planta {
+  public:
+    virtual Planta * copia() const = 0;
+    char getSimbolo() const;
+    string getPropriedades() const;
+
+  protected:
+    Planta(const string & n, const string & b, char s, int nut, int a);
+
   private:
     string beleza;
     string nome;
     char simbolo;
     int nutrientes;
     int agua;
-
-  protected:
-    Planta(string n, string b, char s, int nut, int a);
-
-  public:
-    char getSimbolo() const;
-    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
+        Roseira * copia() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
+        ErvaDaninha * copia() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
+        Exotica * copia() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
+        Cacto * copia() const override;
 };
 # 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h" 1
@@ -63560,6 +63565,7 @@ class Ferramenta {
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
+    virtual Ferramenta * copia() const = 0;
     virtual void usar(Celula* area) = 0;
     virtual std::string getDesc() const = 0;
 
@@ -63576,6 +63582,7 @@ class Ferramenta {
 class Regador : public Ferramenta {
   public:
     Regador();
+    Regador * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 
@@ -63586,6 +63593,7 @@ class Regador : public Ferramenta {
 class Adubo : public Ferramenta {
   public:
     Adubo();
+    Adubo * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const override;
 
@@ -63596,6 +63604,7 @@ class Adubo : public Ferramenta {
 class Tesoura : public Ferramenta {
   public:
     Tesoura();
+    Tesoura * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 };
@@ -63603,6 +63612,7 @@ class Tesoura : public Ferramenta {
 class Enxada : public Ferramenta {
   public:
     Enxada();
+    Enxada * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 };
@@ -63622,6 +63632,8 @@ class Celula {
     ~Celula();
     int getNutrientes() const;
     int getAgua() const;
+    void setAgua(int a);
+    void setNutrientes(int n);
     void setPlanta(Planta* planta);
     bool removerPlanta();
     bool temPlanta() const;
@@ -63642,6 +63654,7 @@ class Celula {
 class Jardineiro {
   public:
     Jardineiro();
+    Jardineiro(const Jardineiro & outro);
     ~Jardineiro();
     void setFerramenta(Ferramenta * f);
     std::string getFerramentas() const;
@@ -63655,11 +63668,11 @@ class Jardineiro {
 # 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h" 2
 
 
-using namespace std;
-
 class Jardim {
   public:
     Jardim(int c, int l);
+    Jardim(const Jardim & outro);
+    Jardim & operator=(Jardim outro);
     ~Jardim();
     void mostraGrelha() const;
     int getNColunas() const;
@@ -63679,6 +63692,7 @@ class Jardim {
     void listaSolo(int l, int c, int n = 0) const;
 
   private:
+    void swap(Jardim & outro);
     void getCelulaDesc(int l, int c) const;
     bool verificaLimites(int l, int c) const;
     int instante;
@@ -64923,16 +64937,65 @@ Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardLinha(-
         ++tentativas;
     } while (ferrColocadas < 3 && tentativas < 100);
 
-    cout << "Jardim criado" << endl;
+    std::cout << "Jardim criado" << std::endl;
+}
+
+Jardim::Jardim(const Jardim & outro) {
+    nColunas = outro.nColunas;
+    nLinhas = outro.nLinhas;
+    jardLinha = outro.jardLinha;
+    jardColuna = outro.jardColuna;
+
+    if (outro.jardineiro != nullptr)
+        jardineiro = new Jardineiro(*outro.jardineiro);
+    else
+        jardineiro = nullptr;
+
+    grelha = new Celula*[nLinhas];
+
+    for (int l = 0; l < nLinhas; ++l)
+        grelha[l] = new Celula[nColunas];
+
+    for (int l = 0; l < nLinhas; ++l) {
+        for (int c = 0; c < nColunas; ++c) {
+            grelha[l][c].setNutrientes(outro.grelha[l][c].getNutrientes());
+            grelha[l][c].setAgua(outro.grelha[l][c].getAgua());
+
+            if (outro.grelha[l][c].temPlanta())
+                grelha[l][c].setPlanta(outro.grelha[l][c].getPlanta()->copia());
+
+            if (outro.grelha[l][c].temFerramenta())
+                grelha[l][c].setFerramenta(outro.grelha[l][c].getFerramenta()->copia());
+        }
+    }
+}
+
+Jardim & Jardim::operator=(Jardim outro) {
+    swap(outro);
+    return *this;
 }
 
 Jardim::~Jardim() {
-  if (grelha != nullptr) {
-    for (int i = 0; i < nLinhas; i++) {
-      delete[] grelha[i];
+    if (grelha != nullptr) {
+        for (int i = 0; i < nLinhas; i++) {
+        delete[] grelha[i];
+        }
+        delete[] grelha;
     }
-    delete[] grelha;
-  }
+
+    if (jardineiro != nullptr) {
+        delete jardineiro;
+    }
+}
+
+void Jardim::swap(Jardim & outro) {
+    std::swap(nColunas, outro.nColunas);
+    std::swap(nLinhas, outro.nLinhas);
+    std::swap(jardLinha, outro.jardLinha);
+    std::swap(jardColuna, outro.jardColuna);
+    std::swap(instante, outro.instante);
+    std::swap(grelha, outro.grelha);
+    std::swap(jardineiro, outro.jardineiro);
 }
 
 int Jardim::getNColunas() const {
@@ -64945,7 +65008,7 @@ int Jardim::getNLinhas() const {
 
 bool Jardim::verificaLimites(int l, int c) const {
     if (l < 0 || l >= nLinhas || c < 0 || c >= nColunas) {
-        cout << "Erro: Fora do limite do jardim" << endl;
+        std::cout << "Erro: Fora do limite do jardim" << std::endl;
         return false;
     }
 
@@ -64955,30 +65018,30 @@ bool Jardim::verificaLimites(int l, int c) const {
 void Jardim::mostraGrelha() const {
     int a = (int) 'A';
 
-    cout << " ";
+    std::cout << " ";
     for (int i = 0; i < nLinhas+1; i++) {
             for (int j = 0; j < nColunas+1; j++) {
             if (i == 0 && j < nColunas)
-                cout << (char) (a + j);
+                std::cout << (char) (a + j);
 
             if (i > 0) {
                 if (j == 0 && j < nColunas)
-                    cout << (char) (a + (i-1));
+                    std::cout << (char) (a + (i-1));
                 else {
-                    Celula celula = grelha[i-1][j-1];
+                    const Celula & celula = grelha[i-1][j-1];
 
                     if (i-1 == jardLinha && j-1 == jardColuna)
-                        cout << '*';
+                        std::cout << '*';
                     else if (celula.temPlanta())
-                        cout << celula.getPlanta()->getSimbolo();
+                        std::cout << celula.getPlanta()->getSimbolo();
                     else if (celula.temFerramenta())
-                        cout << celula.getFerramenta()->getSimbolo();
+                        std::cout << celula.getFerramenta()->getSimbolo();
                     else
-                        cout << ' ';
+                        std::cout << ' ';
                 }
             }
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 }
 
@@ -64988,12 +65051,12 @@ bool Jardim::criarPlanta(int l, int c, char tipo) {
     tipo = tolower(tipo);
 
     if (!(tipo == 'c' || tipo == 'r' || tipo == 'e' || tipo == 'x')) {
-        cout << "Erro: Tipo de planta invalido" << endl;
+        std::cout << "Erro: Tipo de planta invalido" << std::endl;
         return false;
     }
 
     if (grelha[l][c].temPlanta()) {
-        cout << "Erro: Ja existe uma planta nessa posicao" << endl;
+        std::cout << "Erro: Ja existe uma planta nessa posicao" << std::endl;
         return false;
     }
 
@@ -65012,7 +65075,7 @@ bool Jardim::removerPlanta(int l, int c) {
     if (!verificaLimites(l, c)) return false;
 
     if (!grelha[l][c].temPlanta()) {
-        cout << "Erro: Nao existe uma planta nessa posicao" << endl;
+        std::cout << "Erro: Nao existe uma planta nessa posicao" << std::endl;
         return false;
     }
 
@@ -65023,12 +65086,12 @@ bool Jardim::getDescPlanta(int l, int c) const {
     if (!verificaLimites(l, c)) return false;
 
     if (!grelha[l][c].temPlanta()) {
-        cout << "Erro: Nao existe nenhuma planta nessa posicao" << endl;
+        std::cout << "Erro: Nao existe nenhuma planta nessa posicao" << std::endl;
         return false;
     }
 
     Planta * p = grelha[l][c].getPlanta();
-    cout << p->getPropriedades() << endl;
+    std::cout << p->getPropriedades() << std::endl;
     return true;
 }
 
@@ -65052,7 +65115,7 @@ bool Jardim::setJardineiro(int l, int c) {
     if (!verificaLimites(l, c)) return false;
 
     if (jardLinha == l && jardColuna == c) {
-        cout << "Erro: O jardineiro ja estava nessa posicao" << endl;
+        std::cout << "Erro: O jardineiro ja estava nessa posicao" << std::endl;
         return false;
     }
 
@@ -65063,7 +65126,7 @@ bool Jardim::setJardineiro(int l, int c) {
 
 bool Jardim::sairJardineiro() {
     if (jardLinha == -1 || jardColuna == -1) {
-        cout << "Erro: O jardineiro já estava fora do jardim" << endl;
+        std::cout << "Erro: O jardineiro já estava fora do jardim" << std::endl;
         return false;
     }
 
@@ -65079,17 +65142,17 @@ bool Jardim::compraFerramenta(char f) {
     else if (f == 'a') ferr = new Adubo();
     else if (f == 'z') ferr = new Enxada();
     else {
-        cout << "Erro: Ferramenta desconhecida no mercado online";
+        std::cout << "Erro: Ferramenta desconhecida no mercado online";
         return false;
     }
 
-    cout << "Ferramenta comprada com sucesso" << endl;
+    std::cout << "Ferramenta comprada com sucesso" << std::endl;
     jardineiro->setFerramenta(ferr);
     return true;
 }
 
 void Jardim::listaFerramentas() const {
-    cout << jardineiro->getFerramentas();
+    std::cout << jardineiro->getFerramentas();
 }
 
 void Jardim::pegaFerramenta(int num) const {
@@ -65102,9 +65165,9 @@ void Jardim::largaFerramenta() const {
 
 void Jardim::listarPlantas() const {
     int nPlantas = 0;
-    ostringstream str;
+    std::ostringstream str;
 
-    str << "############# PLANTAS NO JARDIM #############" << endl;
+    str << "############# PLANTAS NO JARDIM #############" << std::endl;
 
     for (int l = 0; l < nLinhas; l++) {
         for (int c = 0; c < nColunas; c++) {
@@ -65114,21 +65177,21 @@ void Jardim::listarPlantas() const {
                 char coordL = 'A' + l;
                 char coordC = 'A' + c;
 
-                str << "---------------- POSICAO " << coordL << coordC << " -----------------" << endl;
-                str << p->getPropriedades() << endl;
-                str << "Solo com " << grelha[l][c].getNutrientes() << " de nutrientes e " << grelha[l][c].getAgua() << " de agua" << endl;
+                str << "---------------- POSICAO " << coordL << coordC << " -----------------" << std::endl;
+                str << p->getPropriedades() << std::endl;
+                str << "Solo com " << grelha[l][c].getNutrientes() << " de nutrientes e " << grelha[l][c].getAgua() << " de agua" << std::endl;
             }
         }
     }
 
     if (nPlantas > 0)
-        cout << str.str();
+        std::cout << str.str();
     else
-        cout << "Aviso: Nao ha nenhuma planta no jardim" << endl;
+        std::cout << "Aviso: Nao ha nenhuma planta no jardim" << std::endl;
 }
 
 void Jardim::listaArea() const {
-    cout << "############# CONTEUDO DO JARDIM #############" << endl;
+    std::cout << "############# CONTEUDO DO JARDIM #############" << std::endl;
 
     for (int l = 0; l < nLinhas; l++) {
         for (int c = 0; c < nColunas; c++) {
@@ -65141,11 +65204,10 @@ void Jardim::listaArea() const {
 }
 
 void Jardim::listaSolo(int l, int c, int n) const {
-
     if (n == 0) {
         getCelulaDesc(l, c);
     } else {
-        cout << "############ PROPRIEDADES DA AREA ############" << endl;
+        std::cout << "############ PROPRIEDADES DA AREA ############" << std::endl;
         int inicioL = (l - n < 0) ? 0 : l - n;
         int inicioC = (c - n < 0) ? 0 : c - n;
         int fimL = (l + n >= nLinhas) ? nLinhas - 1 : l + n;
@@ -65162,8 +65224,8 @@ void Jardim::getCelulaDesc(int l, int c) const {
     char coordL = 'A' + l;
     char coordC = 'A' + c;
 
-    cout << "----------------- POSICAO " << coordL << coordC << " -----------------" << endl;
-    cout << "Solo com " << grelha[l][c].getNutrientes() << " de nutrientes e " << grelha[l][c].getAgua() << " de agua" << endl;
+    std::cout << "----------------- POSICAO " << coordL << coordC << " -----------------" << std::endl;
+    std::cout << "Solo com " << grelha[l][c].getNutrientes() << " de nutrientes e " << grelha[l][c].getAgua() << " de agua" << std::endl;
 
     bool temPlanta = grelha[l][c].temPlanta();
     bool temFerramenta = grelha[l][c].temFerramenta();
@@ -65171,16 +65233,14 @@ void Jardim::getCelulaDesc(int l, int c) const {
 
     if (temPlanta) {
         Planta* p = grelha[l][c].getPlanta();
-
-        cout << p->getPropriedades() << endl;
+        std::cout << p->getPropriedades() << std::endl;
     }
 
     if (temFerramenta) {
         Ferramenta * f = grelha[l][c].getFerramenta();
-
-        cout << f->getDesc() << endl;
+        std::cout << f->getDesc() << std::endl;
     }
 
     if (temJardineiro)
-        cout << "Jardineiro" << endl;
+        std::cout << "Jardineiro" << std::endl;
 }

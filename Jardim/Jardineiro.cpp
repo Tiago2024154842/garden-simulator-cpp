@@ -4,12 +4,11 @@
 Jardineiro::Jardineiro() : mao(nullptr) {}
 
 Jardineiro::Jardineiro(const Jardineiro & outro) {
-    for (auto f : outro.inventario) {
+    for (auto f : outro.inventario) 
         inventario.push_back(f->copia());
-    }
 
-    if (outro->mao != nullptr)
-        mao = outro->mao->copia();
+    if (outro.mao != nullptr)
+        mao = outro.mao->copia();
     else
         mao = nullptr;
 }
@@ -83,7 +82,6 @@ void Jardineiro::largaFerramenta() {
         inventario.push_back(mao);
         std::cout << mao->getNome() << " largado(a)" << std::endl;
         mao = nullptr;
-    } else {
+    } else 
         std::cout << "Erro: O jardineiro nao tem nenhuma ferramenta para largar" << std::endl;
-    }
 }   

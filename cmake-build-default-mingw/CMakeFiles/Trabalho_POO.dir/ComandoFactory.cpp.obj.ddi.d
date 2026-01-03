@@ -1,55 +1,93 @@
 CMakeFiles\Trabalho_POO.dir\ComandoFactory.cpp.obj.ddi: \
  C:/Users/tiago/Documents/Trabalho_POO/ComandoFactory.cpp \
  C:/Users/tiago/Documents/Trabalho_POO/ComandoFactory.h \
- C:/Users/tiago/Documents/Trabalho_POO/Comandos/Comando.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/iostream \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/unordered_map \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/requires_hosted.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/cpu_defines.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/pstl/pstl_config.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/initializer_list \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/unordered_map.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/hashtable.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/hashtable_policy.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/tuple \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_pair.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/type_traits \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/version.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/move.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/utility.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/compare \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/concepts \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/uses_allocator.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/invoke.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ranges_util.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ranges_base.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_iterator.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/cpp_type_traits.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_iterator_base_types.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/iterator_concepts.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ptr_traits.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ranges_cmp.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/type_traits.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/new \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/exception.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/exception_defines.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_construct.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_iterator_base_funcs.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/concept_check.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/debug/assertions.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/numeric_traits.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/max_size_type.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/numbers \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/functional_hash.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/hash_bytes.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_algobase.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/functexcept.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/debug/debug.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/predefined_ops.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bit \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/aligned_buffer.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/alloc_traits.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/alloc_traits.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/memoryfwd.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/allocator.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/c++allocator.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/new_allocator.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/enable_special_members.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_function.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/backward/binders.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/node_handle.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/range_access.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/erase_if.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/memory_resource.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/cstddef \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stddef.h \
+ D:/w64devkit/include/stddef.h D:/w64devkit/include/crtdefs.h \
+ D:/w64devkit/include/corecrt.h D:/w64devkit/include/_mingw.h \
+ D:/w64devkit/include/_mingw_mac.h D:/w64devkit/include/_mingw_secapi.h \
+ D:/w64devkit/include/vadefs.h D:/w64devkit/include/sdks/_mingw_ddk.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/uses_allocator_args.h \
+ C:/Users/tiago/Documents/Trabalho_POO/Comandos/Comando.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/iostream \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ostream \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ostream.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ios \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/iosfwd \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stringfwd.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/memoryfwd.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/postypes.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/cwchar \
- D:/w64devkit/include/wchar.h D:/w64devkit/include/corecrt.h \
- D:/w64devkit/include/_mingw.h D:/w64devkit/include/_mingw_mac.h \
- D:/w64devkit/include/_mingw_secapi.h D:/w64devkit/include/vadefs.h \
- D:/w64devkit/include/sdks/_mingw_ddk.h \
- D:/w64devkit/include/corecrt_stdio_config.h \
+ D:/w64devkit/include/wchar.h D:/w64devkit/include/corecrt_stdio_config.h \
  D:/w64devkit/include/corecrt_wstdlib.h \
  D:/w64devkit/include/corecrt_wctype.h \
  D:/w64devkit/include/_mingw_off_t.h D:/w64devkit/include/_mingw_stat64.h \
  D:/w64devkit/include/swprintf.inl D:/w64devkit/include/sec_api/wchar_s.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/exception \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/exception.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/version.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/exception_ptr.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/exception_defines.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/cxxabi_init_exception.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stddef.h \
- D:/w64devkit/include/stddef.h D:/w64devkit/include/crtdefs.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/typeinfo \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/hash_bytes.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/new \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/move.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/type_traits \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/nested_exception.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/char_traits.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/compare \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/concepts \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_construct.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_iterator_base_types.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/iterator_concepts.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ptr_traits.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ranges_cmp.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_iterator_base_funcs.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/concept_check.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/debug/assertions.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/localefwd.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/c++locale.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/clocale \
@@ -76,36 +114,11 @@ CMakeFiles\Trabalho_POO.dir\ComandoFactory.cpp.obj.ddi: \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/atomic_word.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/locale_classes.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/string \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/allocator.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/c++allocator.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/new_allocator.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/functexcept.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/cpp_type_traits.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ostream_insert.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/cxxabi_forced.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_iterator.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/type_traits.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_function.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/backward/binders.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/numeric_traits.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_algobase.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/stl_pair.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/utility.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/debug/debug.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/predefined_ops.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bit \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/refwrap.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/invoke.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/range_access.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/initializer_list \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/basic_string.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/alloc_traits.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/alloc_traits.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/string_view \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/functional_hash.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ranges_base.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/max_size_type.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/numbers \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/string_view.tcc \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/string_conversions.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/cstdlib \
@@ -118,12 +131,6 @@ CMakeFiles\Trabalho_POO.dir\ComandoFactory.cpp.obj.ddi: \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/cerrno \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/charconv.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/basic_string.tcc \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/memory_resource.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/cstddef \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/uses_allocator.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/uses_allocator_args.h \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/tuple \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ranges_util.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/locale_classes.tcc \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/system_error \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/error_constants.h \
@@ -181,4 +188,7 @@ CMakeFiles\Trabalho_POO.dir\ComandoFactory.cpp.obj.ddi: \
  C:/Users/tiago/Documents/Trabalho_POO/Random/Random.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h \
- C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h
+ C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h \
+ C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/sstream.tcc

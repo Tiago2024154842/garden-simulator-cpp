@@ -23,7 +23,7 @@ std::string Ferramenta::getNome() const {
 
 Regador::Regador() : Ferramenta('g', "Regador"), agua(Settings::Regador::capacidade) {}
 
-Regador * copia() const {
+Regador * Regador::copia() const {
     return new Regador(*this);
 }
 
@@ -42,7 +42,7 @@ std::string Regador::getDesc() const {
 
 Adubo::Adubo() : Ferramenta('a', "Pacote de adubo"), quantidade(Settings::Adubo::capacidade) {}
 
-Adubo * copia() const {
+Adubo * Adubo::copia() const {
     return new Adubo(*this);
 }
 
@@ -61,7 +61,7 @@ std::string Adubo::getDesc() const {
 
 Tesoura::Tesoura() : Ferramenta('t', "Tesoura de poda") {}
 
-Tesoura * copia() const {
+Tesoura * Tesoura::copia() const {
     return new Tesoura(*this);
 }
 
@@ -79,7 +79,7 @@ std::string Tesoura::getDesc() const {
 
 Enxada::Enxada() : Ferramenta('z', "Enxada") {}
 
-Enxada * copia() const {
+Enxada * Enxada::copia() const {
     return new Enxada(*this);
 }
 

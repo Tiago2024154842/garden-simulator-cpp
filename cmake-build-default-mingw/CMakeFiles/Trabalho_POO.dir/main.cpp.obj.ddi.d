@@ -140,8 +140,6 @@ CMakeFiles\Trabalho_POO.dir\main.cpp.obj.ddi: \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ostream.tcc \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/istream \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/istream.tcc \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream \
- D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/sstream.tcc \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h \
  C:/Users/tiago/Documents/Trabalho_POO/Random/Random.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/random \
@@ -183,5 +181,13 @@ CMakeFiles\Trabalho_POO.dir\main.cpp.obj.ddi: \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h \
  C:/Users/tiago/Documents/Trabalho_POO/ComandoFactory.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/unordered_map \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/unordered_map.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/hashtable.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/hashtable_policy.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/aligned_buffer.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/enable_special_members.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/node_handle.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/erase_if.h \
  C:/Users/tiago/Documents/Trabalho_POO/Comandos/Comando.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h

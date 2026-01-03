@@ -6,20 +6,20 @@
 using namespace std;
 
 class Planta {
+  public:
+    virtual Planta * copia() const = 0;
+    char getSimbolo() const;
+    string getPropriedades() const;
+    
+  protected:
+    Planta(const string & n, const string & b, char s, int nut, int a);
+    
   private:
     string beleza;
     string nome;
     char simbolo;
     int nutrientes;
     int agua;
-
-  protected:
-    Planta(string n, string b, char s, int nut, int a);
-
-  public:
-    virtual Planta * copia() const = 0;
-    char getSimbolo() const;
-    string getPropriedades() const;
 };
 
 class Roseira : public Planta {

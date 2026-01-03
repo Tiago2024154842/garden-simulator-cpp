@@ -46512,6 +46512,7 @@ class Ferramenta {
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
+    virtual Ferramenta * copia() const = 0;
     virtual void usar(Celula* area) = 0;
     virtual std::string getDesc() const = 0;
 
@@ -46528,6 +46529,7 @@ class Ferramenta {
 class Regador : public Ferramenta {
   public:
     Regador();
+    Regador * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 
@@ -46538,6 +46540,7 @@ class Regador : public Ferramenta {
 class Adubo : public Ferramenta {
   public:
     Adubo();
+    Adubo * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const override;
 
@@ -46548,6 +46551,7 @@ class Adubo : public Ferramenta {
 class Tesoura : public Ferramenta {
   public:
     Tesoura();
+    Tesoura * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 };
@@ -46555,6 +46559,7 @@ class Tesoura : public Ferramenta {
 class Enxada : public Ferramenta {
   public:
     Enxada();
+    Enxada * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 };
@@ -46563,6 +46568,7 @@ class Enxada : public Ferramenta {
 class Jardineiro {
   public:
     Jardineiro();
+    Jardineiro(const Jardineiro & outro);
     ~Jardineiro();
     void setFerramenta(Ferramenta * f);
     std::string getFerramentas() const;
@@ -47775,6 +47781,17 @@ namespace std
 
 # 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp"
 Jardineiro::Jardineiro() : mao(nullptr) {}
+
+Jardineiro::Jardineiro(const Jardineiro & outro) {
+    for (auto f : outro.inventario)
+        inventario.push_back(f->copia());
+
+    if (outro.mao != nullptr)
+        mao = outro.mao->copia();
+    else
+        mao = nullptr;
+}
+
 Jardineiro::~Jardineiro() {
     for (auto it = inventario.begin(); it != inventario.end(); ++it)
         delete *it;
@@ -47844,7 +47861,6 @@ void Jardineiro::largaFerramenta() {
         inventario.push_back(mao);
         std::cout << mao->getNome() << " largado(a)" << std::endl;
         mao = nullptr;
-    } else {
+    } else
         std::cout << "Erro: O jardineiro nao tem nenhuma ferramenta para largar" << std::endl;
-    }
 }

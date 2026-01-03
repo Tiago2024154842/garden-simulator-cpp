@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <sstream>
 #include "Jardim/Jardim.h"
 #include "ComandoFactory.h"
 
@@ -16,7 +15,7 @@ int main() {
         getline(cin, comando);
         if (comando == "fim") break;
         
-        jardim = executarComando(comando, jardim);
+        jardim = ComandoFactory::executarComando(comando, jardim);
         comando.clear();
     } while (true);
 

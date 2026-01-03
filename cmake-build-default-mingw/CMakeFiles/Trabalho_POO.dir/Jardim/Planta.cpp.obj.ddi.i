@@ -41565,39 +41565,44 @@ namespace std
 using namespace std;
 
 class Planta {
+  public:
+    virtual Planta * copia() const = 0;
+    char getSimbolo() const;
+    string getPropriedades() const;
+
+  protected:
+    Planta(const string & n, const string & b, char s, int nut, int a);
+
   private:
     string beleza;
     string nome;
     char simbolo;
     int nutrientes;
     int agua;
-
-  protected:
-    Planta(string n, string b, char s, int nut, int a);
-
-  public:
-    char getSimbolo() const;
-    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
+        Roseira * copia() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
+        ErvaDaninha * copia() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
+        Exotica * copia() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
+        Cacto * copia() const override;
 };
 # 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.cpp" 2
 # 1 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 1 3
@@ -42872,7 +42877,7 @@ class Settings {
 };
 # 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.cpp" 2
 
-Planta::Planta(string n, string b, char s, int nut, int a) : nome(n), beleza(b), simbolo(s), nutrientes(nut), agua(a) {}
+Planta::Planta(const string & n, const string & b, char s, int nut, int a) : nome(n), beleza(b), simbolo(s), nutrientes(nut), agua(a) {}
 
 char Planta::getSimbolo() const {
     return simbolo;
@@ -42887,8 +42892,16 @@ string Planta::getPropriedades() const {
 
 Roseira::Roseira() : Planta("Roseira", "bonita", 'r', Settings::Roseira::inicial_nutrientes, Settings::Roseira::inicial_agua) {}
 
+Roseira * Roseira::copia() const { return new Roseira(*this); }
+
 ErvaDaninha::ErvaDaninha() : Planta("Erva Daninha", "feia", 'e', Settings::ErvaDaninha::inicial_nutrientes, Settings::ErvaDaninha::inicial_agua) {}
+
+ErvaDaninha * ErvaDaninha::copia() const { return new ErvaDaninha(*this); }
 
 Exotica::Exotica() : Planta("Exotica", "divinal", 'x', 10, 10) {}
 
+Exotica * Exotica::copia() const { return new Exotica(*this); }
+
 Cacto::Cacto() : Planta("Cacto", "neutra", 'c', 10, 10) {}
+
+Cacto * Cacto::copia() const { return new Cacto(*this); }

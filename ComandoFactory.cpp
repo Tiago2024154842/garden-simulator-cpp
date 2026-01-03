@@ -1,4 +1,7 @@
 #include "ComandoFactory.h"
+#include <sstream>
+
+std::unordered_map<std::string, Jardim*> ComandoFactory::gravacoes;
 
 Comando * ComandoFactory::criarComando(const std::string & comando) {
     if (comando == "lplantas") return new lplantas();
@@ -25,7 +28,7 @@ Comando * ComandoFactory::criarComando(const std::string & comando) {
     return nullptr;
 }
 
-Jardim * ComandoFactory::executarComando(const string& c, Jardim* jardimAtual) {
+Jardim * ComandoFactory::executarComando(const std::string& c, Jardim* jardimAtual) {
     istringstream comando(c);
     string nome;
     comando >> nome;
@@ -59,7 +62,7 @@ Jardim * ComandoFactory::executarComando(const string& c, Jardim* jardimAtual) {
 
     string argv[2];
     int argc = 0;
-    while (comando >> argv[argc] && argc < 3)
+    while (comando >> argv[argc] && argc < 2)
         argc++;
 
     if (cmd->executar(jardimAtual, argv, argc)) // se retornar true mostra o jardim
@@ -68,4 +71,48 @@ Jardim * ComandoFactory::executarComando(const string& c, Jardim* jardimAtual) {
     delete cmd;
     
     return jardimAtual;
+}
+
+void ComandoFactory::gravar(string & nome, Jardim* jardimAtual) {
+    if (jardimAtual == nullptr) return;
+
+    auto it = gravacoes.find(nome);
+    if (it != gravacoes.end())
+        delete it->second;
+
+    gravacoes[nome] = new Jardim(*jardimAtual);
+    std::cout << "Copia do jardim guardada com o nome " << nome << endl;
+}
+
+bool ComandoFactory::recuperar(std::string & nome, Jardim* jardimAtual) {
+    if (jardimAtual == nullptr) return false;
+
+    auto it = gravacoes.find(nome);
+    if (it == gravacoes.end()) {
+        std::cout << "Erro: Gravacao nao encontrada" << std::endl;
+        return false;
+    }
+
+    Jardim* save = it->second;
+
+    *jardimAtual = *save;
+    delete save;
+    gravacoes.erase(it);
+
+    std::cout << "Jardim recuperado e gravacao eliminada da memoria" << endl;
+    return true;
+}
+
+bool ComandoFactory::apagar(std::string & nome) {
+    auto it = gravacoes.find(nome);
+    if (it == gravacoes.end()) {
+        std::cout << "Erro: Gravacao nao encontrada" << std::endl;
+        return false;
+    }
+
+    delete it->second;
+    gravacoes.erase(it);
+
+    std::cout << "Gravacao eliminada" << endl;
+    return true;
 }

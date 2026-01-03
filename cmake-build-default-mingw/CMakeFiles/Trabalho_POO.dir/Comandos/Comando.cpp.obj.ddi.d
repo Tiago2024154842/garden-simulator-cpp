@@ -181,6 +181,17 @@ CMakeFiles\Trabalho_POO.dir\Comandos\Comando.cpp.obj.ddi: \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.h \
  C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h \
+ C:/Users/tiago/Documents/Trabalho_POO/ComandoFactory.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/unordered_map \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/unordered_map.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/hashtable.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/hashtable_policy.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/ext/aligned_buffer.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/enable_special_members.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/node_handle.h \
+ D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/erase_if.h \
+ C:/Users/tiago/Documents/Trabalho_POO/Comandos/Comando.h \
+ C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/fstream \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/codecvt.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \

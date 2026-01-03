@@ -6,13 +6,12 @@
 #include "Celula.h"
 #include "Jardineiro.h"
 #include "Ferramenta.h"
-
-using namespace std;
-
+ 
 class Jardim {
   public:
     Jardim(int c, int l);
     Jardim(const Jardim & outro);
+    Jardim & operator=(Jardim outro);
     ~Jardim();
     void mostraGrelha() const;
     int getNColunas() const;
@@ -32,6 +31,7 @@ class Jardim {
     void listaSolo(int l, int c, int n = 0) const;
 
   private:
+    void swap(Jardim & outro);
     void getCelulaDesc(int l, int c) const;
     bool verificaLimites(int l, int c) const;
     int instante;

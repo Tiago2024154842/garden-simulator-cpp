@@ -1,4 +1,5 @@
 #include "Comando.h"
+#include "ComandoFactory.h"
 #include <fstream>
 
 bool lplantas::executar(Jardim * jardim, string * argv, int argc) {
@@ -221,7 +222,6 @@ bool sai::executar(Jardim * jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
-    cout << "Comando não implementado" << endl;
     return jardim->sairJardineiro();
 }
 
@@ -229,13 +229,13 @@ bool grava::executar(Jardim * jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
         
-    if(argc != 1) {
+    if (argc != 1) {
         cout << "Uso: gravar <nome>" << endl;
         return false;
     }
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    ComandoFactory::gravar(argv[0], jardim);
+    return false;
 }
 
 bool recupera::executar(Jardim * jardim, string* argv, int argc) {
@@ -247,8 +247,7 @@ bool recupera::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    return ComandoFactory::recuperar(argv[0], jardim);;
 }
 
 bool apaga::executar(Jardim * jardim, string* argv, int argc) {
@@ -260,8 +259,8 @@ bool apaga::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    ComandoFactory::apagar(argv[0]);
+    return false;
 }
 
 bool executa::executar(Jardim * jardim, string* argv, int argc) {

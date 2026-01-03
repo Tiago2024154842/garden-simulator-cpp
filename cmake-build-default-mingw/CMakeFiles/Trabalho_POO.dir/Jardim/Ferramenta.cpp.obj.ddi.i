@@ -41569,6 +41569,7 @@ class Ferramenta {
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
+    virtual Ferramenta * copia() const = 0;
     virtual void usar(Celula* area) = 0;
     virtual std::string getDesc() const = 0;
 
@@ -41585,6 +41586,7 @@ class Ferramenta {
 class Regador : public Ferramenta {
   public:
     Regador();
+    Regador * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 
@@ -41595,6 +41597,7 @@ class Regador : public Ferramenta {
 class Adubo : public Ferramenta {
   public:
     Adubo();
+    Adubo * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const override;
 
@@ -41605,6 +41608,7 @@ class Adubo : public Ferramenta {
 class Tesoura : public Ferramenta {
   public:
     Tesoura();
+    Tesoura * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 };
@@ -41612,6 +41616,7 @@ class Tesoura : public Ferramenta {
 class Enxada : public Ferramenta {
   public:
     Enxada();
+    Enxada * copia() const override;
     void usar(Celula* area) override;
     std::string getDesc() const;
 };
@@ -63639,39 +63644,44 @@ class Random {
 using namespace std;
 
 class Planta {
+  public:
+    virtual Planta * copia() const = 0;
+    char getSimbolo() const;
+    string getPropriedades() const;
+
+  protected:
+    Planta(const string & n, const string & b, char s, int nut, int a);
+
   private:
     string beleza;
     string nome;
     char simbolo;
     int nutrientes;
     int agua;
-
-  protected:
-    Planta(string n, string b, char s, int nut, int a);
-
-  public:
-    char getSimbolo() const;
-    string getPropriedades() const;
 };
 
 class Roseira : public Planta {
     public:
         Roseira();
+        Roseira * copia() const override;
 };
 
 class ErvaDaninha: public Planta {
     public:
         ErvaDaninha();
+        ErvaDaninha * copia() const override;
 };
 
 class Exotica : public Planta {
     public:
         Exotica();
+        Exotica * copia() const override;
 };
 
 class Cacto : public Planta {
     public:
         Cacto();
+        Cacto * copia() const override;
 };
 # 7 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 
@@ -63690,6 +63700,8 @@ class Celula {
     ~Celula();
     int getNutrientes() const;
     int getAgua() const;
+    void setAgua(int a);
+    void setNutrientes(int n);
     void setPlanta(Planta* planta);
     bool removerPlanta();
     bool temPlanta() const;
@@ -64920,6 +64932,10 @@ std::string Ferramenta::getNome() const {
 
 Regador::Regador() : Ferramenta('g', "Regador"), agua(Settings::Regador::capacidade) {}
 
+Regador * Regador::copia() const {
+    return new Regador(*this);
+}
+
 void Regador::usar(Celula* area) {
     if (area != nullptr && agua >= 10) {
 
@@ -64934,6 +64950,10 @@ std::string Regador::getDesc() const {
 }
 
 Adubo::Adubo() : Ferramenta('a', "Pacote de adubo"), quantidade(Settings::Adubo::capacidade) {}
+
+Adubo * Adubo::copia() const {
+    return new Adubo(*this);
+}
 
 void Adubo::usar(Celula* area) {
     if (area != nullptr && quantidade >= 10) {
@@ -64950,9 +64970,13 @@ std::string Adubo::getDesc() const {
 
 Tesoura::Tesoura() : Ferramenta('t', "Tesoura de poda") {}
 
+Tesoura * Tesoura::copia() const {
+    return new Tesoura(*this);
+}
+
 void Tesoura::usar(Celula* area) {
     if (area != nullptr && area->temPlanta()) {
-        area->removePlanta();
+        area->removerPlanta();
     }
 }
 
@@ -64963,6 +64987,10 @@ std::string Tesoura::getDesc() const {
 }
 
 Enxada::Enxada() : Ferramenta('z', "Enxada") {}
+
+Enxada * Enxada::copia() const {
+    return new Enxada(*this);
+}
 
 void Enxada::usar(Celula* area) {}
 

@@ -8,6 +8,7 @@ using namespace std;
 
 class Comando {
   public:
+    virtual ~Comando() {}
     virtual bool executar(Jardim * jardim, string * argv, int argc) = 0;
 };
 
@@ -72,7 +73,7 @@ class compra : public Comando {
 };
 
 class mover : public Comando {
-    char direcao;
+  char direcao;
     
   public:
     mover(char d);
