@@ -8,9 +8,9 @@
 class ComandoFactory {
   public:
     static Jardim * executarComando(const std::string& c, Jardim* jardimAtual);
-    static void gravar(std::string & nome, Jardim* jardimAtual);
-    static bool recuperar(std::string & nome, Jardim* jardimAtual);
-    static bool apagar(std::string & nome);
+    static void gravar(const std::string & nome, Jardim* jardimAtual);
+    static bool recuperar(const std::string & nome, Jardim* jardimAtual);
+    static bool apagar(const std::string & nome);
 
   private:
     static std::unordered_map<string, Jardim*> gravacoes;

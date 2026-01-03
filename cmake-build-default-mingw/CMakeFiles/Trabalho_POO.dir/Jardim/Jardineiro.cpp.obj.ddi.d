@@ -146,5 +146,6 @@ CMakeFiles\Trabalho_POO.dir\Jardim\Jardineiro.cpp.obj.ddi: \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/ostream.tcc \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/istream \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/istream.tcc \
+ C:/Users/tiago/Documents/Trabalho_POO/Settings.h \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream \
  D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/bits/sstream.tcc

@@ -15,9 +15,9 @@ Celula::~Celula() {
   }
 }
 
-void Celula::setPlanta(Planta * planta) {
-  if (this->planta == nullptr)
-    this->planta = planta;
+void Celula::setPlanta(Planta * p) {
+  if (planta == nullptr && p != nullptr)
+    planta = p;
 }
 
 bool Celula::temPlanta() const {
@@ -42,13 +42,19 @@ bool Celula::temFerramenta() const {
   return ferramenta != nullptr;
 }
 
-void Celula::setFerramenta(Ferramenta* ferramenta) {
-  if (this->ferramenta == nullptr)
-    this->ferramenta = ferramenta;
+void Celula::setFerramenta(Ferramenta* f) {
+  if (ferramenta == nullptr && f != nullptr)
+    ferramenta = f;
 }
 
 Ferramenta * Celula::getFerramenta() const {
   return ferramenta;
+}
+
+Ferramenta * Celula::retirarFerramenta() {
+  Ferramenta * f = ferramenta;
+  ferramenta = nullptr;
+  return f;
 }
 
 int Celula::getNutrientes() const {

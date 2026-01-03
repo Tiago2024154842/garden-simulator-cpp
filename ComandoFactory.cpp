@@ -73,7 +73,7 @@ Jardim * ComandoFactory::executarComando(const std::string& c, Jardim* jardimAtu
     return jardimAtual;
 }
 
-void ComandoFactory::gravar(string & nome, Jardim* jardimAtual) {
+void ComandoFactory::gravar(const string & nome, Jardim* jardimAtual) {
     if (jardimAtual == nullptr) return;
 
     auto it = gravacoes.find(nome);
@@ -84,7 +84,7 @@ void ComandoFactory::gravar(string & nome, Jardim* jardimAtual) {
     std::cout << "Copia do jardim guardada com o nome " << nome << endl;
 }
 
-bool ComandoFactory::recuperar(std::string & nome, Jardim* jardimAtual) {
+bool ComandoFactory::recuperar(const std::string & nome, Jardim* jardimAtual) {
     if (jardimAtual == nullptr) return false;
 
     auto it = gravacoes.find(nome);
@@ -103,7 +103,7 @@ bool ComandoFactory::recuperar(std::string & nome, Jardim* jardimAtual) {
     return true;
 }
 
-bool ComandoFactory::apagar(std::string & nome) {
+bool ComandoFactory::apagar(const std::string & nome) {
     auto it = gravacoes.find(nome);
     if (it == gravacoes.end()) {
         std::cout << "Erro: Gravacao nao encontrada" << std::endl;

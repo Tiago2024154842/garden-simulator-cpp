@@ -53,7 +53,7 @@ bool planta::executar(Jardim * jardim, string * argv, int argc) {
         return false;
     }
 
-    return jardim->criarPlanta(l, c, argv[1][0]);;
+    return jardim->plantarPlanta(l, c, argv[1][0]);;
 }
 
 bool avanca::executar(Jardim *jardim, string *argv, int argc) {
@@ -62,15 +62,22 @@ bool avanca::executar(Jardim *jardim, string *argv, int argc) {
 
     int n = 1;
     if (argc > 0) {
-        n = stoi(argv[0]);
+        try {
+            n = stoi(argv[0]);
+        } catch (const std::invalid_argument & e) {
+            cout << "Erro: [n] tem de ser um numero" << endl;
+            return false;
+        }
+
         if(n < 0) {
             cout << "Erro: [n] tem de ser numero positivo" << endl;
             return false;
         }
     }
 
-    cout << "avanca [" << n << "]" << endl;
-    cout << "Comando nao implementado" << endl;
+    for (int i = 0; i < n; i++)
+        jardim->avancaInstante();
+    
     return true;
 }
 
@@ -100,9 +107,17 @@ bool lsolo::executar(Jardim * jardim, string * argv, int argc) {
     }
 
     if (argc == 2) {
-        int n = stoi(argv[1]);
+        int n;
+        
+        try {
+            n = stoi(argv[1]);
+        } catch (const std::invalid_argument & e) {
+            cout << "Erro: [n] tem de ser um numero" << endl;
+            return false;
+        }
+
         if(n < 0) {
-            cout << "[n] tem de ser numero positivo" << endl;
+            cout << "Erro: [n] tem de ser numero positivo" << endl;
             return false;
         }
 
@@ -159,7 +174,15 @@ bool pega::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    int n = stoi(argv[0]);
+    int n;
+
+    try {
+        n = stoi(argv[0]);
+    } catch (const std::invalid_argument & e) {
+        cout << "Erro: [n] tem de ser um numero" << endl;
+        return false;
+    }
+
     if(n < 0) {
         cout << "[n] tem de ser numero positivo" << endl;
         return false;
@@ -215,7 +238,7 @@ bool entra::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    return jardim->setJardineiro(l, c);
+    return jardim->entrarJardineiro(l, c);
 }
 
 bool sai::executar(Jardim * jardim, string* argv, int argc) {
@@ -275,8 +298,14 @@ bool executa::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    string linha;
+    while (getline(inputFile, linha)) {
+        if (linha.empty())
+            continue;
+
+        jardim = ComandoFactory::executarComando(linha, jardim);
+    }
+
+    inputFile.close();
+    return false;
 }
-
-

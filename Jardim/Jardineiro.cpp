@@ -1,9 +1,21 @@
 #include "Jardineiro.h"
+#include "Settings.h"
 #include <sstream>
 
-Jardineiro::Jardineiro() : mao(nullptr) {}
+Jardineiro::Jardineiro() : mao(nullptr), noJardim(false), linha(-1), coluna(-1) {
+    resetContadoresTurno();
+}
 
 Jardineiro::Jardineiro(const Jardineiro & outro) {
+    noJardim = outro.noJardim;
+    linha = outro.linha;
+    coluna = outro.coluna;
+    movimentosTurno = outro.movimentosTurno;
+    colheitasTurno = outro.colheitasTurno;
+    plantacoesTurno = outro.plantacoesTurno;
+    saidasTurno = outro.saidasTurno;
+    entradasTurno = outro.entradasTurno;
+
     for (auto f : outro.inventario) 
         inventario.push_back(f->copia());
 
@@ -25,8 +37,65 @@ Jardineiro::~Jardineiro() {
     }
 }
 
+bool Jardineiro::estaNoJardim() const { return noJardim; }
+
+bool Jardineiro::estaNaPosicao(int l, int c) const {
+    return noJardim && linha == l && coluna == c;
+}
+
+void Jardineiro::setPosicao(int l, int c) {
+    linha = l;
+    coluna = c;
+    noJardim = true;
+}
+
+int Jardineiro::getLinha() const { return linha; }
+
+int Jardineiro::getColuna() const { return coluna; }
+
+void Jardineiro::resetContadoresTurno() {
+    saidasTurno = 0;
+    entradasTurno = 0;
+    movimentosTurno = 0;
+    colheitasTurno = 0;
+    plantacoesTurno = 0;
+}
+
+bool Jardineiro::podeMover() const { return movimentosTurno < Settings::Jardineiro::max_movimentos; }
+
+bool Jardineiro::podeColher() const { return colheitasTurno < Settings::Jardineiro::max_colheitas; }
+
+bool Jardineiro::podePlantar() const { return plantacoesTurno < Settings::Jardineiro::max_plantacoes; }
+
+bool Jardineiro::podeSair() const { return saidasTurno < Settings::Jardineiro::max_entradas_saidas; }
+
+bool Jardineiro::podeEntrar() const { return entradasTurno < Settings::Jardineiro::max_entradas_saidas; }
+
+void Jardineiro::registarMovimento() {
+    ++movimentosTurno;
+}
+
+void Jardineiro::registarColheita() {
+    ++colheitasTurno;
+}
+
+void Jardineiro::registarPlantacao() {
+    ++plantacoesTurno;
+}
+
+void Jardineiro::registarEntrada() {
+    ++entradasTurno;
+    noJardim = true;
+}
+
+void Jardineiro::sairDoJardim() {
+    ++saidasTurno;
+    noJardim = false;
+}
+
 void Jardineiro::setFerramenta(Ferramenta * f) {
-    inventario.push_back(f);
+    if (f != nullptr)
+        inventario.push_back(f);
 }
 
 std::string Jardineiro::getFerramentas() const {

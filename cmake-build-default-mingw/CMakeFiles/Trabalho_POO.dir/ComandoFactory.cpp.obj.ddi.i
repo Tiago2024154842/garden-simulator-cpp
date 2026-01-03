@@ -70176,12 +70176,12 @@ class Celula {
     int getAgua() const;
     void setAgua(int a);
     void setNutrientes(int n);
-    void setPlanta(Planta* planta);
+    void setPlanta(Planta* p);
     bool removerPlanta();
     bool temPlanta() const;
     Planta * getPlanta() const;
-    void removePlanta();
-    void setFerramenta(Ferramenta* ferramenta);
+    void setFerramenta(Ferramenta* f);
+    Ferramenta * retirarFerramenta();
     Ferramenta * getFerramenta() const;
     bool temFerramenta() const;
 };
@@ -70202,8 +70202,32 @@ class Jardineiro {
     std::string getFerramentas() const;
     void pegaFerramenta(int num);
     void largaFerramenta();
+    int getLinha() const;
+    int getColuna() const;
+    bool podeMover() const;
+    bool podeColher() const;
+    bool podePlantar() const;
+    bool podeEntrar() const;
+    bool podeSair() const;
+    bool estaNoJardim() const;
+    bool estaNaPosicao(int l, int c) const;
+    void setPosicao(int l, int c);
+    void resetContadoresTurno();
+    void registarMovimento();
+    void registarPlantacao();
+    void registarColheita();
+    void registarEntrada();
+    void sairDoJardim();
 
   private:
+    int movimentosTurno;
+    int colheitasTurno;
+    int plantacoesTurno;
+    int saidasTurno;
+    int entradasTurno;
+    int linha;
+    int coluna;
+    bool noJardim;
     Ferramenta * mao;
     std::vector<Ferramenta*> inventario;
 };
@@ -70220,11 +70244,11 @@ class Jardim {
     int getNColunas() const;
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
-    bool criarPlanta(int l, int c, char tipo);
+    bool plantarPlanta(int l, int c, char tipo);
     bool removerPlanta(int l, int c);
     bool moverJardineiro(char c);
-    bool setJardineiro(int l, int c);
     bool sairJardineiro();
+    bool entrarJardineiro(int l, int c);
     bool compraFerramenta(char f);
     void listaFerramentas() const;
     void pegaFerramenta(int num) const;
@@ -70232,16 +70256,18 @@ class Jardim {
     void listarPlantas() const;
     void listaArea() const;
     void listaSolo(int l, int c, int n = 0) const;
+    void avancaInstante();
 
   private:
     void swap(Jardim & outro);
     void getCelulaDesc(int l, int c) const;
+    bool setJardineiro(int l, int c);
     bool verificaLimites(int l, int c) const;
+    void verificarFerramentasNoChao(int l, int c);
+    void criarNovaFerramenta(int l, int c);
     int instante;
     int nColunas;
     int nLinhas;
-    int jardLinha;
-    int jardColuna;
     Jardineiro * jardineiro;
     Celula ** grelha;
 };
@@ -70359,9 +70385,9 @@ class executa : public Comando {
 class ComandoFactory {
   public:
     static Jardim * executarComando(const std::string& c, Jardim* jardimAtual);
-    static void gravar(std::string & nome, Jardim* jardimAtual);
-    static bool recuperar(std::string & nome, Jardim* jardimAtual);
-    static bool apagar(std::string & nome);
+    static void gravar(const std::string & nome, Jardim* jardimAtual);
+    static bool recuperar(const std::string & nome, Jardim* jardimAtual);
+    static bool apagar(const std::string & nome);
 
   private:
     static std::unordered_map<string, Jardim*> gravacoes;
@@ -71640,7 +71666,7 @@ Jardim * ComandoFactory::executarComando(const std::string& c, Jardim* jardimAtu
     return jardimAtual;
 }
 
-void ComandoFactory::gravar(string & nome, Jardim* jardimAtual) {
+void ComandoFactory::gravar(const string & nome, Jardim* jardimAtual) {
     if (jardimAtual == nullptr) return;
 
     auto it = gravacoes.find(nome);
@@ -71651,7 +71677,7 @@ void ComandoFactory::gravar(string & nome, Jardim* jardimAtual) {
     std::cout << "Copia do jardim guardada com o nome " << nome << endl;
 }
 
-bool ComandoFactory::recuperar(std::string & nome, Jardim* jardimAtual) {
+bool ComandoFactory::recuperar(const std::string & nome, Jardim* jardimAtual) {
     if (jardimAtual == nullptr) return false;
 
     auto it = gravacoes.find(nome);
@@ -71670,7 +71696,7 @@ bool ComandoFactory::recuperar(std::string & nome, Jardim* jardimAtual) {
     return true;
 }
 
-bool ComandoFactory::apagar(std::string & nome) {
+bool ComandoFactory::apagar(const std::string & nome) {
     auto it = gravacoes.find(nome);
     if (it == gravacoes.end()) {
         std::cout << "Erro: Gravacao nao encontrada" << std::endl;

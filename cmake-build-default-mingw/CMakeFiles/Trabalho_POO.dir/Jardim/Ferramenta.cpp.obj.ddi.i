@@ -63702,12 +63702,12 @@ class Celula {
     int getAgua() const;
     void setAgua(int a);
     void setNutrientes(int n);
-    void setPlanta(Planta* planta);
+    void setPlanta(Planta* p);
     bool removerPlanta();
     bool temPlanta() const;
     Planta * getPlanta() const;
-    void removePlanta();
-    void setFerramenta(Ferramenta* ferramenta);
+    void setFerramenta(Ferramenta* f);
+    Ferramenta * retirarFerramenta();
     Ferramenta * getFerramenta() const;
     bool temFerramenta() const;
 };

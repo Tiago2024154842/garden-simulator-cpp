@@ -63639,12 +63639,12 @@ class Celula {
     int getAgua() const;
     void setAgua(int a);
     void setNutrientes(int n);
-    void setPlanta(Planta* planta);
+    void setPlanta(Planta* p);
     bool removerPlanta();
     bool temPlanta() const;
     Planta * getPlanta() const;
-    void removePlanta();
-    void setFerramenta(Ferramenta* ferramenta);
+    void setFerramenta(Ferramenta* f);
+    Ferramenta * retirarFerramenta();
     Ferramenta * getFerramenta() const;
     bool temFerramenta() const;
 };
@@ -63665,8 +63665,32 @@ class Jardineiro {
     std::string getFerramentas() const;
     void pegaFerramenta(int num);
     void largaFerramenta();
+    int getLinha() const;
+    int getColuna() const;
+    bool podeMover() const;
+    bool podeColher() const;
+    bool podePlantar() const;
+    bool podeEntrar() const;
+    bool podeSair() const;
+    bool estaNoJardim() const;
+    bool estaNaPosicao(int l, int c) const;
+    void setPosicao(int l, int c);
+    void resetContadoresTurno();
+    void registarMovimento();
+    void registarPlantacao();
+    void registarColheita();
+    void registarEntrada();
+    void sairDoJardim();
 
   private:
+    int movimentosTurno;
+    int colheitasTurno;
+    int plantacoesTurno;
+    int saidasTurno;
+    int entradasTurno;
+    int linha;
+    int coluna;
+    bool noJardim;
     Ferramenta * mao;
     std::vector<Ferramenta*> inventario;
 };
@@ -63683,11 +63707,11 @@ class Jardim {
     int getNColunas() const;
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
-    bool criarPlanta(int l, int c, char tipo);
+    bool plantarPlanta(int l, int c, char tipo);
     bool removerPlanta(int l, int c);
     bool moverJardineiro(char c);
-    bool setJardineiro(int l, int c);
     bool sairJardineiro();
+    bool entrarJardineiro(int l, int c);
     bool compraFerramenta(char f);
     void listaFerramentas() const;
     void pegaFerramenta(int num) const;
@@ -63695,16 +63719,18 @@ class Jardim {
     void listarPlantas() const;
     void listaArea() const;
     void listaSolo(int l, int c, int n = 0) const;
+    void avancaInstante();
 
   private:
     void swap(Jardim & outro);
     void getCelulaDesc(int l, int c) const;
+    bool setJardineiro(int l, int c);
     bool verificaLimites(int l, int c) const;
+    void verificarFerramentasNoChao(int l, int c);
+    void criarNovaFerramenta(int l, int c);
     int instante;
     int nColunas;
     int nLinhas;
-    int jardLinha;
-    int jardColuna;
     Jardineiro * jardineiro;
     Celula ** grelha;
 };
@@ -70386,9 +70412,9 @@ namespace std
 class ComandoFactory {
   public:
     static Jardim * executarComando(const std::string& c, Jardim* jardimAtual);
-    static void gravar(std::string & nome, Jardim* jardimAtual);
-    static bool recuperar(std::string & nome, Jardim* jardimAtual);
-    static bool apagar(std::string & nome);
+    static void gravar(const std::string & nome, Jardim* jardimAtual);
+    static bool recuperar(const std::string & nome, Jardim* jardimAtual);
+    static bool apagar(const std::string & nome);
 
   private:
     static std::unordered_map<string, Jardim*> gravacoes;
@@ -73147,7 +73173,7 @@ bool planta::executar(Jardim * jardim, string * argv, int argc) {
         return false;
     }
 
-    return jardim->criarPlanta(l, c, argv[1][0]);;
+    return jardim->plantarPlanta(l, c, argv[1][0]);;
 }
 
 bool avanca::executar(Jardim *jardim, string *argv, int argc) {
@@ -73156,15 +73182,22 @@ bool avanca::executar(Jardim *jardim, string *argv, int argc) {
 
     int n = 1;
     if (argc > 0) {
-        n = stoi(argv[0]);
+        try {
+            n = stoi(argv[0]);
+        } catch (const std::invalid_argument & e) {
+            cout << "Erro: [n] tem de ser um numero" << endl;
+            return false;
+        }
+
         if(n < 0) {
             cout << "Erro: [n] tem de ser numero positivo" << endl;
             return false;
         }
     }
 
-    cout << "avanca [" << n << "]" << endl;
-    cout << "Comando nao implementado" << endl;
+    for (int i = 0; i < n; i++)
+        jardim->avancaInstante();
+
     return true;
 }
 
@@ -73194,9 +73227,17 @@ bool lsolo::executar(Jardim * jardim, string * argv, int argc) {
     }
 
     if (argc == 2) {
-        int n = stoi(argv[1]);
+        int n;
+
+        try {
+            n = stoi(argv[1]);
+        } catch (const std::invalid_argument & e) {
+            cout << "Erro: [n] tem de ser um numero" << endl;
+            return false;
+        }
+
         if(n < 0) {
-            cout << "[n] tem de ser numero positivo" << endl;
+            cout << "Erro: [n] tem de ser numero positivo" << endl;
             return false;
         }
 
@@ -73253,7 +73294,15 @@ bool pega::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    int n = stoi(argv[0]);
+    int n;
+
+    try {
+        n = stoi(argv[0]);
+    } catch (const std::invalid_argument & e) {
+        cout << "Erro: [n] tem de ser um numero" << endl;
+        return false;
+    }
+
     if(n < 0) {
         cout << "[n] tem de ser numero positivo" << endl;
         return false;
@@ -73309,7 +73358,7 @@ bool entra::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    return jardim->setJardineiro(l, c);
+    return jardim->entrarJardineiro(l, c);
 }
 
 bool sai::executar(Jardim * jardim, string* argv, int argc) {
@@ -73369,6 +73418,14 @@ bool executa::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    cout << "Comando não implementado" << endl;
-    return true;
+    string linha;
+    while (getline(inputFile, linha)) {
+        if (linha.empty())
+            continue;
+
+        jardim = ComandoFactory::executarComando(linha, jardim);
+    }
+
+    inputFile.close();
+    return false;
 }

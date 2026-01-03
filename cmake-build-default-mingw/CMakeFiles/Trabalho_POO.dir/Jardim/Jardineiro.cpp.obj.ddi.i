@@ -46574,12 +46574,108 @@ class Jardineiro {
     std::string getFerramentas() const;
     void pegaFerramenta(int num);
     void largaFerramenta();
+    int getLinha() const;
+    int getColuna() const;
+    bool podeMover() const;
+    bool podeColher() const;
+    bool podePlantar() const;
+    bool podeEntrar() const;
+    bool podeSair() const;
+    bool estaNoJardim() const;
+    bool estaNaPosicao(int l, int c) const;
+    void setPosicao(int l, int c);
+    void resetContadoresTurno();
+    void registarMovimento();
+    void registarPlantacao();
+    void registarColheita();
+    void registarEntrada();
+    void sairDoJardim();
 
   private:
+    int movimentosTurno;
+    int colheitasTurno;
+    int plantacoesTurno;
+    int saidasTurno;
+    int entradasTurno;
+    int linha;
+    int coluna;
+    bool noJardim;
     Ferramenta * mao;
     std::vector<Ferramenta*> inventario;
 };
 # 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp" 2
+# 1 "C:/Users/tiago/Documents/Trabalho_POO/Settings.h" 1
+
+
+
+class Settings {
+    public:
+    class Jardim {
+    public:
+        static const int agua_min = 80;
+        static const int agua_max = 100;
+        static const int nutrientes_min = 40;
+        static const int nutrientes_max = 50;
+    };
+    class Regador {
+    public:
+        static const int capacidade = 200;
+        static const int dose = 10;
+    };
+    class Adubo {
+    public:
+        static const int capacidade = 100;
+        static const int dose = 10;
+    };
+    class Jardineiro {
+    public:
+        static const int max_movimentos = 10;
+        static const int max_entradas_saidas = 1;
+        static const int max_plantacoes = 2;
+        static const int max_colheitas = 5;
+    };
+    class Cacto {
+        public:
+        static const int absorcao_agua_percentagem = 25;
+        static const int absorcao_nutrientes = 5;
+        static const int morre_agua_solo_maior = 100;
+        static const int morre_agua_solo_instantes = 3;
+        static const int morre_nutrientes_solo_menor = 1;
+        static const int morre_nutrientes_solo_instantes = 3;
+        static const int multiplica_nutrientes_maior = 100;
+        static const int multiplica_agua_maior = 50;
+    };
+    class Roseira {
+        public:
+        static const int inicial_agua = 25;
+        static const int inicial_nutrientes = 25;
+        static const int perda_agua = 4;
+        static const int perda_nutrientes = 4;
+        static const int absorcao_agua = 5;
+        static const int absorcao_nutrientes = 8;
+        static const int morre_agua_menor = 1;
+        static const int morre_nutrientes_menor = 1;
+        static const int morre_nutrientes_maior = 199;
+        static const int multiplica_nutrientes_maior = 100;
+        static const int nova_nutrientes = 25;
+        static const int nova_agua_percentagem = 50;
+        static const int original_nutrientes = 100;
+        static const int original_agua_percentagem = 50;
+    };
+    class ErvaDaninha {
+        public:
+        static const int inicial_agua = 5;
+        static const int inicial_nutrientes = 5;
+        static const int absorcao_agua = 1;
+        static const int absorcao_nutrientes = 1;
+        static const int morre_instantes = 60;
+        static const int multiplica_nutrientes_maior = 30;
+        static const int multiplica_instantes = 5;
+        static const int nova_nutrientes = 5;
+        static const int original_nutrientes = 5;
+    };
+};
+# 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp" 2
 # 1 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 1 3
 # 57 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
 
@@ -47776,13 +47872,24 @@ namespace std
 
 #pragma GCC diagnostic pop
 # 1256 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 2 3
-# 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp" 2
+# 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp" 2
 
 
-# 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp"
-Jardineiro::Jardineiro() : mao(nullptr) {}
+# 5 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp"
+Jardineiro::Jardineiro() : mao(nullptr), noJardim(false), linha(-1), coluna(-1) {
+    resetContadoresTurno();
+}
 
 Jardineiro::Jardineiro(const Jardineiro & outro) {
+    noJardim = outro.noJardim;
+    linha = outro.linha;
+    coluna = outro.coluna;
+    movimentosTurno = outro.movimentosTurno;
+    colheitasTurno = outro.colheitasTurno;
+    plantacoesTurno = outro.plantacoesTurno;
+    saidasTurno = outro.saidasTurno;
+    entradasTurno = outro.entradasTurno;
+
     for (auto f : outro.inventario)
         inventario.push_back(f->copia());
 
@@ -47804,8 +47911,65 @@ Jardineiro::~Jardineiro() {
     }
 }
 
+bool Jardineiro::estaNoJardim() const { return noJardim; }
+
+bool Jardineiro::estaNaPosicao(int l, int c) const {
+    return noJardim && linha == l && coluna == c;
+}
+
+void Jardineiro::setPosicao(int l, int c) {
+    linha = l;
+    coluna = c;
+    noJardim = true;
+}
+
+int Jardineiro::getLinha() const { return linha; }
+
+int Jardineiro::getColuna() const { return coluna; }
+
+void Jardineiro::resetContadoresTurno() {
+    saidasTurno = 0;
+    entradasTurno = 0;
+    movimentosTurno = 0;
+    colheitasTurno = 0;
+    plantacoesTurno = 0;
+}
+
+bool Jardineiro::podeMover() const { return movimentosTurno < Settings::Jardineiro::max_movimentos; }
+
+bool Jardineiro::podeColher() const { return colheitasTurno < Settings::Jardineiro::max_colheitas; }
+
+bool Jardineiro::podePlantar() const { return plantacoesTurno < Settings::Jardineiro::max_plantacoes; }
+
+bool Jardineiro::podeSair() const { return saidasTurno < Settings::Jardineiro::max_entradas_saidas; }
+
+bool Jardineiro::podeEntrar() const { return entradasTurno < Settings::Jardineiro::max_entradas_saidas; }
+
+void Jardineiro::registarMovimento() {
+    ++movimentosTurno;
+}
+
+void Jardineiro::registarColheita() {
+    ++colheitasTurno;
+}
+
+void Jardineiro::registarPlantacao() {
+    ++plantacoesTurno;
+}
+
+void Jardineiro::registarEntrada() {
+    ++entradasTurno;
+    noJardim = true;
+}
+
+void Jardineiro::sairDoJardim() {
+    ++saidasTurno;
+    noJardim = false;
+}
+
 void Jardineiro::setFerramenta(Ferramenta * f) {
-    inventario.push_back(f);
+    if (f != nullptr)
+        inventario.push_back(f);
 }
 
 std::string Jardineiro::getFerramentas() const {

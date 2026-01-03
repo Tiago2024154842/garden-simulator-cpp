@@ -63634,12 +63634,12 @@ class Celula {
     int getAgua() const;
     void setAgua(int a);
     void setNutrientes(int n);
-    void setPlanta(Planta* planta);
+    void setPlanta(Planta* p);
     bool removerPlanta();
     bool temPlanta() const;
     Planta * getPlanta() const;
-    void removePlanta();
-    void setFerramenta(Ferramenta* ferramenta);
+    void setFerramenta(Ferramenta* f);
+    Ferramenta * retirarFerramenta();
     Ferramenta * getFerramenta() const;
     bool temFerramenta() const;
 };
@@ -63660,8 +63660,32 @@ class Jardineiro {
     std::string getFerramentas() const;
     void pegaFerramenta(int num);
     void largaFerramenta();
+    int getLinha() const;
+    int getColuna() const;
+    bool podeMover() const;
+    bool podeColher() const;
+    bool podePlantar() const;
+    bool podeEntrar() const;
+    bool podeSair() const;
+    bool estaNoJardim() const;
+    bool estaNaPosicao(int l, int c) const;
+    void setPosicao(int l, int c);
+    void resetContadoresTurno();
+    void registarMovimento();
+    void registarPlantacao();
+    void registarColheita();
+    void registarEntrada();
+    void sairDoJardim();
 
   private:
+    int movimentosTurno;
+    int colheitasTurno;
+    int plantacoesTurno;
+    int saidasTurno;
+    int entradasTurno;
+    int linha;
+    int coluna;
+    bool noJardim;
     Ferramenta * mao;
     std::vector<Ferramenta*> inventario;
 };
@@ -63678,11 +63702,11 @@ class Jardim {
     int getNColunas() const;
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
-    bool criarPlanta(int l, int c, char tipo);
+    bool plantarPlanta(int l, int c, char tipo);
     bool removerPlanta(int l, int c);
     bool moverJardineiro(char c);
-    bool setJardineiro(int l, int c);
     bool sairJardineiro();
+    bool entrarJardineiro(int l, int c);
     bool compraFerramenta(char f);
     void listaFerramentas() const;
     void pegaFerramenta(int num) const;
@@ -63690,20 +63714,94 @@ class Jardim {
     void listarPlantas() const;
     void listaArea() const;
     void listaSolo(int l, int c, int n = 0) const;
+    void avancaInstante();
 
   private:
     void swap(Jardim & outro);
     void getCelulaDesc(int l, int c) const;
+    bool setJardineiro(int l, int c);
     bool verificaLimites(int l, int c) const;
+    void verificarFerramentasNoChao(int l, int c);
+    void criarNovaFerramenta(int l, int c);
     int instante;
     int nColunas;
     int nLinhas;
-    int jardLinha;
-    int jardColuna;
     Jardineiro * jardineiro;
     Celula ** grelha;
 };
 # 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
+# 1 "C:/Users/tiago/Documents/Trabalho_POO/Settings.h" 1
+
+
+
+class Settings {
+    public:
+    class Jardim {
+    public:
+        static const int agua_min = 80;
+        static const int agua_max = 100;
+        static const int nutrientes_min = 40;
+        static const int nutrientes_max = 50;
+    };
+    class Regador {
+    public:
+        static const int capacidade = 200;
+        static const int dose = 10;
+    };
+    class Adubo {
+    public:
+        static const int capacidade = 100;
+        static const int dose = 10;
+    };
+    class Jardineiro {
+    public:
+        static const int max_movimentos = 10;
+        static const int max_entradas_saidas = 1;
+        static const int max_plantacoes = 2;
+        static const int max_colheitas = 5;
+    };
+    class Cacto {
+        public:
+        static const int absorcao_agua_percentagem = 25;
+        static const int absorcao_nutrientes = 5;
+        static const int morre_agua_solo_maior = 100;
+        static const int morre_agua_solo_instantes = 3;
+        static const int morre_nutrientes_solo_menor = 1;
+        static const int morre_nutrientes_solo_instantes = 3;
+        static const int multiplica_nutrientes_maior = 100;
+        static const int multiplica_agua_maior = 50;
+    };
+    class Roseira {
+        public:
+        static const int inicial_agua = 25;
+        static const int inicial_nutrientes = 25;
+        static const int perda_agua = 4;
+        static const int perda_nutrientes = 4;
+        static const int absorcao_agua = 5;
+        static const int absorcao_nutrientes = 8;
+        static const int morre_agua_menor = 1;
+        static const int morre_nutrientes_menor = 1;
+        static const int morre_nutrientes_maior = 199;
+        static const int multiplica_nutrientes_maior = 100;
+        static const int nova_nutrientes = 25;
+        static const int nova_agua_percentagem = 50;
+        static const int original_nutrientes = 100;
+        static const int original_agua_percentagem = 50;
+    };
+    class ErvaDaninha {
+        public:
+        static const int inicial_agua = 5;
+        static const int inicial_nutrientes = 5;
+        static const int absorcao_agua = 1;
+        static const int absorcao_nutrientes = 1;
+        static const int morre_instantes = 60;
+        static const int multiplica_nutrientes_maior = 30;
+        static const int multiplica_instantes = 5;
+        static const int nova_nutrientes = 5;
+        static const int original_nutrientes = 5;
+    };
+};
+# 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
 # 1 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 1 3
 # 57 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 3
 
@@ -64900,11 +64998,11 @@ namespace std
 
 #pragma GCC diagnostic pop
 # 1256 "D:/w64devkit/lib/gcc/x86_64-w64-mingw32/15.2.0/include/c++/sstream" 2 3
-# 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
+# 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
 
 
-# 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp"
-Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardLinha(-1), jardColuna(-1) {
+# 5 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp"
+Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0) {
     jardineiro = new Jardineiro();
     grelha = new Celula*[nLinhas];
     for (int i = 0; i < nLinhas; ++i) {
@@ -64943,8 +65041,7 @@ Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0), jardLinha(-
 Jardim::Jardim(const Jardim & outro) {
     nColunas = outro.nColunas;
     nLinhas = outro.nLinhas;
-    jardLinha = outro.jardLinha;
-    jardColuna = outro.jardColuna;
+    instante = outro.instante;
 
     if (outro.jardineiro != nullptr)
         jardineiro = new Jardineiro(*outro.jardineiro);
@@ -64977,9 +65074,9 @@ Jardim & Jardim::operator=(Jardim outro) {
 
 Jardim::~Jardim() {
     if (grelha != nullptr) {
-        for (int i = 0; i < nLinhas; i++) {
-        delete[] grelha[i];
-        }
+        for (int i = 0; i < nLinhas; i++)
+            delete[] grelha[i];
+
         delete[] grelha;
     }
 
@@ -64991,12 +65088,20 @@ Jardim::~Jardim() {
 void Jardim::swap(Jardim & outro) {
     std::swap(nColunas, outro.nColunas);
     std::swap(nLinhas, outro.nLinhas);
-    std::swap(jardLinha, outro.jardLinha);
-    std::swap(jardColuna, outro.jardColuna);
     std::swap(instante, outro.instante);
     std::swap(grelha, outro.grelha);
     std::swap(jardineiro, outro.jardineiro);
 }
+
+void Jardim::avancaInstante() {
+    instante++;
+
+    if (jardineiro != nullptr)
+        jardineiro->resetContadoresTurno();
+
+    std::cout << "avancou 1 instante" << std::endl;
+}
+
 
 int Jardim::getNColunas() const {
     return nColunas;
@@ -65030,7 +65135,7 @@ void Jardim::mostraGrelha() const {
                 else {
                     const Celula & celula = grelha[i-1][j-1];
 
-                    if (i-1 == jardLinha && j-1 == jardColuna)
+                    if (jardineiro->estaNaPosicao(i-1, j-1))
                         std::cout << '*';
                     else if (celula.temPlanta())
                         std::cout << celula.getPlanta()->getSimbolo();
@@ -65045,7 +65150,7 @@ void Jardim::mostraGrelha() const {
     }
 }
 
-bool Jardim::criarPlanta(int l, int c, char tipo) {
+bool Jardim::plantarPlanta(int l, int c, char tipo) {
     if (!verificaLimites(l, c)) return false;
 
     tipo = tolower(tipo);
@@ -65060,14 +65165,19 @@ bool Jardim::criarPlanta(int l, int c, char tipo) {
         return false;
     }
 
+    if (!jardineiro->podePlantar()) {
+        std::cout << "Erro: Jardineiro sem energia, ja atingiu as " << Settings::Jardineiro::max_plantacoes << " plantacoes por turno" << std::endl;
+        return false;
+    }
+
     Planta * p = nullptr;
     if (tipo == 'r') p = new Roseira();
     else if (tipo == 'e') p = new ErvaDaninha();
     else if (tipo == 'x') p = new Exotica();
-    else if (tipo == 'c') p = new Cacto();
-    else return false;
+    else p = new Cacto();
 
     grelha[l][c].setPlanta(p);
+    jardineiro->registarPlantacao();
     return true;
 }
 
@@ -65096,8 +65206,18 @@ bool Jardim::getDescPlanta(int l, int c) const {
 }
 
 bool Jardim::moverJardineiro(char direcao) {
-    int linha = jardLinha;
-    int coluna = jardColuna;
+    if (!jardineiro->estaNoJardim()) {
+        std::cout << "Erro: O jardineiro nao esta no jardim" << std::endl;
+        return false;
+    }
+
+    if (!jardineiro->podeMover()) {
+        std::cout << "Erro: Jardineiro muito cansado, ja atingiu os " << Settings::Jardineiro::max_movimentos << " movimentos por turno" << std::endl;
+        return false;
+    }
+
+    int linha = jardineiro->getLinha();
+    int coluna = jardineiro->getColuna();
 
     if (direcao == 'e')
         --coluna;
@@ -65108,30 +65228,90 @@ bool Jardim::moverJardineiro(char direcao) {
     else
         ++linha;
 
-    return Jardim::setJardineiro(linha, coluna);
+    bool moveu = Jardim::setJardineiro(linha, coluna);
+
+    if (moveu)
+        jardineiro->registarMovimento();
+
+    return moveu;
+}
+
+bool Jardim::entrarJardineiro(int l, int c) {
+    if (!jardineiro->podeEntrar()) {
+        std::cout << "Erro: O jardineiro ja atingiu o maximo de " << Settings::Jardineiro::max_entradas_saidas << " entrada(s) por turno" << std::endl;
+        return false;
+    }
+
+    bool entrou = setJardineiro(l, c);
+    if (entrou) {
+        jardineiro->registarEntrada();
+        std::cout << "O jardineiro entrou para a posicao " << (char)('A' + l) << (char)('A' + l) << std::endl;
+    }
+
+    return entrou;
 }
 
 bool Jardim::setJardineiro(int l, int c) {
     if (!verificaLimites(l, c)) return false;
 
-    if (jardLinha == l && jardColuna == c) {
+    if (jardineiro->estaNaPosicao(l, c)) {
         std::cout << "Erro: O jardineiro ja estava nessa posicao" << std::endl;
         return false;
     }
 
-    jardLinha = l;
-    jardColuna = c;
+    jardineiro->setPosicao(l, c);
+    verificarFerramentasNoChao(l, c);
     return true;
 }
 
+void Jardim::verificarFerramentasNoChao(int l, int c) {
+    if (grelha[l][c].temFerramenta()) {
+        Ferramenta* f = grelha[l][c].retirarFerramenta();
+
+        if (f != nullptr) {
+            jardineiro->setFerramenta(f);
+            cout << "O jardineiro encontrou um(a) " << f->getNome() << endl;
+            criarNovaFerramenta(l, c);
+        }
+    }
+}
+
+void Jardim::criarNovaFerramenta(int l, int c) {
+    int tentativas = 0;
+    while (tentativas < 100) {
+        int novaL = Random::getRandom(nLinhas - 1);
+        int novaC = Random::getRandom(nColunas - 1);
+
+        if (!grelha[novaL][novaC].temFerramenta() && !(novaL == l && novaC == c)) {
+            int tipo = Random::getRandom(1, 4);
+            Ferramenta* f = nullptr;
+
+            if (tipo == 1) f = new Regador();
+            else if (tipo == 2) f = new Adubo();
+            else if (tipo == 3) f = new Tesoura();
+            else f = new Enxada();
+
+            grelha[novaL][novaC].setFerramenta(f);
+            std:cout << "Uma nova ferramenta apareceu por magia no jardim" << std::endl;
+            break;
+        }
+
+        tentativas++;
+    }
+}
+
 bool Jardim::sairJardineiro() {
-    if (jardLinha == -1 || jardColuna == -1) {
-        std::cout << "Erro: O jardineiro já estava fora do jardim" << std::endl;
+    if (!jardineiro->estaNoJardim()) {
+        std::cout << "Erro: O jardineiro ja esta fora do jardim" << std::endl;
         return false;
     }
 
-    jardLinha = -1;
-    jardColuna = -1;
+    if (!jardineiro->podeSair()) {
+        std::cout << "Erro: O jardineiro ja atingiu o maximo de " << Settings::Jardineiro::max_entradas_saidas << " saida(s) por turno" << std::endl;
+        return false;
+    }
+
+    jardineiro->sairDoJardim();
     return true;
 }
 
@@ -65195,7 +65375,7 @@ void Jardim::listaArea() const {
 
     for (int l = 0; l < nLinhas; l++) {
         for (int c = 0; c < nColunas; c++) {
-            bool temInfo = grelha[l][c].temPlanta() || grelha[l][c].temFerramenta() || (jardLinha == l && jardColuna == c);
+            bool temInfo = grelha[l][c].temPlanta() || grelha[l][c].temFerramenta() || jardineiro->estaNaPosicao(l, c);
 
             if (temInfo)
                 getCelulaDesc(l, c);
@@ -65229,7 +65409,7 @@ void Jardim::getCelulaDesc(int l, int c) const {
 
     bool temPlanta = grelha[l][c].temPlanta();
     bool temFerramenta = grelha[l][c].temFerramenta();
-    bool temJardineiro = (jardLinha == l && jardColuna == c);
+    bool temJardineiro = jardineiro->estaNaPosicao(l, c);
 
     if (temPlanta) {
         Planta* p = grelha[l][c].getPlanta();

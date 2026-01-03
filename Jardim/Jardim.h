@@ -17,11 +17,11 @@ class Jardim {
     int getNColunas() const;
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
-    bool criarPlanta(int l, int c, char tipo);
+    bool plantarPlanta(int l, int c, char tipo);
     bool removerPlanta(int l, int c);
     bool moverJardineiro(char c);
-    bool setJardineiro(int l, int c);
     bool sairJardineiro();
+    bool entrarJardineiro(int l, int c);
     bool compraFerramenta(char f);
     void listaFerramentas() const;
     void pegaFerramenta(int num) const;
@@ -29,16 +29,18 @@ class Jardim {
     void listarPlantas() const;
     void listaArea() const;
     void listaSolo(int l, int c, int n = 0) const;
-
+    void avancaInstante();
+    
   private:
     void swap(Jardim & outro);
     void getCelulaDesc(int l, int c) const;
+    bool setJardineiro(int l, int c);
     bool verificaLimites(int l, int c) const;
+    void verificarFerramentasNoChao(int l, int c);
+    void criarNovaFerramenta(int l, int c);
     int instante;
     int nColunas;
     int nLinhas;
-    int jardLinha;
-    int jardColuna;
     Jardineiro * jardineiro;
     Celula ** grelha;
 };

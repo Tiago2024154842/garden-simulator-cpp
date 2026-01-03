@@ -34,18 +34,16 @@
       <change beforePath="$PROJECT_DIR$/ComandoFactory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ComandoFactory.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ComandoFactory.h" beforeDir="false" afterPath="$PROJECT_DIR$/ComandoFactory.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Comandos/Comando.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Comandos/Comando.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Comandos/Comando.h" beforeDir="false" afterPath="$PROJECT_DIR$/Comandos/Comando.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jardim/Ferramenta.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Ferramenta.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Celula.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Celula.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Celula.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Celula.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Jardim.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardim.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Jardim.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardim.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Jardineiro.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardineiro.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jardim/Planta.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Planta.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jardim/Planta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Planta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Jardineiro.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardineiro.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/Trabalho_POO.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/Trabalho_POO.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +152,7 @@
       <workItem from="1767142521630" duration="7829000" />
       <workItem from="1767310199301" duration="3921000" />
       <workItem from="1767317656438" duration="1201000" />
-      <workItem from="1767374771631" duration="13618000" />
+      <workItem from="1767374771631" duration="22289000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,18 @@
+jardim 5 5
+planta aa c
+planta bb r
+planta cc e
+planta dd x
+lferr
+lsolo cc 2
+larea
+lplantas
+entra aa
+sai
+grava test
+planta ee c
+recupera test
+grava test
+planta ee c
+apaga test
+recupera test
