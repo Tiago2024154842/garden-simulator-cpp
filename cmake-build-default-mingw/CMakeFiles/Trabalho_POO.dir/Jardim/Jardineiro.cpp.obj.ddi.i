@@ -46509,11 +46509,12 @@ class Celula;
 
 class Ferramenta {
   public:
+    virtual ~Ferramenta() = default;
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
     virtual Ferramenta * copia() const = 0;
-    virtual void usar(Celula* area) = 0;
+    virtual bool usar(Celula* c) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
@@ -46530,7 +46531,7 @@ class Regador : public Ferramenta {
   public:
     Regador();
     Regador * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 
   private:
@@ -46541,7 +46542,7 @@ class Adubo : public Ferramenta {
   public:
     Adubo();
     Adubo * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const override;
 
   private:
@@ -46552,7 +46553,7 @@ class Tesoura : public Ferramenta {
   public:
     Tesoura();
     Tesoura * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 };
 
@@ -46560,8 +46561,10 @@ class Enxada : public Ferramenta {
   public:
     Enxada();
     Enxada * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
+  private:
+    int usos;
 };
 # 6 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.h" 2
 
@@ -46590,6 +46593,7 @@ class Jardineiro {
     void registarColheita();
     void registarEntrada();
     void sairDoJardim();
+    void usarFerramenta(Celula * area);
 
   private:
     int movimentosTurno;
@@ -46626,6 +46630,12 @@ class Settings {
     public:
         static const int capacidade = 100;
         static const int dose = 10;
+    };
+    class Enxada {
+    public:
+        static const int aumenta_nutrientes = 5;
+        static const int perda_agua = 10;
+        static const int max_usos = 3;
     };
     class Jardineiro {
     public:
@@ -46672,7 +46682,20 @@ class Settings {
         static const int multiplica_nutrientes_maior = 30;
         static const int multiplica_instantes = 5;
         static const int nova_nutrientes = 5;
+        static const int nova_agua = 5;
         static const int original_nutrientes = 5;
+    };
+    class Bananeira {
+        public:
+        static const int inicial_agua = 50;
+        static const int inicial_nutrientes = 10;
+        static const int perda_agua = 5;
+        static const int perda_nutrientes = 1;
+        static const int deixa_nutrientes = 50;
+        static const int absorcao_agua = 5;
+        static const int absorcao_nutrientes = 2;
+        static const int morre_agua_menor = 1;
+        static const int morre_nutrientes_menor = 1;
     };
 };
 # 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardineiro.cpp" 2
@@ -48027,4 +48050,15 @@ void Jardineiro::largaFerramenta() {
         mao = nullptr;
     } else
         std::cout << "Erro: O jardineiro nao tem nenhuma ferramenta para largar" << std::endl;
+}
+
+void Jardineiro::usarFerramenta(Celula * area) {
+    if (mao != nullptr && area != nullptr) {
+        bool eliminar = !mao->usar(area);
+
+        if (eliminar) {
+            delete mao;
+            mao = nullptr;
+        }
+    }
 }

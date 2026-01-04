@@ -41569,13 +41569,17 @@ class Celula;
 class Planta {
   public:
     virtual Planta * copia() const = 0;
+    virtual ~Planta() = default;
     virtual bool processaInstante(Celula & c) = 0;
     char getSimbolo() const;
+    string getBeleza() const;
     string getPropriedades() const;
     string getNome() const;
     bool getInvasora() const;
     virtual bool podeMultiplicar() const = 0;
     virtual Planta* multiplica() = 0;
+    virtual void reageMorte(Celula & c);
+    virtual bool podeMorrerSufocada();
 
   protected:
     Planta(const string & n, const string & b, char s, int nut, int a, bool i);
@@ -41600,6 +41604,8 @@ class Roseira : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    bool podeMorrerSufocada() override;
+    void reageMorte(Celula & c) override;
 };
 
 class ErvaDaninha: public Planta {
@@ -41615,13 +41621,14 @@ class ErvaDaninha: public Planta {
     int instantesMultiplicacao;
 };
 
-class Exotica : public Planta {
+class Bananeira : public Planta {
   public:
-    Exotica();
-    Exotica * copia() const override;
+    Bananeira();
+    Bananeira * copia() const override;
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 };
 
 class Cacto : public Planta {
@@ -41631,6 +41638,7 @@ class Cacto : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 
   private:
     int instantesAguaSolo;
@@ -42859,6 +42867,12 @@ class Settings {
         static const int capacidade = 100;
         static const int dose = 10;
     };
+    class Enxada {
+    public:
+        static const int aumenta_nutrientes = 5;
+        static const int perda_agua = 10;
+        static const int max_usos = 3;
+    };
     class Jardineiro {
     public:
         static const int max_movimentos = 10;
@@ -42904,7 +42918,20 @@ class Settings {
         static const int multiplica_nutrientes_maior = 30;
         static const int multiplica_instantes = 5;
         static const int nova_nutrientes = 5;
+        static const int nova_agua = 5;
         static const int original_nutrientes = 5;
+    };
+    class Bananeira {
+        public:
+        static const int inicial_agua = 50;
+        static const int inicial_nutrientes = 10;
+        static const int perda_agua = 5;
+        static const int perda_nutrientes = 1;
+        static const int deixa_nutrientes = 50;
+        static const int absorcao_agua = 5;
+        static const int absorcao_nutrientes = 2;
+        static const int morre_agua_menor = 1;
+        static const int morre_nutrientes_menor = 1;
     };
 };
 # 4 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Planta.cpp" 2
@@ -64861,11 +64888,12 @@ class Celula;
 
 class Ferramenta {
   public:
+    virtual ~Ferramenta() = default;
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
     virtual Ferramenta * copia() const = 0;
-    virtual void usar(Celula* area) = 0;
+    virtual bool usar(Celula* c) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
@@ -64882,7 +64910,7 @@ class Regador : public Ferramenta {
   public:
     Regador();
     Regador * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 
   private:
@@ -64893,7 +64921,7 @@ class Adubo : public Ferramenta {
   public:
     Adubo();
     Adubo * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const override;
 
   private:
@@ -64904,7 +64932,7 @@ class Tesoura : public Ferramenta {
   public:
     Tesoura();
     Tesoura * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 };
 
@@ -64912,8 +64940,10 @@ class Enxada : public Ferramenta {
   public:
     Enxada();
     Enxada * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
+  private:
+    int usos;
 };
 # 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 
@@ -64965,6 +64995,14 @@ string Planta::getNome() const {
     return nome;
 }
 
+string Planta::getBeleza() const {
+    return beleza;
+}
+
+bool Planta::podeMorrerSufocada() {
+    return false;
+}
+
 bool Planta::getInvasora() const {
     return invasora;
 }
@@ -64989,6 +65027,8 @@ int Planta::getNutrientes() const {
     return nutrientes;
 }
 
+void Planta::reageMorte(Celula & c) {}
+
 Roseira::Roseira() : Planta("Roseira", "bonita", 'r', Settings::Roseira::inicial_nutrientes, Settings::Roseira::inicial_agua, false) {}
 
 Roseira * Roseira::copia() const { return new Roseira(*this); }
@@ -64997,8 +65037,51 @@ bool Roseira::podeMultiplicar() const {
     return getNutrientes() > Settings::Roseira::multiplica_nutrientes_maior;
 }
 
-bool Roseira::processaInstante(Celula & c) {
+Planta * Roseira::multiplica() {
+    Roseira* nova = new Roseira();
 
+    setNutrientes(Settings::Roseira::original_nutrientes);
+    nova->setNutrientes(Settings::Roseira::nova_nutrientes);
+
+    int aguaNova = (getAgua() * Settings::Roseira::nova_agua_percentagem) / 100;
+    nova->setAgua(aguaNova);
+
+    int aguaAtual = (getAgua() * Settings::Roseira::original_agua_percentagem) / 100;
+    setAgua(aguaAtual);
+
+    return nova;
+}
+
+void Roseira::reageMorte(Celula & c) {
+    c.adicionarAgua(getAgua() / 2);
+    c.adicionarNutrientes(getNutrientes() / 2);
+}
+
+bool Roseira::processaInstante(Celula & c) {
+    setAgua(getAgua() - Settings::Roseira::perda_agua);
+    setNutrientes(getNutrientes() - Settings::Roseira::perda_nutrientes);
+
+    int aguaAbsorvida = (c.getAgua() >= Settings::Roseira::absorcao_agua) ? Settings::Roseira::absorcao_agua : c.getAgua();
+    c.retirarAgua(aguaAbsorvida);
+    setAgua(getAgua() + aguaAbsorvida);
+
+    int nutAbsorvidos = (c.getNutrientes() >= Settings::Roseira::absorcao_nutrientes) ? Settings::Roseira::absorcao_nutrientes : c.getNutrientes();
+    c.retirarNutrientes(nutAbsorvidos);
+    setNutrientes(getNutrientes() + nutAbsorvidos);
+
+    bool morreuPorAgua = getAgua() < Settings::Roseira::morre_agua_menor;
+    bool morreuPorNutrientes = getNutrientes() < Settings::Roseira::morre_nutrientes_menor;
+    bool morreuDemasiadosNut = getNutrientes() > Settings::Roseira::morre_nutrientes_maior;
+    bool morreu = morreuPorAgua || morreuPorNutrientes || morreuDemasiadosNut;
+
+    if (morreu)
+        return false;
+
+    return true;
+}
+
+bool Roseira::podeMorrerSufocada() {
+    return true;
 }
 
 ErvaDaninha::ErvaDaninha() : Planta("Erva Daninha", "feia", 'e', Settings::ErvaDaninha::inicial_nutrientes, Settings::ErvaDaninha::inicial_agua, true) {
@@ -65012,16 +65095,77 @@ bool ErvaDaninha::podeMultiplicar() const {
     return getNutrientes() > Settings::ErvaDaninha::multiplica_nutrientes_maior && instantesMultiplicacao > Settings::ErvaDaninha::multiplica_instantes;
 }
 
-bool ErvaDaninha::processaInstante(Celula & c) {
+Planta * ErvaDaninha::multiplica() {
+    ErvaDaninha* nova = new ErvaDaninha();
 
+    nova->setNutrientes(Settings::ErvaDaninha::nova_nutrientes);
+    nova->setAgua(Settings::ErvaDaninha::nova_agua);
+    instantesMultiplicacao = 0;
+
+    return nova;
 }
 
-Exotica::Exotica() : Planta("Exotica", "divinal", 'x', 0, 0, true) {}
+bool ErvaDaninha::processaInstante(Celula & c) {
+    instantesMorte++;
+    instantesMultiplicacao++;
 
-Exotica * Exotica::copia() const { return new Exotica(*this); }
+    if (instantesMorte >= Settings::ErvaDaninha::morre_instantes)
+        return false;
 
-bool Exotica::processaInstante(Celula & c) {
+    int aguaAbsorvida = (c.getAgua() >= Settings::ErvaDaninha::absorcao_agua) ? Settings::ErvaDaninha::absorcao_agua : c.getAgua();
+    if (aguaAbsorvida > 0) {
+        c.retirarAgua(aguaAbsorvida);
+        setAgua(getAgua() + aguaAbsorvida);
+    }
 
+    int nutAbsorvidos = (c.getNutrientes() >= Settings::ErvaDaninha::absorcao_nutrientes) ? Settings::ErvaDaninha::absorcao_nutrientes : c.getNutrientes();
+    if (nutAbsorvidos > 0) {
+        c.retirarNutrientes(nutAbsorvidos);
+        setNutrientes(getNutrientes() + nutAbsorvidos);
+    }
+
+    return true;
+}
+
+Bananeira::Bananeira() : Planta("Bananeira", "divinal", 'x', Settings::Bananeira::inicial_nutrientes, Settings::Bananeira::inicial_agua, false) {}
+
+bool Bananeira::podeMultiplicar() const {
+    return false;
+}
+
+Planta * Bananeira::multiplica() {
+    return nullptr;
+}
+
+Bananeira * Bananeira::copia() const { return new Bananeira(*this); }
+
+void Bananeira::reageMorte(Celula & c) {
+    c.adicionarNutrientes(50);
+    c.adicionarAgua(this->getAgua());
+}
+
+bool Bananeira::processaInstante(Celula & c) {
+    setAgua(getAgua() - Settings::Bananeira::perda_agua);
+    setNutrientes(getNutrientes() - Settings::Bananeira::perda_nutrientes);
+
+    if (c.getAgua() > 0) {
+        c.retirarAgua(Settings::Bananeira::absorcao_agua);
+        setAgua(getAgua() + Settings::Bananeira::absorcao_agua);
+    }
+
+    if (c.getNutrientes() > 0) {
+        c.retirarNutrientes(Settings::Bananeira::absorcao_nutrientes);
+        setNutrientes(getNutrientes() + Settings::Bananeira::absorcao_nutrientes);
+    }
+
+    bool morreuPorAgua = getAgua() < Settings::Bananeira::morre_agua_menor;
+    bool morreuPorNutrientes = getNutrientes() < Settings::Bananeira::morre_nutrientes_menor;
+    bool morreu = morreuPorAgua || morreuPorNutrientes;
+
+    if (morreu)
+        return false;
+
+    return true;
 }
 
 Cacto::Cacto() : Planta("Cacto", "neutra", 'c', 0, 0, false) {
@@ -65035,8 +65179,26 @@ bool Cacto::podeMultiplicar() const {
     return getNutrientes() > Settings::Cacto::multiplica_nutrientes_maior && getAgua() > Settings::Cacto::multiplica_agua_maior;
 }
 
+Planta * Cacto::multiplica() {
+    Cacto * nova = new Cacto();
+    int metadeNut = getNutrientes() / 2;
+    int metadeAgua = getAgua() / 2;
+
+    setNutrientes(metadeNut);
+    setAgua(metadeAgua);
+
+    nova->setNutrientes(metadeNut);
+    nova->setAgua(metadeAgua);
+
+    return nova;
+}
+
+void Cacto::reageMorte(Celula & c) {
+    c.adicionarNutrientes(this->getNutrientes());
+}
+
 bool Cacto::processaInstante(Celula & c) {
-    int aguaAbsorvida = c.getAgua() * Settings::Cacto::absorcao_agua_percentagem;
+    int aguaAbsorvida = (c.getAgua() * Settings::Cacto::absorcao_agua_percentagem) / 100;
     c.retirarAgua(aguaAbsorvida);
     setAgua(getAgua() + aguaAbsorvida);
 
@@ -65051,14 +65213,12 @@ bool Cacto::processaInstante(Celula & c) {
     if (c.getNutrientes() < Settings::Cacto::morre_nutrientes_solo_menor) ++instantesNutSolo;
     else instantesNutSolo = 0;
 
-    bool morreuPorAgua = instantesAguaSolo == Settings::Cacto::morre_agua_solo_instantes;
-    bool morreuPorNutrientes = instantesNutSolo == Settings::Cacto::morre_nutrientes_solo_instantes;
+    bool morreuPorAgua = instantesAguaSolo >= Settings::Cacto::morre_agua_solo_instantes;
+    bool morreuPorNutrientes = instantesNutSolo >= Settings::Cacto::morre_nutrientes_solo_instantes;
     bool morreu = morreuPorAgua || morreuPorNutrientes;
 
-    if (morreu) {
-        c.adicionarNutrientes(this->getNutrientes());
+    if (morreu)
         return false;
-    }
 
     return true;
 }

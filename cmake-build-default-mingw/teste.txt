@@ -1,18 +1,7 @@
-jardim 5 5
-planta aa c
-planta bb r
-planta cc e
-planta dd x
-lferr
-lsolo cc 2
-larea
-lplantas
+jardim 10 10
 entra aa
-sai
-grava test
-planta ee c
-recupera test
-grava test
-planta ee c
-apaga test
-recupera test
+planta aa c
+planta aa r
+colhe bb
+pega 99
+executa teste.txt

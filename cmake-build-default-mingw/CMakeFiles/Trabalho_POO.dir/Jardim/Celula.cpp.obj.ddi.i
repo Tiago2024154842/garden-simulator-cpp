@@ -63509,13 +63509,17 @@ class Celula;
 class Planta {
   public:
     virtual Planta * copia() const = 0;
+    virtual ~Planta() = default;
     virtual bool processaInstante(Celula & c) = 0;
     char getSimbolo() const;
+    string getBeleza() const;
     string getPropriedades() const;
     string getNome() const;
     bool getInvasora() const;
     virtual bool podeMultiplicar() const = 0;
     virtual Planta* multiplica() = 0;
+    virtual void reageMorte(Celula & c);
+    virtual bool podeMorrerSufocada();
 
   protected:
     Planta(const string & n, const string & b, char s, int nut, int a, bool i);
@@ -63540,6 +63544,8 @@ class Roseira : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    bool podeMorrerSufocada() override;
+    void reageMorte(Celula & c) override;
 };
 
 class ErvaDaninha: public Planta {
@@ -63555,13 +63561,14 @@ class ErvaDaninha: public Planta {
     int instantesMultiplicacao;
 };
 
-class Exotica : public Planta {
+class Bananeira : public Planta {
   public:
-    Exotica();
-    Exotica * copia() const override;
+    Bananeira();
+    Bananeira * copia() const override;
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 };
 
 class Cacto : public Planta {
@@ -63571,6 +63578,7 @@ class Cacto : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 
   private:
     int instantesAguaSolo;
@@ -63587,11 +63595,12 @@ class Celula;
 
 class Ferramenta {
   public:
+    virtual ~Ferramenta() = default;
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
     virtual Ferramenta * copia() const = 0;
-    virtual void usar(Celula* area) = 0;
+    virtual bool usar(Celula* c) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
@@ -63608,7 +63617,7 @@ class Regador : public Ferramenta {
   public:
     Regador();
     Regador * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 
   private:
@@ -63619,7 +63628,7 @@ class Adubo : public Ferramenta {
   public:
     Adubo();
     Adubo * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const override;
 
   private:
@@ -63630,7 +63639,7 @@ class Tesoura : public Ferramenta {
   public:
     Tesoura();
     Tesoura * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 };
 
@@ -63638,8 +63647,10 @@ class Enxada : public Ferramenta {
   public:
     Enxada();
     Enxada * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
+  private:
+    int usos;
 };
 # 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 
@@ -63696,6 +63707,12 @@ class Settings {
         static const int capacidade = 100;
         static const int dose = 10;
     };
+    class Enxada {
+    public:
+        static const int aumenta_nutrientes = 5;
+        static const int perda_agua = 10;
+        static const int max_usos = 3;
+    };
     class Jardineiro {
     public:
         static const int max_movimentos = 10;
@@ -63741,7 +63758,20 @@ class Settings {
         static const int multiplica_nutrientes_maior = 30;
         static const int multiplica_instantes = 5;
         static const int nova_nutrientes = 5;
+        static const int nova_agua = 5;
         static const int original_nutrientes = 5;
+    };
+    class Bananeira {
+        public:
+        static const int inicial_agua = 50;
+        static const int inicial_nutrientes = 10;
+        static const int perda_agua = 5;
+        static const int perda_nutrientes = 1;
+        static const int deixa_nutrientes = 50;
+        static const int absorcao_agua = 5;
+        static const int absorcao_nutrientes = 2;
+        static const int morre_agua_menor = 1;
+        static const int morre_nutrientes_menor = 1;
     };
 };
 # 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.cpp" 2

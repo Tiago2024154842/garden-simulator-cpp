@@ -94,28 +94,42 @@ void Jardim::swap(Jardim & outro) {
 }
 
 void Jardim::avancaInstante() {
-    instante++;
+    ++instante;
+    
+    if (jardineiro != nullptr && jardineiro->estaNoJardim()) {
+        int jLinha = jardineiro->getLinha();
+        int jColuna = jardineiro->getColuna();
+        
+        if (verificaLimites(jLinha, jColuna)) {
+            jardineiro->usarFerramenta(&grelha[jLinha][jColuna]);
+        }
+    }
     
     if (jardineiro != nullptr)
         jardineiro->resetContadoresTurno();
-
-     for (int l = 0; l < nLinhas; ++l) {
+    
+    for (int l = 0; l < nLinhas; ++l) {
         for (int c = 0; c < nColunas; ++c) {
-            Planta * p = grelha[l][c].getPlanta();
-            bool viva = p->processaInstante(grelha[l][c]);
-
-            if (!viva) {
-                std::cout << "Um(a) " << p->getNome() << " morreu na posicao " << (char) 'A' + l << (char) 'A' + c << std::endl;
-                grelha[l][c].removerPlanta(); 
+            if (grelha[l][c].temPlanta()) { 
+                Planta * p = grelha[l][c].getPlanta();
+                bool viva = p->processaInstante(grelha[l][c]);
+                
+                if (!viva) {
+                    std::cout << p->getNome() << " morreu na posicao " << (char)('A' + l) << (char) (char)('A' + c) << std::endl;
+                    p->reageMorte(grelha[l][c]);
+                    grelha[l][c].removerPlanta(); 
+                } else if (verificaVizinhosAVolta(l, c) && p->podeMorrerSufocada()) {
+                    std::cout << p->getNome() << " morreu sufocada na posicao " << (char)('A' + l) << (char) (char)('A' + c) << std::endl;
+                    p->reageMorte(grelha[l][c]);
+                    grelha[l][c].removerPlanta(); 
+                } else if (p->podeMultiplicar()) {
+                    this->tratarMultiplicacao(l, c);
+                }
             }
-
-            bool podeMultiplicar = p->podeMultiplicar();
-            if (podeMultiplicar)
-                this->tratarMultiplicacao(l, c);
         }
     }
 
-    std::cout << "avancou 1 instante" << std::endl;
+    std::cout << "Simulacao avancada em 1 instante" << std::endl;
 }
 
 
@@ -128,11 +142,7 @@ int Jardim::getNLinhas() const {
 }
 
 bool Jardim::verificaLimites(int l, int c) const {
-    if (l < 0 || l >= nLinhas || c < 0 || c >= nColunas) {
-        return false;
-    }
-
-    return true;
+    return (l >= 0 && l < nLinhas && c >= 0 && c < nColunas);
 }
 
 void Jardim::mostraGrelha() const {
@@ -172,10 +182,17 @@ void Jardim::tratarMultiplicacao(int l, int c) {
 
     if (!p->podeMultiplicar()) return;
 
-    Celula * vizinho = this->getVizinho(l, c, p->getInvasora());
+    Celula * vizinho = this->getVizinho(l, c, !p->getInvasora());
 
     if (vizinho != nullptr) {
-        
+        Planta * nova = p->multiplica();
+
+        if (vizinho->temPlanta()) {
+            vizinho->removerPlanta();
+            std::cout << "Uma planta foi engolida por outra" << std::endl;
+        }
+
+        vizinho->setPlanta(nova);
     }
 }
 
@@ -206,6 +223,29 @@ Celula * Jardim::getVizinho(int l, int c, bool apenasVazio) const {
     return possiveisCelulas[randomCelula];
 }
 
+bool Jardim::verificaVizinhosAVolta(int l, int c) const {
+    int dLinha[] = {-1, 1, 0, 0, -1, -1, 1, 1};
+    int dColuna[] = {0, 0, -1, 1, -1, 1, -1, 1};
+    int vizinhosExistentes = 0;
+    int vizinhosOcupados = 0;
+
+    for (int i = 0; i < 8; ++i) {
+        int vizLinha = l + dLinha[i];
+        int vizColuna = c + dColuna[i];
+
+        if (verificaLimites(vizLinha, vizColuna)) {
+            ++vizinhosExistentes;
+
+            if (grelha[vizLinha][vizColuna].temPlanta()) 
+                ++vizinhosOcupados;
+        }
+    }
+
+    if (vizinhosExistentes == 0) return false;
+
+    return vizinhosExistentes == vizinhosOcupados;
+}
+
 bool Jardim::plantarPlanta(int l, int c, char tipo) {
     if (!verificaLimites(l, c)) {
         std::cout << "Erro: Fora do limite do jardim" << std::endl;
@@ -232,7 +272,7 @@ bool Jardim::plantarPlanta(int l, int c, char tipo) {
     Planta * p = nullptr;
     if (tipo == 'r') p = new Roseira();
     else if (tipo == 'e') p = new ErvaDaninha();
-    else if (tipo == 'x') p = new Exotica();
+    else if (tipo == 'x') p = new Bananeira();
     else p = new Cacto();
 
     grelha[l][c].setPlanta(p);
@@ -370,7 +410,7 @@ void Jardim::criarNovaFerramenta(int l, int c) {
             else f = new Enxada();
 
             grelha[novaL][novaC].setFerramenta(f);
-            std:cout << "Uma nova ferramenta apareceu por magia no jardim" << std::endl;
+            std::cout << "Uma nova ferramenta apareceu por magia no jardim" << std::endl;
             break;
         }
 
@@ -404,7 +444,7 @@ bool Jardim::compraFerramenta(char f) {
         return false;
     }
 
-    std::cout << "Ferramenta comprada com sucesso" << std::endl;
+    std::cout << ferr->getNome() <<" comprada com sucesso" << std::endl;
     jardineiro->setFerramenta(ferr);
     return true;
 }

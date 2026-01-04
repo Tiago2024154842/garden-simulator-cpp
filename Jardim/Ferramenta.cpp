@@ -9,13 +9,9 @@ Ferramenta::Ferramenta(const char s, const std::string & n) : simbolo(s), nome(n
     numSerie = ++contadorNumSerie;
 }
 
-int Ferramenta::getNumSerie() const {
-    return numSerie;
-}
+int Ferramenta::getNumSerie() const { return numSerie; }
 
-char Ferramenta::getSimbolo() const {
-    return simbolo;
-}
+char Ferramenta::getSimbolo() const { return simbolo; }
 
 std::string Ferramenta::getNome() const {
     return nome;
@@ -27,11 +23,16 @@ Regador * Regador::copia() const {
     return new Regador(*this);
 }
 
-void Regador::usar(Celula* area) {
-    if (area != nullptr && agua >= 10) {
-        // area->adicionarAgua(Settings::Regador::dose); 
+bool Regador::usar(Celula* c) {
+    if (c != nullptr && agua >= 10) {
+        c->adicionarAgua(Settings::Regador::dose); 
         agua -= Settings::Regador::dose;
+        if (agua < 0) agua = 0;
+
+        std::cout << "O jardineiro usou o " << getNome() << std::endl;
     }
+
+    return true;
 }
 
 std::string Regador::getDesc() const {
@@ -46,11 +47,17 @@ Adubo * Adubo::copia() const {
     return new Adubo(*this);
 }
 
-void Adubo::usar(Celula* area) {
-    if (area != nullptr && quantidade >= 10) {
-        // area->adicionarNutrientes(10);
+bool Adubo::usar(Celula* c) {
+    if (c != nullptr && quantidade >= 10) {
+        c->adicionarNutrientes(Settings::Adubo::dose);
         quantidade -= Settings::Adubo::dose;
+        if (quantidade < 0) quantidade = 0;
+
+        std::cout << "O jardineiro usou o " << getNome() << " e ficou com " << (quantidade*100)/Settings::Adubo::capacidade 
+            << "% do pacote cheio" << std::endl;
     }
+
+    return true;
 }
 
 std::string Adubo::getDesc() const {
@@ -65,10 +72,17 @@ Tesoura * Tesoura::copia() const {
     return new Tesoura(*this);
 }
 
-void Tesoura::usar(Celula* area) {
-    if (area != nullptr && area->temPlanta()) {
-        area->removerPlanta();
+bool Tesoura::usar(Celula* c) {
+    if (c != nullptr && c->temPlanta()) {
+        Planta * p = c->getPlanta();
+
+        if (p->getBeleza() == "feia") {
+            std::cout << "O jardineiro usou a " << getNome() << " e cortou uma planta feia (" << p->getNome() << ")" << std::endl;
+            c->removerPlanta();
+        }
     }
+
+    return true;
 }
 
 std::string Tesoura::getDesc() const {
@@ -77,16 +91,30 @@ std::string Tesoura::getDesc() const {
     return str.str();
 }
 
-Enxada::Enxada() : Ferramenta('z', "Enxada") {}
+Enxada::Enxada() : Ferramenta('z', "Enxada"), usos(0) {}
 
 Enxada * Enxada::copia() const {
     return new Enxada(*this);
 }
 
-void Enxada::usar(Celula* area) {}
+bool Enxada::usar(Celula* c) {
+    if (c != nullptr && c->temPlanta()) {
+        usos++;
+
+        std::cout << "O jardineiro usou a " << getNome() << " e ao cavar arrancou um(a) " << c->getPlanta()->getNome() << std::endl;
+        c->retirarAgua(Settings::Enxada::perda_agua);
+        c->adicionarNutrientes(Settings::Enxada::aumenta_nutrientes);
+        c->removerPlanta();
+
+        if (usos >= Settings::Enxada::max_usos) {
+            std::cout << "A enxada partiu-se" << std::endl;
+            return false;
+        }
+    }
+}
 
 std::string Enxada::getDesc() const {
     std::ostringstream str;
-    str << getNome() << " (nr de serie: " << getNumSerie() << ")";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ") usada " << usos << "vezes";
     return str.str();
 }

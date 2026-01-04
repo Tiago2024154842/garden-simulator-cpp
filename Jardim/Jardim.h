@@ -38,6 +38,7 @@ class Jardim {
     void getCelulaDesc(int l, int c) const;
     bool setJardineiro(int l, int c);
     bool verificaLimites(int l, int c) const;
+    bool verificaVizinhosAVolta(int l, int c) const;
     void verificarFerramentasNoChao(int l, int c);
     void criarNovaFerramenta(int l, int c);
     int instante;

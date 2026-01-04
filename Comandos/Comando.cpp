@@ -1,8 +1,9 @@
 #include "Comando.h"
 #include "ComandoFactory.h"
 #include <fstream>
+#include <sstream>
 
-bool lplantas::executar(Jardim * jardim, string * argv, int argc) {
+bool lplantas::executar(Jardim *& jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -10,7 +11,7 @@ bool lplantas::executar(Jardim * jardim, string * argv, int argc) {
     return false;
 }
 
-bool lplanta::executar(Jardim * jardim, string* argv, int argc) {
+bool lplanta::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -31,7 +32,7 @@ bool lplanta::executar(Jardim * jardim, string* argv, int argc) {
     return false;
 }
 
-bool planta::executar(Jardim * jardim, string * argv, int argc) {
+bool planta::executar(Jardim *& jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -56,7 +57,7 @@ bool planta::executar(Jardim * jardim, string * argv, int argc) {
     return jardim->plantarPlanta(l, c, argv[1][0]);;
 }
 
-bool avanca::executar(Jardim *jardim, string *argv, int argc) {
+bool avanca::executar(Jardim *& jardim, string *argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -81,7 +82,7 @@ bool avanca::executar(Jardim *jardim, string *argv, int argc) {
     return true;
 }
 
-bool larea::executar(Jardim * jardim, string * argv, int argc) {
+bool larea::executar(Jardim *& jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -89,7 +90,7 @@ bool larea::executar(Jardim * jardim, string * argv, int argc) {
     return false;
 }
 
-bool lsolo::executar(Jardim * jardim, string * argv, int argc) {
+bool lsolo::executar(Jardim *& jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
     
@@ -129,7 +130,7 @@ bool lsolo::executar(Jardim * jardim, string * argv, int argc) {
     return false;
 }
 
-bool lferr::executar(Jardim * jardim, string * argv, int argc) {
+bool lferr::executar(Jardim *& jardim, string * argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -137,7 +138,7 @@ bool lferr::executar(Jardim * jardim, string * argv, int argc) {
     return false;
 }
 
-bool colhe::executar(Jardim * jardim, string* argv, int argc) {
+bool colhe::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -157,7 +158,7 @@ bool colhe::executar(Jardim * jardim, string* argv, int argc) {
     return jardim->colherPlanta(l, c);
 }
 
-bool larga::executar(Jardim * jardim, string* argv, int argc) {
+bool larga::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -165,7 +166,7 @@ bool larga::executar(Jardim * jardim, string* argv, int argc) {
     return false;
 }
 
-bool pega::executar(Jardim * jardim, string* argv, int argc) {
+bool pega::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -192,7 +193,7 @@ bool pega::executar(Jardim * jardim, string* argv, int argc) {
     return false;
 }
 
-bool compra::executar(Jardim * jardim, string* argv, int argc) {
+bool compra::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
     
@@ -214,14 +215,14 @@ bool compra::executar(Jardim * jardim, string* argv, int argc) {
 
 mover::mover(char d) : direcao(d) {};
 
-bool mover::executar(Jardim *jardim, string *argv, int argc) {
+bool mover::executar(Jardim *& jardim, string *argv, int argc) {
     if (jardim == nullptr)
         return false;
 
     return jardim->moverJardineiro(direcao);
 }
 
-bool entra::executar(Jardim * jardim, string* argv, int argc) {
+bool entra::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -241,14 +242,14 @@ bool entra::executar(Jardim * jardim, string* argv, int argc) {
     return jardim->entrarJardineiro(l, c);
 }
 
-bool sai::executar(Jardim * jardim, string* argv, int argc) {
+bool sai::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
     return jardim->sairJardineiro();
 }
 
-bool grava::executar(Jardim * jardim, string* argv, int argc) {
+bool grava::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
         
@@ -261,7 +262,7 @@ bool grava::executar(Jardim * jardim, string* argv, int argc) {
     return false;
 }
 
-bool recupera::executar(Jardim * jardim, string* argv, int argc) {
+bool recupera::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
     
@@ -273,7 +274,7 @@ bool recupera::executar(Jardim * jardim, string* argv, int argc) {
     return ComandoFactory::recuperar(argv[0], jardim);;
 }
 
-bool apaga::executar(Jardim * jardim, string* argv, int argc) {
+bool apaga::executar(Jardim *& jardim, string* argv, int argc) {
     if (jardim == nullptr)
         return false;
 
@@ -286,7 +287,7 @@ bool apaga::executar(Jardim * jardim, string* argv, int argc) {
     return false;
 }
 
-bool executa::executar(Jardim * jardim, string* argv, int argc) {
+bool executa::executar(Jardim *& jardim, string* argv, int argc) {
     if (argc != 1) {
         cout << "Uso: executa <nome>" << endl;
         return false;
@@ -302,6 +303,15 @@ bool executa::executar(Jardim * jardim, string* argv, int argc) {
     while (getline(inputFile, linha)) {
         if (linha.empty())
             continue;
+
+        istringstream iss(linha);
+        string cmd, arg;
+        iss >> cmd >> arg;
+
+        if (cmd == "executa" && arg == argv[0]) {
+            cout << "Aviso: Ciclo infinito detetado! O comando '" << linha << "' foi ignorado dentro do ficheiro " << argv[0] << endl;
+            continue;
+        }
 
         jardim = ComandoFactory::executarComando(linha, jardim);
     }

@@ -39,6 +39,9 @@ Jardim * ComandoFactory::executarComando(const std::string& c, Jardim* jardimAtu
             if (linhas > 26 || colunas > 26) {
                 cout << "Erro: O tamanho maximo e 26x26" << endl;
                 return jardimAtual;
+            } else if (linhas < 0 || colunas < 0) {
+                cout << "Erro: O tamanho do jardim nao pode ser negativo" << endl;
+                return jardimAtual;
             }
 
             delete jardimAtual;
@@ -62,7 +65,7 @@ Jardim * ComandoFactory::executarComando(const std::string& c, Jardim* jardimAtu
 
     string argv[2];
     int argc = 0;
-    while (comando >> argv[argc] && argc < 2)
+    while (argc < 2 && comando >> argv[argc])
         argc++;
 
     if (cmd->executar(jardimAtual, argv, argc)) // se retornar true mostra o jardim

@@ -63516,13 +63516,17 @@ class Celula;
 class Planta {
   public:
     virtual Planta * copia() const = 0;
+    virtual ~Planta() = default;
     virtual bool processaInstante(Celula & c) = 0;
     char getSimbolo() const;
+    string getBeleza() const;
     string getPropriedades() const;
     string getNome() const;
     bool getInvasora() const;
     virtual bool podeMultiplicar() const = 0;
     virtual Planta* multiplica() = 0;
+    virtual void reageMorte(Celula & c);
+    virtual bool podeMorrerSufocada();
 
   protected:
     Planta(const string & n, const string & b, char s, int nut, int a, bool i);
@@ -63547,6 +63551,8 @@ class Roseira : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    bool podeMorrerSufocada() override;
+    void reageMorte(Celula & c) override;
 };
 
 class ErvaDaninha: public Planta {
@@ -63562,13 +63568,14 @@ class ErvaDaninha: public Planta {
     int instantesMultiplicacao;
 };
 
-class Exotica : public Planta {
+class Bananeira : public Planta {
   public:
-    Exotica();
-    Exotica * copia() const override;
+    Bananeira();
+    Bananeira * copia() const override;
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 };
 
 class Cacto : public Planta {
@@ -63578,6 +63585,7 @@ class Cacto : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 
   private:
     int instantesAguaSolo;
@@ -63594,11 +63602,12 @@ class Celula;
 
 class Ferramenta {
   public:
+    virtual ~Ferramenta() = default;
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
     virtual Ferramenta * copia() const = 0;
-    virtual void usar(Celula* area) = 0;
+    virtual bool usar(Celula* c) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
@@ -63615,7 +63624,7 @@ class Regador : public Ferramenta {
   public:
     Regador();
     Regador * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 
   private:
@@ -63626,7 +63635,7 @@ class Adubo : public Ferramenta {
   public:
     Adubo();
     Adubo * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const override;
 
   private:
@@ -63637,7 +63646,7 @@ class Tesoura : public Ferramenta {
   public:
     Tesoura();
     Tesoura * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 };
 
@@ -63645,8 +63654,10 @@ class Enxada : public Ferramenta {
   public:
     Enxada();
     Enxada * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
+  private:
+    int usos;
 };
 # 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 
@@ -63712,6 +63723,7 @@ class Jardineiro {
     void registarColheita();
     void registarEntrada();
     void sairDoJardim();
+    void usarFerramenta(Celula * area);
 
   private:
     int movimentosTurno;
@@ -63759,6 +63771,7 @@ class Jardim {
     void getCelulaDesc(int l, int c) const;
     bool setJardineiro(int l, int c);
     bool verificaLimites(int l, int c) const;
+    bool verificaVizinhosAVolta(int l, int c) const;
     void verificarFerramentasNoChao(int l, int c);
     void criarNovaFerramenta(int l, int c);
     int instante;
@@ -63790,6 +63803,12 @@ class Settings {
     public:
         static const int capacidade = 100;
         static const int dose = 10;
+    };
+    class Enxada {
+    public:
+        static const int aumenta_nutrientes = 5;
+        static const int perda_agua = 10;
+        static const int max_usos = 3;
     };
     class Jardineiro {
     public:
@@ -63836,7 +63855,20 @@ class Settings {
         static const int multiplica_nutrientes_maior = 30;
         static const int multiplica_instantes = 5;
         static const int nova_nutrientes = 5;
+        static const int nova_agua = 5;
         static const int original_nutrientes = 5;
+    };
+    class Bananeira {
+        public:
+        static const int inicial_agua = 50;
+        static const int inicial_nutrientes = 10;
+        static const int perda_agua = 5;
+        static const int perda_nutrientes = 1;
+        static const int deixa_nutrientes = 50;
+        static const int absorcao_agua = 5;
+        static const int absorcao_nutrientes = 2;
+        static const int morre_agua_menor = 1;
+        static const int morre_nutrientes_menor = 1;
     };
 };
 # 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Jardim.cpp" 2
@@ -65132,28 +65164,42 @@ void Jardim::swap(Jardim & outro) {
 }
 
 void Jardim::avancaInstante() {
-    instante++;
+    ++instante;
+
+    if (jardineiro != nullptr && jardineiro->estaNoJardim()) {
+        int jLinha = jardineiro->getLinha();
+        int jColuna = jardineiro->getColuna();
+
+        if (verificaLimites(jLinha, jColuna)) {
+            jardineiro->usarFerramenta(&grelha[jLinha][jColuna]);
+        }
+    }
 
     if (jardineiro != nullptr)
         jardineiro->resetContadoresTurno();
 
-     for (int l = 0; l < nLinhas; ++l) {
+    for (int l = 0; l < nLinhas; ++l) {
         for (int c = 0; c < nColunas; ++c) {
-            Planta * p = grelha[l][c].getPlanta();
-            bool viva = p->processaInstante(grelha[l][c]);
+            if (grelha[l][c].temPlanta()) {
+                Planta * p = grelha[l][c].getPlanta();
+                bool viva = p->processaInstante(grelha[l][c]);
 
-            if (!viva) {
-                std::cout << "Um(a) " << p->getNome() << " morreu na posicao " << (char) 'A' + l << (char) 'A' + c << std::endl;
-                grelha[l][c].removerPlanta();
+                if (!viva) {
+                    std::cout << p->getNome() << " morreu na posicao " << (char)('A' + l) << (char) (char)('A' + c) << std::endl;
+                    p->reageMorte(grelha[l][c]);
+                    grelha[l][c].removerPlanta();
+                } else if (verificaVizinhosAVolta(l, c) && p->podeMorrerSufocada()) {
+                    std::cout << p->getNome() << " morreu sufocada na posicao " << (char)('A' + l) << (char) (char)('A' + c) << std::endl;
+                    p->reageMorte(grelha[l][c]);
+                    grelha[l][c].removerPlanta();
+                } else if (p->podeMultiplicar()) {
+                    this->tratarMultiplicacao(l, c);
+                }
             }
-
-            bool podeMultiplicar = p->podeMultiplicar();
-            if (podeMultiplicar)
-                this->tratarMultiplicacao(l, c);
         }
     }
 
-    std::cout << "avancou 1 instante" << std::endl;
+    std::cout << "Simulacao avancada em 1 instante" << std::endl;
 }
 
 
@@ -65166,11 +65212,7 @@ int Jardim::getNLinhas() const {
 }
 
 bool Jardim::verificaLimites(int l, int c) const {
-    if (l < 0 || l >= nLinhas || c < 0 || c >= nColunas) {
-        return false;
-    }
-
-    return true;
+    return (l >= 0 && l < nLinhas && c >= 0 && c < nColunas);
 }
 
 void Jardim::mostraGrelha() const {
@@ -65210,10 +65252,17 @@ void Jardim::tratarMultiplicacao(int l, int c) {
 
     if (!p->podeMultiplicar()) return;
 
-    Celula * vizinho = this->getVizinho(l, c, p->getInvasora());
+    Celula * vizinho = this->getVizinho(l, c, !p->getInvasora());
 
     if (vizinho != nullptr) {
+        Planta * nova = p->multiplica();
 
+        if (vizinho->temPlanta()) {
+            vizinho->removerPlanta();
+            std::cout << "Uma planta foi engolida por outra" << std::endl;
+        }
+
+        vizinho->setPlanta(nova);
     }
 }
 
@@ -65244,6 +65293,29 @@ Celula * Jardim::getVizinho(int l, int c, bool apenasVazio) const {
     return possiveisCelulas[randomCelula];
 }
 
+bool Jardim::verificaVizinhosAVolta(int l, int c) const {
+    int dLinha[] = {-1, 1, 0, 0, -1, -1, 1, 1};
+    int dColuna[] = {0, 0, -1, 1, -1, 1, -1, 1};
+    int vizinhosExistentes = 0;
+    int vizinhosOcupados = 0;
+
+    for (int i = 0; i < 8; ++i) {
+        int vizLinha = l + dLinha[i];
+        int vizColuna = c + dColuna[i];
+
+        if (verificaLimites(vizLinha, vizColuna)) {
+            ++vizinhosExistentes;
+
+            if (grelha[vizLinha][vizColuna].temPlanta())
+                ++vizinhosOcupados;
+        }
+    }
+
+    if (vizinhosExistentes == 0) return false;
+
+    return vizinhosExistentes == vizinhosOcupados;
+}
+
 bool Jardim::plantarPlanta(int l, int c, char tipo) {
     if (!verificaLimites(l, c)) {
         std::cout << "Erro: Fora do limite do jardim" << std::endl;
@@ -65270,7 +65342,7 @@ bool Jardim::plantarPlanta(int l, int c, char tipo) {
     Planta * p = nullptr;
     if (tipo == 'r') p = new Roseira();
     else if (tipo == 'e') p = new ErvaDaninha();
-    else if (tipo == 'x') p = new Exotica();
+    else if (tipo == 'x') p = new Bananeira();
     else p = new Cacto();
 
     grelha[l][c].setPlanta(p);
@@ -65408,7 +65480,7 @@ void Jardim::criarNovaFerramenta(int l, int c) {
             else f = new Enxada();
 
             grelha[novaL][novaC].setFerramenta(f);
-            std:cout << "Uma nova ferramenta apareceu por magia no jardim" << std::endl;
+            std::cout << "Uma nova ferramenta apareceu por magia no jardim" << std::endl;
             break;
         }
 
@@ -65442,7 +65514,7 @@ bool Jardim::compraFerramenta(char f) {
         return false;
     }
 
-    std::cout << "Ferramenta comprada com sucesso" << std::endl;
+    std::cout << ferr->getNome() <<" comprada com sucesso" << std::endl;
     jardineiro->setFerramenta(ferr);
     return true;
 }

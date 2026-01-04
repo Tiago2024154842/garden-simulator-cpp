@@ -7,11 +7,12 @@ class Celula;
 
 class Ferramenta {
   public:
+    virtual ~Ferramenta() = default;
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
     virtual Ferramenta * copia() const = 0;
-    virtual void usar(Celula* area) = 0;
+    virtual bool usar(Celula* c) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
@@ -28,7 +29,7 @@ class Regador : public Ferramenta {
   public:
     Regador();
     Regador * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
     
   private:
@@ -39,7 +40,7 @@ class Adubo : public Ferramenta {
   public:
     Adubo();
     Adubo * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const override;
 
   private:
@@ -50,7 +51,7 @@ class Tesoura : public Ferramenta {
   public:
     Tesoura();
     Tesoura * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 };
 
@@ -58,8 +59,10 @@ class Enxada : public Ferramenta {
   public:
     Enxada();
     Enxada * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
+  private:
+    int usos;
 };
 
 #endif

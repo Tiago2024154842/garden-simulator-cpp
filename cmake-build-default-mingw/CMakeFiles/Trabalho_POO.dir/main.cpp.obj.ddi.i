@@ -63518,13 +63518,17 @@ class Celula;
 class Planta {
   public:
     virtual Planta * copia() const = 0;
+    virtual ~Planta() = default;
     virtual bool processaInstante(Celula & c) = 0;
     char getSimbolo() const;
+    string getBeleza() const;
     string getPropriedades() const;
     string getNome() const;
     bool getInvasora() const;
     virtual bool podeMultiplicar() const = 0;
     virtual Planta* multiplica() = 0;
+    virtual void reageMorte(Celula & c);
+    virtual bool podeMorrerSufocada();
 
   protected:
     Planta(const string & n, const string & b, char s, int nut, int a, bool i);
@@ -63549,6 +63553,8 @@ class Roseira : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    bool podeMorrerSufocada() override;
+    void reageMorte(Celula & c) override;
 };
 
 class ErvaDaninha: public Planta {
@@ -63564,13 +63570,14 @@ class ErvaDaninha: public Planta {
     int instantesMultiplicacao;
 };
 
-class Exotica : public Planta {
+class Bananeira : public Planta {
   public:
-    Exotica();
-    Exotica * copia() const override;
+    Bananeira();
+    Bananeira * copia() const override;
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 };
 
 class Cacto : public Planta {
@@ -63580,6 +63587,7 @@ class Cacto : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 
   private:
     int instantesAguaSolo;
@@ -63596,11 +63604,12 @@ class Celula;
 
 class Ferramenta {
   public:
+    virtual ~Ferramenta() = default;
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
     virtual Ferramenta * copia() const = 0;
-    virtual void usar(Celula* area) = 0;
+    virtual bool usar(Celula* c) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
@@ -63617,7 +63626,7 @@ class Regador : public Ferramenta {
   public:
     Regador();
     Regador * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 
   private:
@@ -63628,7 +63637,7 @@ class Adubo : public Ferramenta {
   public:
     Adubo();
     Adubo * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const override;
 
   private:
@@ -63639,7 +63648,7 @@ class Tesoura : public Ferramenta {
   public:
     Tesoura();
     Tesoura * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 };
 
@@ -63647,8 +63656,10 @@ class Enxada : public Ferramenta {
   public:
     Enxada();
     Enxada * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
+  private:
+    int usos;
 };
 # 8 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Celula.h" 2
 
@@ -63714,6 +63725,7 @@ class Jardineiro {
     void registarColheita();
     void registarEntrada();
     void sairDoJardim();
+    void usarFerramenta(Celula * area);
 
   private:
     int movimentosTurno;
@@ -63761,6 +63773,7 @@ class Jardim {
     void getCelulaDesc(int l, int c) const;
     bool setJardineiro(int l, int c);
     bool verificaLimites(int l, int c) const;
+    bool verificaVizinhosAVolta(int l, int c) const;
     void verificarFerramentasNoChao(int l, int c);
     void criarNovaFerramenta(int l, int c);
     int instante;
@@ -70345,67 +70358,62 @@ using namespace std;
 class Comando {
   public:
     virtual ~Comando() {}
-    virtual bool executar(Jardim * jardim, string * argv, int argc) = 0;
+    virtual bool executar(Jardim *& jardim, string * argv, int argc) = 0;
 };
 
 class lplantas : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class lplanta : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
-};
-
-class jardim : public Comando {
-  public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class planta : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class avanca : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class larea : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class lsolo : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class lferr : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class colhe : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class larga : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class pega : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class compra : public Comando {
   public:
-    bool executar(Jardim *jardim, string *argv, int argc) override;
+    bool executar(Jardim *& jardim, string *argv, int argc) override;
 };
 
 class mover : public Comando {
@@ -70413,37 +70421,37 @@ class mover : public Comando {
 
   public:
     mover(char d);
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class entra : public Comando {
   public:
-    bool executar(Jardim * jardim, string * argv, int argc) override;
+    bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class sai : public Comando {
   public:
-  bool executar(Jardim * jardim, string * argv, int argc) override;
+  bool executar(Jardim *& jardim, string * argv, int argc) override;
 };
 
 class grava : public Comando {
   public:
-    bool executar(Jardim *jardim, string *argv, int argc) override;
+    bool executar(Jardim *& jardim, string *argv, int argc) override;
 };
 
 class recupera : public Comando {
   public:
-    bool executar(Jardim *jardim, string *argv, int argc) override;
+    bool executar(Jardim *& jardim, string *argv, int argc) override;
 };
 
 class apaga : public Comando {
 public:
-  bool executar(Jardim *jardim, string *argv, int argc) override;
+  bool executar(Jardim *& jardim, string *argv, int argc) override;
 };
 
 class executa : public Comando {
   public:
-    bool executar(Jardim *jardim, string *argv, int argc) override;
+    bool executar(Jardim *& jardim, string *argv, int argc) override;
 };
 # 6 "C:/Users/tiago/Documents/Trabalho_POO/ComandoFactory.h" 2
 

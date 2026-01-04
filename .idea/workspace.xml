@@ -30,27 +30,22 @@
   <component name="ChangeListManager">
     <list default="true" id="0d0f3226-498a-4e02-aca4-b061aadfca85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ComandoFactory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ComandoFactory.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Comandos/Comando.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Comandos/Comando.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jardim/Celula.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Celula.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jardim/Celula.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Celula.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Comandos/Comando.h" beforeDir="false" afterPath="$PROJECT_DIR$/Comandos/Comando.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Ferramenta.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Ferramenta.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Ferramenta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Ferramenta.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Jardim.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardim.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Jardim.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardim.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Jardineiro.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardineiro.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Jardineiro.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardineiro.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Planta.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Planta.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Planta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Planta.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Settings.h" beforeDir="false" afterPath="$PROJECT_DIR$/Settings.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/ComandoFactory.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/ComandoFactory.cpp.obj.ddi.i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj.ddi.i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj.ddi.i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Ferramenta.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Ferramenta.cpp.obj.ddi.i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Jardim.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Jardim.cpp.obj.ddi.i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj.ddi.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj.ddi.d" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj.ddi.i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/main.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/main.cpp.obj.ddi.i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/Trabalho_POO.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/teste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/teste.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +162,7 @@
       <workItem from="1767489611909" duration="92000" />
       <workItem from="1767491668638" duration="75000" />
       <workItem from="1767491836182" duration="56000" />
-      <workItem from="1767492084538" duration="1634000" />
+      <workItem from="1767492084538" duration="12814000" />
     </task>
     <servers />
   </component>

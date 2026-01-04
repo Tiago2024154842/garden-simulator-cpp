@@ -41566,11 +41566,12 @@ class Celula;
 
 class Ferramenta {
   public:
+    virtual ~Ferramenta() = default;
     std::string getNome() const;
     char getSimbolo() const;
     int getNumSerie() const;
     virtual Ferramenta * copia() const = 0;
-    virtual void usar(Celula* area) = 0;
+    virtual bool usar(Celula* c) = 0;
     virtual std::string getDesc() const = 0;
 
   protected:
@@ -41587,7 +41588,7 @@ class Regador : public Ferramenta {
   public:
     Regador();
     Regador * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 
   private:
@@ -41598,7 +41599,7 @@ class Adubo : public Ferramenta {
   public:
     Adubo();
     Adubo * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const override;
 
   private:
@@ -41609,7 +41610,7 @@ class Tesoura : public Ferramenta {
   public:
     Tesoura();
     Tesoura * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
 };
 
@@ -41617,8 +41618,10 @@ class Enxada : public Ferramenta {
   public:
     Enxada();
     Enxada * copia() const override;
-    void usar(Celula* area) override;
+    bool usar(Celula* c) override;
     std::string getDesc() const;
+  private:
+    int usos;
 };
 # 2 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.cpp" 2
 # 1 "C:/Users/tiago/Documents/Trabalho_POO/Settings.h" 1
@@ -41643,6 +41646,12 @@ class Settings {
     public:
         static const int capacidade = 100;
         static const int dose = 10;
+    };
+    class Enxada {
+    public:
+        static const int aumenta_nutrientes = 5;
+        static const int perda_agua = 10;
+        static const int max_usos = 3;
     };
     class Jardineiro {
     public:
@@ -41689,7 +41698,20 @@ class Settings {
         static const int multiplica_nutrientes_maior = 30;
         static const int multiplica_instantes = 5;
         static const int nova_nutrientes = 5;
+        static const int nova_agua = 5;
         static const int original_nutrientes = 5;
+    };
+    class Bananeira {
+        public:
+        static const int inicial_agua = 50;
+        static const int inicial_nutrientes = 10;
+        static const int perda_agua = 5;
+        static const int perda_nutrientes = 1;
+        static const int deixa_nutrientes = 50;
+        static const int absorcao_agua = 5;
+        static const int absorcao_nutrientes = 2;
+        static const int morre_agua_menor = 1;
+        static const int morre_nutrientes_menor = 1;
     };
 };
 # 3 "C:/Users/tiago/Documents/Trabalho_POO/Jardim/Ferramenta.cpp" 2
@@ -63648,13 +63670,17 @@ class Celula;
 class Planta {
   public:
     virtual Planta * copia() const = 0;
+    virtual ~Planta() = default;
     virtual bool processaInstante(Celula & c) = 0;
     char getSimbolo() const;
+    string getBeleza() const;
     string getPropriedades() const;
     string getNome() const;
     bool getInvasora() const;
     virtual bool podeMultiplicar() const = 0;
     virtual Planta* multiplica() = 0;
+    virtual void reageMorte(Celula & c);
+    virtual bool podeMorrerSufocada();
 
   protected:
     Planta(const string & n, const string & b, char s, int nut, int a, bool i);
@@ -63679,6 +63705,8 @@ class Roseira : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    bool podeMorrerSufocada() override;
+    void reageMorte(Celula & c) override;
 };
 
 class ErvaDaninha: public Planta {
@@ -63694,13 +63722,14 @@ class ErvaDaninha: public Planta {
     int instantesMultiplicacao;
 };
 
-class Exotica : public Planta {
+class Bananeira : public Planta {
   public:
-    Exotica();
-    Exotica * copia() const override;
+    Bananeira();
+    Bananeira * copia() const override;
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 };
 
 class Cacto : public Planta {
@@ -63710,6 +63739,7 @@ class Cacto : public Planta {
     Planta * multiplica() override;
     bool processaInstante(Celula & c) override;
     bool podeMultiplicar() const override;
+    void reageMorte(Celula & c);
 
   private:
     int instantesAguaSolo;
@@ -64954,13 +64984,9 @@ Ferramenta::Ferramenta(const char s, const std::string & n) : simbolo(s), nome(n
     numSerie = ++contadorNumSerie;
 }
 
-int Ferramenta::getNumSerie() const {
-    return numSerie;
-}
+int Ferramenta::getNumSerie() const { return numSerie; }
 
-char Ferramenta::getSimbolo() const {
-    return simbolo;
-}
+char Ferramenta::getSimbolo() const { return simbolo; }
 
 std::string Ferramenta::getNome() const {
     return nome;
@@ -64972,11 +64998,16 @@ Regador * Regador::copia() const {
     return new Regador(*this);
 }
 
-void Regador::usar(Celula* area) {
-    if (area != nullptr && agua >= 10) {
-
+bool Regador::usar(Celula* c) {
+    if (c != nullptr && agua >= 10) {
+        c->adicionarAgua(Settings::Regador::dose);
         agua -= Settings::Regador::dose;
+        if (agua < 0) agua = 0;
+
+        std::cout << "O jardineiro usou o " << getNome() << std::endl;
     }
+
+    return true;
 }
 
 std::string Regador::getDesc() const {
@@ -64991,11 +65022,17 @@ Adubo * Adubo::copia() const {
     return new Adubo(*this);
 }
 
-void Adubo::usar(Celula* area) {
-    if (area != nullptr && quantidade >= 10) {
-
+bool Adubo::usar(Celula* c) {
+    if (c != nullptr && quantidade >= 10) {
+        c->adicionarNutrientes(Settings::Adubo::dose);
         quantidade -= Settings::Adubo::dose;
+        if (quantidade < 0) quantidade = 0;
+
+        std::cout << "O jardineiro usou o " << getNome() << " e ficou com " << (quantidade*100)/Settings::Adubo::capacidade
+            << "% do pacote cheio" << std::endl;
     }
+
+    return true;
 }
 
 std::string Adubo::getDesc() const {
@@ -65010,10 +65047,17 @@ Tesoura * Tesoura::copia() const {
     return new Tesoura(*this);
 }
 
-void Tesoura::usar(Celula* area) {
-    if (area != nullptr && area->temPlanta()) {
-        area->removerPlanta();
+bool Tesoura::usar(Celula* c) {
+    if (c != nullptr && c->temPlanta()) {
+        Planta * p = c->getPlanta();
+
+        if (p->getBeleza() == "feia") {
+            std::cout << "O jardineiro usou a " << getNome() << " e cortou uma planta feia (" << p->getNome() << ")" << std::endl;
+            c->removerPlanta();
+        }
     }
+
+    return true;
 }
 
 std::string Tesoura::getDesc() const {
@@ -65022,16 +65066,30 @@ std::string Tesoura::getDesc() const {
     return str.str();
 }
 
-Enxada::Enxada() : Ferramenta('z', "Enxada") {}
+Enxada::Enxada() : Ferramenta('z', "Enxada"), usos(0) {}
 
 Enxada * Enxada::copia() const {
     return new Enxada(*this);
 }
 
-void Enxada::usar(Celula* area) {}
+bool Enxada::usar(Celula* c) {
+    if (c != nullptr && c->temPlanta()) {
+        usos++;
+
+        std::cout << "O jardineiro usou a " << getNome() << " e ao cavar arrancou um(a) " << c->getPlanta()->getNome() << std::endl;
+        c->retirarAgua(Settings::Enxada::perda_agua);
+        c->adicionarNutrientes(Settings::Enxada::aumenta_nutrientes);
+        c->removerPlanta();
+
+        if (usos >= Settings::Enxada::max_usos) {
+            std::cout << "A enxada partiu-se" << std::endl;
+            return false;
+        }
+    }
+}
 
 std::string Enxada::getDesc() const {
     std::ostringstream str;
-    str << getNome() << " (nr de serie: " << getNumSerie() << ")";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ") usada " << usos << "vezes";
     return str.str();
 }

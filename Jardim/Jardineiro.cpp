@@ -154,3 +154,14 @@ void Jardineiro::largaFerramenta() {
     } else 
         std::cout << "Erro: O jardineiro nao tem nenhuma ferramenta para largar" << std::endl;
 }   
+
+void Jardineiro::usarFerramenta(Celula * area) {
+    if (mao != nullptr && area != nullptr) {
+        bool eliminar = !mao->usar(area);
+
+        if (eliminar) {
+            delete mao;
+            mao = nullptr;
+        }
+    }
+}

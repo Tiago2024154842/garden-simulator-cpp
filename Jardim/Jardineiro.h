@@ -29,6 +29,7 @@ class Jardineiro {
     void registarColheita();
     void registarEntrada();
     void sairDoJardim();
+    void usarFerramenta(Celula * area);
 
   private:
     int movimentosTurno;
