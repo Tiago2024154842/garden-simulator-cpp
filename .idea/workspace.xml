@@ -7,7 +7,6 @@
     <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexRemoved" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -31,19 +30,27 @@
   <component name="ChangeListManager">
     <list default="true" id="0d0f3226-498a-4e02-aca4-b061aadfca85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ComandoFactory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ComandoFactory.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ComandoFactory.h" beforeDir="false" afterPath="$PROJECT_DIR$/ComandoFactory.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Comandos/Comando.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Comandos/Comando.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Celula.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Celula.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Celula.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Celula.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Jardim.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardim.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jardim/Jardim.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardim.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jardim/Jardineiro.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardineiro.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jardim/Jardineiro.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Jardineiro.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Planta.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Planta.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jardim/Planta.h" beforeDir="false" afterPath="$PROJECT_DIR$/Jardim/Planta.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/ComandoFactory.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/ComandoFactory.cpp.obj.ddi.i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Comandos/Comando.cpp.obj.ddi.i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Celula.cpp.obj.ddi.i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Ferramenta.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Ferramenta.cpp.obj.ddi.i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Jardim.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Jardim.cpp.obj.ddi.i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj.ddi.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj.ddi.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/Jardim/Planta.cpp.obj.ddi.i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/main.cpp.obj.ddi.i" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/CMakeFiles/Trabalho_POO.dir/main.cpp.obj.ddi.i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/Trabalho_POO.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-default-mingw/Trabalho_POO.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-default-mingw/Trabalho_POO.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,8 +119,8 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.Unnamed" />
       <item itemvalue="CMake Application.Trabalho_POO" />
+      <item itemvalue="CMake Application.Unnamed" />
       <item itemvalue="CMake Debug.Trabalho_POO" />
     </list>
     <recent_temporary>
@@ -152,7 +159,15 @@
       <workItem from="1767142521630" duration="7829000" />
       <workItem from="1767310199301" duration="3921000" />
       <workItem from="1767317656438" duration="1201000" />
-      <workItem from="1767374771631" duration="22289000" />
+      <workItem from="1767374771631" duration="22730000" />
+      <workItem from="1767462689507" duration="4604000" />
+      <workItem from="1767482043449" duration="748000" />
+      <workItem from="1767484438780" duration="869000" />
+      <workItem from="1767486693177" duration="151000" />
+      <workItem from="1767489611909" duration="92000" />
+      <workItem from="1767491668638" duration="75000" />
+      <workItem from="1767491836182" duration="56000" />
+      <workItem from="1767492084538" duration="1634000" />
     </task>
     <servers />
   </component>

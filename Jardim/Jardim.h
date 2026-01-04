@@ -18,7 +18,7 @@ class Jardim {
     int getNLinhas() const;
     bool getDescPlanta(int l, int c) const;
     bool plantarPlanta(int l, int c, char tipo);
-    bool removerPlanta(int l, int c);
+    bool colherPlanta(int l, int c) const;
     bool moverJardineiro(char c);
     bool sairJardineiro();
     bool entrarJardineiro(int l, int c);
@@ -32,6 +32,8 @@ class Jardim {
     void avancaInstante();
     
   private:
+    Celula * getVizinho(int l, int c, bool apenasVazio) const;
+    void tratarMultiplicacao(int l, int c);
     void swap(Jardim & outro);
     void getCelulaDesc(int l, int c) const;
     bool setJardineiro(int l, int c);

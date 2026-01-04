@@ -70,7 +70,29 @@ void Celula::setAgua(int a) {
   agua = a;
 }
 
+void Celula::retirarAgua(int a) {
+  agua -= a;
+
+  if (agua < 0)
+    agua = 0;
+}
+
+void Celula::adicionarAgua(int a) {
+    agua += a;
+}
+
 void Celula::setNutrientes(int n) {
   if (n < 0) n = 0;
   nutrientes = n;
+}
+
+void Celula::retirarNutrientes(int n) {
+  nutrientes -= n;
+
+  if (nutrientes < 0)
+    nutrientes = 0;
+}
+
+void Celula::adicionarNutrientes(int n) {
+    nutrientes += n;
 }

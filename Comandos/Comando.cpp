@@ -154,7 +154,7 @@ bool colhe::executar(Jardim * jardim, string* argv, int argc) {
         return false;
     }
 
-    return jardim->removerPlanta(l, c);
+    return jardim->colherPlanta(l, c);
 }
 
 bool larga::executar(Jardim * jardim, string* argv, int argc) {

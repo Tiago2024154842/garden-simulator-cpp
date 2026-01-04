@@ -99,6 +99,22 @@ void Jardim::avancaInstante() {
     if (jardineiro != nullptr)
         jardineiro->resetContadoresTurno();
 
+     for (int l = 0; l < nLinhas; ++l) {
+        for (int c = 0; c < nColunas; ++c) {
+            Planta * p = grelha[l][c].getPlanta();
+            bool viva = p->processaInstante(grelha[l][c]);
+
+            if (!viva) {
+                std::cout << "Um(a) " << p->getNome() << " morreu na posicao " << (char) 'A' + l << (char) 'A' + c << std::endl;
+                grelha[l][c].removerPlanta(); 
+            }
+
+            bool podeMultiplicar = p->podeMultiplicar();
+            if (podeMultiplicar)
+                this->tratarMultiplicacao(l, c);
+        }
+    }
+
     std::cout << "avancou 1 instante" << std::endl;
 }
 
@@ -113,7 +129,6 @@ int Jardim::getNLinhas() const {
 
 bool Jardim::verificaLimites(int l, int c) const {
     if (l < 0 || l >= nLinhas || c < 0 || c >= nColunas) {
-        std::cout << "Erro: Fora do limite do jardim" << std::endl;
         return false;
     }
 
@@ -150,8 +165,52 @@ void Jardim::mostraGrelha() const {
     }
 }
 
+void Jardim::tratarMultiplicacao(int l, int c) {
+    if (!grelha[l][c].temPlanta()) return;
+
+    Planta* p = grelha[l][c].getPlanta();
+
+    if (!p->podeMultiplicar()) return;
+
+    Celula * vizinho = this->getVizinho(l, c, p->getInvasora());
+
+    if (vizinho != nullptr) {
+        
+    }
+}
+
+Celula * Jardim::getVizinho(int l, int c, bool apenasVazio) const {
+    int dirL[] = {-1, 1, 0, 0, -1, -1, 1, 1};
+    int dirC[] = {0, 0, -1, 1, -1, 1, -1, 1};
+
+    std::vector<Celula *> possiveisCelulas;
+
+    int maxVizinhos = 8;
+    possiveisCelulas.reserve(maxVizinhos);
+
+    for (int i = 0; i < maxVizinhos; ++i) {        
+        int vizL = l + dirL[i];
+        int vizC = c + dirC[i];
+
+        if (verificaLimites(vizL, vizC)) {
+            if (!apenasVazio || !grelha[vizL][vizC].temPlanta())
+               possiveisCelulas.push_back(&grelha[vizL][vizC]);
+        }
+    }
+
+    if (possiveisCelulas.empty())
+        return nullptr;
+
+    int randomCelula = Random::getRandom(possiveisCelulas.size()-1);
+
+    return possiveisCelulas[randomCelula];
+}
+
 bool Jardim::plantarPlanta(int l, int c, char tipo) {
-    if (!verificaLimites(l, c)) return false;
+    if (!verificaLimites(l, c)) {
+        std::cout << "Erro: Fora do limite do jardim" << std::endl;
+        return false;
+    }
 
     tipo = tolower(tipo);
 
@@ -181,19 +240,35 @@ bool Jardim::plantarPlanta(int l, int c, char tipo) {
     return true;
 }
 
-bool Jardim::removerPlanta(int l, int c) {
-    if (!verificaLimites(l, c)) return false;
+bool Jardim::colherPlanta(int l, int c) const {
+    if (!verificaLimites(l, c)) {
+        std::cout << "Erro: Fora do limite do jardim" << std::endl;
+        return false;
+    }
 
     if (!grelha[l][c].temPlanta()) {
         std::cout << "Erro: Nao existe uma planta nessa posicao" << std::endl;
         return false;
     }
 
-    return grelha[l][c].removerPlanta();
+    if (!jardineiro->podeColher()) {
+        std::cout << "Erro: O jardineiro ja atingiu o maximo de " << Settings::Jardineiro::max_colheitas << " colheita(s) por turno" << std::endl;
+        return false;
+    }
+
+    bool colheu = grelha[l][c].removerPlanta();
+
+    if (colheu)
+        jardineiro->registarColheita();
+
+    return colheu;
 }
 
 bool Jardim::getDescPlanta(int l, int c) const {
-    if (!verificaLimites(l, c)) return false;
+    if (!verificaLimites(l, c)) {
+        std::cout << "Erro: Fora do limite do jardim" << std::endl;
+        return false;
+    }
 
     if (!grelha[l][c].temPlanta()) {
         std::cout << "Erro: Nao existe nenhuma planta nessa posicao" << std::endl;
@@ -252,7 +327,10 @@ bool Jardim::entrarJardineiro(int l, int c) {
 }
 
 bool Jardim::setJardineiro(int l, int c) {
-    if (!verificaLimites(l, c)) return false;
+    if (!verificaLimites(l, c)) {
+        std::cout << "Erro: Fora do limite do jardim" << std::endl;
+        return false;
+    }
     
     if (jardineiro->estaNaPosicao(l, c)) {
         std::cout << "Erro: O jardineiro ja estava nessa posicao" << std::endl;

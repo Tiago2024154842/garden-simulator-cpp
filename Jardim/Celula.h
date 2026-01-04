@@ -21,7 +21,11 @@ class Celula {
     int getNutrientes() const;
     int getAgua() const;
     void setAgua(int a);
+    void retirarAgua(int a);
+    void adicionarAgua(int a);
     void setNutrientes(int n);
+    void retirarNutrientes(int n);
+    void adicionarNutrientes(int n);
     void setPlanta(Planta* p);
     bool removerPlanta();
     bool temPlanta() const;
