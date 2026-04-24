@@ -94,30 +94,6 @@ The garden grid is implemented as a **raw 2D dynamic array** (no STL containers 
 | `executa <file>` | Run commands from file |
 | `fim` | Exit the program |
 
-## Build & Run
-
-**Requirements:** C++20 compatible compiler, CMake 3.30+
-
-```bash
-# Clone
-git clone https://github.com/Tiago2024154842/Trabalho_POO.git
-cd Trabalho_POO
-
-# Build
-cmake -B build
-cmake --build build
-
-# Run
-./build/Trabalho_POO
-```
-
-Or open directly in **CLion** and build/run from the IDE.
-
-## Authors
-
-- **Tiago Maninha**
-- **Miguel Martins**
-
 Developed for the Object-Oriented Programming course (2025/2026) at DEIS — Instituto Superior de Engenharia de Coimbra.
 
 </details>
