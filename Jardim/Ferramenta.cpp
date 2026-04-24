@@ -111,10 +111,12 @@ bool Enxada::usar(Celula* c) {
             return false;
         }
     }
+
+    return true;
 }
 
 std::string Enxada::getDesc() const {
     std::ostringstream str;
-    str << getNome() << " (nr de serie: " << getNumSerie() << ") usada " << usos << "vezes";
+    str << getNome() << " (nr de serie: " << getNumSerie() << ") usada " << usos << " vezes";
     return str.str();
 }

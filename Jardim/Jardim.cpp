@@ -36,6 +36,7 @@ Jardim::Jardim(int l, int c) : nLinhas(l), nColunas(c), instante(0) {
     } while (ferrColocadas < 3 && tentativas < 100);
 
     std::cout << "Jardim criado" << std::endl;
+    mostraGrelha();
 }
 
 Jardim::Jardim(const Jardim & outro) {
@@ -187,6 +188,8 @@ void Jardim::tratarMultiplicacao(int l, int c) {
     if (vizinho != nullptr) {
         Planta * nova = p->multiplica();
 
+        std::cout << "Um(a) " << nova->getNome() << " multiplicou-se" << std::endl;
+        
         if (vizinho->temPlanta()) {
             vizinho->removerPlanta();
             std::cout << "Uma planta foi engolida por outra" << std::endl;
@@ -298,8 +301,10 @@ bool Jardim::colherPlanta(int l, int c) const {
 
     bool colheu = grelha[l][c].removerPlanta();
 
-    if (colheu)
+    if (colheu) {
         jardineiro->registarColheita();
+        std::cout << "Planta colhida com sucesso" << std::endl;
+    }
 
     return colheu;
 }

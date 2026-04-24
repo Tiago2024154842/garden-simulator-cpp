@@ -24,7 +24,7 @@ bool lplanta::executar(Jardim *& jardim, string* argv, int argc) {
     int c = (int) argv[0][1] - (int) 'a';
 
     if(l >= jardim->getNLinhas() || c >= jardim->getNColunas() || l < 0 || c < 0) {
-        cout << "Coordenadas fora dos limites do jardim" << endl;
+        cout << "Coordenadas fora dos limites do jardim / valor invalido" << endl;
         return false;
     }
 
@@ -103,7 +103,7 @@ bool lsolo::executar(Jardim *& jardim, string * argv, int argc) {
     int c = (int) argv[0][1] - (int) 'a';
 
     if(l >= jardim->getNLinhas() || c >= jardim->getNColunas() || l < 0 || c < 0) {
-        cout << "Coordenadas fora dos limites do jardim" << endl;
+        cout << "Coordenadas fora dos limites do jardim / valor invalido" << endl;
         return false;
     }
 
@@ -235,7 +235,7 @@ bool entra::executar(Jardim *& jardim, string* argv, int argc) {
     int c = (int) argv[0][1] - (int) 'a';
 
     if(l >= jardim->getNLinhas() || c >= jardim->getNColunas() || l < 0 || c < 0) {
-        cout << "Erro: Coordenadas fora dos limites do jardim" << endl;
+        cout << "Erro: Coordenadas fora dos limites do jardim / valor invalido" << endl;
         return false;
     }
 
