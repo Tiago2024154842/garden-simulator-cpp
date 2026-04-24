@@ -178,30 +178,6 @@ A grelha do jardim é implementada como um **array dinâmico 2D raw** (sem conta
 | `executa <ficheiro>` | Executar comandos de ficheiro |
 | `fim` | Encerrar o programa |
 
-## Compilar e Executar
-
-**Requisitos:** Compilador compatível com C++20, CMake 3.30+
-
-```bash
-# Clonar
-git clone https://github.com/Tiago2024154842/Trabalho_POO.git
-cd Trabalho_POO
-
-# Compilar
-cmake -B build
-cmake --build build
-
-# Executar
-./build/Trabalho_POO
-```
-
-Ou abrir diretamente no **CLion** e compilar/executar a partir do IDE.
-
-## Autores
-
-- **Tiago Maninha**
-- **Miguel Martins**
-
 Desenvolvido para a cadeira de Programação Orientada a Objetos (2025/2026) no DEIS — Instituto Superior de Engenharia de Coimbra.
 
 </details>
