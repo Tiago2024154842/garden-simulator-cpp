@@ -1,7 +1,0 @@
-jardim 10 10
-entra aa
-planta aa c
-planta aa r
-colhe bb
-pega 99
-executa teste.txt
